@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Winning in Rural · S27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F5F3;font-family:Inter,"Noto Sans",system-ui,sans-serif}
+#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
+#gate form{width:100%;max-width:380px;background:#fff;border-radius:18px;padding:32px 28px;box-shadow:0 12px 32px rgba(11,74,40,.12);border-top:6px solid #0B8137}
+#gate h1{margin:0 0 4px;font-size:24px;color:#0B4A28}
+#gate p{margin:0 0 20px;color:#4F5E55;font-size:15px}
+#gate input{width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:12px 14px;border:2px solid #CFE3D6;border-radius:12px;outline:none}
+#gate input:focus{border-color:#0B8137}
+#gate button{margin-top:14px;width:100%;font:inherit;font-size:17px;font-weight:700;color:#fff;background:#0B8137;border:0;border-radius:12px;padding:12px;cursor:pointer}
+#gate button:disabled{opacity:.6;cursor:wait}
+#gate .err{color:#B42318;font-size:14px;min-height:20px;margin:10px 0 0}
+#gate label{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14px;color:#4F5E55}
+#gate label input{width:auto}
+#lockbtn{position:fixed;right:14px;bottom:14px;z-index:9999;font:inherit;font-size:13px;font-weight:600;color:#0B4A28;background:#E8F4EC;border:1px solid #CFE3D6;border-radius:999px;padding:6px 14px;cursor:pointer}
+.pp{font-family:Inter,"Noto Sans",sans-serif!important}
+</style></head>
+<body>
+<div id="gate"><form autocomplete="off">
+<h1>Winning in Rural · S27</h1>
+<p>Dữ liệu được mã hoá. Đăng nhập để mở.</p>
+<input type="text" id="us" placeholder="Tài khoản" autocapitalize="none" autocorrect="off" spellcheck="false" autofocus required style="margin-bottom:10px">
+<input type="password" id="pw" placeholder="Mật khẩu" required>
+<label><input type="checkbox" id="keep"> Nhớ trong tab này</label>
+<button type="submit" id="go">Mở khoá</button>
+<p class="err" id="err" role="alert"></p>
+</form></div>
+<script src="d3.min.js"></script>
+<script>
+(function(){
+const META={"iter": 600000, "u": {"fbaebe8d7cac587f24d926ce0a872d800451e2d00d054b6f979395f28ef8789f": {"s": "8aChpGvvxnov4SBWZAiJdQ==", "i": "OBeA7Ob6Y/LlAvf7", "w": "empDUFCP3ZJUITgAqQkQOWaSrFl73oXOEji5/8rDWn1eOtuwijMoWocFkoRyqqum"}, "004df0044f8ca118720bdca0bd89cce77f22221ac52523f18469bdf6e92015e2": {"s": "ZNjTv/xUCvB4HezmSrQraA==", "i": "N8/wpsSEFa/neZfg", "w": "cH3Art7LGe5XxXOzpbLPr7wJi1c7LGrlogCYSw2FTNrmY5FZM/ix0XQIanD8OhUb"}, "a73eef4ee87383c579c7d72b696f0cd61d0fe6e58b6c0c2f595d92a9a5d23d82": {"s": "dWPdmj8tcaFZVHGtOBv63g==", "i": "Rdq6nl1iK8ekPc6B", "w": "k5Kk69xCixIAbPjKUD4xOiD1C0VF/yNxA/6ZrMWqMQ3lhxikK8uVblRk4+WjQYMA"}}};
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const u8b64=u=>{let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);};
+const SK='wir_s27_k';
+let KEY=null;
+async function derive(us,pw){
+  us=us.trim().toLowerCase();const enc=new TextEncoder();
+  const hid=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',enc.encode('wir|'+us)))).map(b=>b.toString(16).padStart(2,'0')).join('');
+  const e=META.u[hid];if(!e)throw new Error('pw');
+  const base=await crypto.subtle.importKey('raw',enc.encode(us+'\n'+pw),'PBKDF2',false,['deriveKey']);
+  const kek=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.s),iterations:META.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  let raw;try{raw=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.i)},kek,b64(e.w));}catch(_){throw new Error('pw');}
+  return crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},true,['decrypt']);
+}
+async function dec(buf){const u=new Uint8Array(buf);return crypto.subtle.decrypt({name:'AES-GCM',iv:u.subarray(0,12)},KEY,u.subarray(12));}
+async function getBin(p){const r=await fetch(p,{cache:'no-cache'});if(!r.ok)throw new Error('net');return r.arrayBuffer();}
+
+async function boot(bundle){
+  const B=JSON.parse(new TextDecoder().decode(bundle));
+  document.getElementById('gate').remove();
+  const st=document.createElement('style');st.textContent=B.css;document.head.appendChild(st);
+  const wrap=document.createElement('div');wrap.innerHTML=B.body;document.body.appendChild(wrap);
+  const lb=document.createElement('button');lb.id='lockbtn';lb.textContent='Khoá';lb.onclick=()=>{try{sessionStorage.removeItem(SK)}catch(e){}location.reload();};document.body.appendChild(lb);
+  // dashboard shim
+  const DATA=B.data,draws={},calcs={},cv={};
+  function run(n){document.querySelectorAll('[data-draw="'+n+'"]').forEach(el=>{if(!draws[n])return;try{draws[n](el)}catch(e){console.error(n,e)}});}
+  window.dash={data:id=>{if(DATA[id])return{status:'ok',data:DATA[id]};if(calcs[id]){if(!cv[id])cv[id]=calcs[id].fn(...calcs[id].inputs.map(i=>DATA[i]));return{status:'ok',data:cv[id]};}return{status:'missing',data:[]};},
+    draw:(n,fn)=>{if(fn){draws[n]=fn;run(n);return;}run(n);},calc:(id,o)=>{calcs[id]=o;},onData:fn=>fn(),setLink:()=>{}};
+  // downloads: save in browser
+  const save=async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data]);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);};
+  window.claude={use:async k=>k==='downloads'?{save}:null};
+  // source files: /_blob/... -> encrypted file
+  const of=window.fetch.bind(window);
+  window.fetch=async(u,o)=>{const s=typeof u==='string'?u:(u&&u.url)||'';const p=B.files[s];
+    if(!p)return of(u,o);const plain=await dec(await getBin(p));
+    return new Response(plain,{status:200,headers:{'Content-Type':'application/json'}});};
+  const sc=document.createElement('script');sc.textContent=B.app;document.body.appendChild(sc);
+}
+
+async function open(){
+  const bin=await getBin('app.bin');
+  let plain;try{plain=await dec(bin);}catch(e){throw new Error('pw');}
+  await boot(plain);
+}
+
+async function tryKept(){
+  let raw=null;try{raw=sessionStorage.getItem(SK);}catch(e){}
+  if(!raw)return false;
+  try{KEY=await crypto.subtle.importKey('raw',b64(raw),{name:'AES-GCM'},true,['decrypt']);await open();return true;}
+  catch(e){try{sessionStorage.removeItem(SK)}catch(_){}KEY=null;return false;}
+}
+
+const f=document.querySelector('#gate form'),err=document.getElementById('err'),go=document.getElementById('go');
+f.onsubmit=async ev=>{ev.preventDefault();err.textContent='';go.disabled=true;go.textContent='Đang mở…';
+  const keep=document.getElementById('keep').checked;
+  try{KEY=await derive(document.getElementById('us').value,document.getElementById('pw').value);
+    if(keep){try{sessionStorage.setItem(SK,u8b64(new Uint8Array(await crypto.subtle.exportKey('raw',KEY))));}catch(e){}}
+    await open();
+  }catch(e){KEY=null;try{sessionStorage.removeItem(SK)}catch(_){}err.textContent=e.message==='pw'?'Sai tài khoản hoặc mật khẩu.':'Không tải được dữ liệu, thử lại.';go.disabled=false;go.textContent='Mở khoá';}
+};
+tryKept();
+})();
+</script>
+</body></html>
