@@ -24,7 +24,7 @@
   <p><b data-draw="wr_tg">—</b> outlet tham gia (<b data-draw="wr_tgp">—</b> outlet phụ trách) · đạt <b data-draw="wr_datp">—</b> trên outlet có target · <b data-draw="wr_pot">—</b> outlet potential chưa tham gia · <b data-draw="hv_pct">—</b> sản lượng TB 3T đang được HVN support.</p></div>
  <div class="wrgrid">
   <section class="card wrl" id="wr4a">
-   <div class="tw" data-source="nodes"><table class="acct"><thead><tr><th>Hạng mục / scheme <button type="button" class="xbtn xs" data-x="wr4" title="Xuất bảng" aria-label="Xuất bảng hạng mục">⤓</button></th><th class="n">Tham gia</th><th>Đạt / có target</th><th class="n">Potential chưa TG</th></tr></thead><tbody data-draw="tb_wr4"></tbody></table></div>
+   <div class="tw" data-source="nodes"><table class="acct"><thead><tr><th>Hạng mục / scheme <button type="button" class="xbtn xs" data-x="wr4" title="Xuất bảng" aria-label="Xuất bảng hạng mục">⤓</button></th><th class="n">Tham gia</th><th>Đạt / có target</th><th class="n" title="Outlet tiềm năng chưa tham gia">Tiềm năng</th></tr></thead><tbody data-draw="tb_wr4"></tbody></table></div>
  <details class="wrmore"><summary>HVN support và kế hoạch MK1 → SIS</summary>
  <div id="hvn">
   <div class="hvn" data-source="hvn"><div class="big"><span data-draw="hv_pct">—</span> <small>sản lượng TB 3T đang được HVN support</small></div>
@@ -78,11 +78,11 @@
 <section class="view" id="pool" hidden>
  <section class="card" id="pl_pick">
   <h2>1 · Chọn scheme cần xử lý <span class="muted" data-draw="pl_scope">—</span></h2>
-  <p class="muted">Chọn được nhiều scheme cùng lúc (tối đa 5). Pool đề xuất hiện ngay bên dưới, mỗi scheme một cột.</p>
+  <p class="muted">Chọn được nhiều scheme cùng lúc (tối đa 5). Danh sách outlet nên mời hiện ngay bên dưới, mỗi scheme một cột.</p>
   <div class="tw plgrid" data-draw="pl_tbl" data-source="programs"></div>
  </section>
  <section class="card" id="pl_sug">
-  <h2>2 · Pool đề xuất &amp; chỉnh</h2>
+  <h2>2 · Danh sách outlet nên mời</h2>
   <div class="plcfg" data-draw="pl_cfg" data-source="outlets tracking"></div>
   <div class="fbar"><input type="search" id="pl_q" placeholder="Tìm outlet, mã, SR…" aria-label="Tìm outlet"><label class="muted"><input type="checkbox" id="pl_only"> Chỉ hiện outlet đã chọn</label></div>
   <div class="tw plmx" data-draw="pl_mx" data-source="outlets tracking"></div>
@@ -98,7 +98,7 @@
   <div data-draw="vsum" data-source="visits tracking gap outlets"></div>
  </section>
  <section class="card" id="visit">
-  <div class="seg" id="vf" data-source="visits tracking gap"><button type="button" data-st="" aria-pressed="true">Mọi outlet <b data-draw="v_all">—</b></button><button type="button" data-st="kd" aria-pressed="false">Có scheme chưa đạt <b data-draw="v_kd">—</b></button><button type="button" data-st="none" aria-pressed="false">Chưa có chương trình <b data-draw="v_none">—</b></button><button type="button" data-st="pot" aria-pressed="false">Potential cần đề xuất <b data-draw="v_pot">—</b></button></div>
+  <div class="seg" id="vf" data-source="visits tracking gap"><button type="button" data-st="" aria-pressed="true">Mọi outlet <b data-draw="v_all">—</b></button><button type="button" data-st="kd" aria-pressed="false">Có chương trình chậm <b data-draw="v_kd">—</b></button><button type="button" data-st="none" aria-pressed="false">Chưa có chương trình <b data-draw="v_none">—</b></button><button type="button" data-st="pot" aria-pressed="false">Nên mời chương trình <b data-draw="v_pot">—</b></button></div>
   <div class="xbar"><p class="srcl" data-draw="src_plan" data-source="sources visits tracking"></p><button type="button" class="xbtn" data-x="visit">⤓ Xuất lịch visit</button></div>
   <div class="vplan" data-draw="vplan" data-source="visits outlets tracking gap overlap"></div>
  </section>

@@ -912,3 +912,89 @@
 .pp #vday,.pp #vday>*,.pp .vsw,.pp .vpt{min-width:0;max-width:100%}
 .pp .vpt.vpt{overflow-x:auto}
 .pp .hero .scope.scope{background:#fff;border-color:#DCE5DF}
+/* ===== v22/11 lần 2 ===== */
+/* Daily visit plan: bỏ khung cố định chiều cao để danh sách outlet luôn hiện */
+.pp #plan:not([hidden]){display:grid!important;height:auto!important;overflow:visible!important;gap:12px}
+.pp #plan>#visit{display:grid!important;gap:10px;min-height:0}
+/* Cây scheme: gọn, số to, % nhỏ bên dưới */
+.pp table.acct td.tc{white-space:nowrap;vertical-align:middle}
+.pp table.acct td.tc b{display:block;font-size:16px;font-weight:800;color:#111A15;line-height:1.2;font-variant-numeric:tabular-nums}
+.pp table.acct td.tc b span{font-size:inherit!important;font-weight:inherit!important;color:inherit}
+.pp table.acct td.tc b .of{color:#56625B;font-weight:700}
+.pp table.acct td.tc small{display:block;font-size:12px;font-weight:600;color:#56625B;margin-top:2px}
+.pp table.acct td.tc small span{font-size:inherit!important}
+.pp table.acct tr.acc.l1 td.nm b{white-space:nowrap;font-size:15.5px}
+.pp table.acct tr.acc.l1 td.nm .muted{display:block;font-size:12px}
+.pp table.acct tr.acc.l2.l2 td{background:#fff!important;padding-top:12px;padding-bottom:4px;border-bottom:0}
+.pp table.acct tr.acc.l2 .acth b{font-size:12.5px;font-weight:800;color:#0B4A28;text-transform:uppercase;letter-spacing:.03em}
+.pp table.acct tr.acc.l2 .mk1c{display:none}
+.pp table.acct tr.acc.nlh{cursor:pointer}
+.pp table.acct tr.acc.nlh .acth{display:flex;gap:8px;align-items:center}
+.pp table.acct tr.acc.nlh .acth b{color:#56625B;text-transform:none;letter-spacing:0;font-size:13px}
+.pp table.acct tr.acc.nlh .tgx{color:#56625B;font-weight:800}
+.pp table.acct tr.acc.nlh .muted{font-size:12px}
+.pp table.acct tr.acc.nol td{padding-top:6px;padding-bottom:6px}
+.pp table.acct tr.acc.nol b{font-weight:600;color:#33423A;font-size:13.5px}
+.pp table.acct tr.acc.l3 .sbadges{display:none}
+.pp table.acct .bar{display:none}
+/* Daily visit plan: phần tóm tắt nhỏ gọn */
+.pp .vhero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px;background:#0B8137;border-radius:14px;padding:12px;color:#fff}
+.pp .vhl{display:grid;gap:10px;align-content:start;padding:4px 4px}
+.pp .vhs{margin:0;font-size:16px;line-height:1.4}.pp .vhs b{font-size:18px}
+.pp .vstat{display:flex;flex-wrap:wrap;gap:6px}
+.pp .vst{background:#fff;color:#33423A;border-radius:8px;padding:4px 10px;font-size:13px;font-weight:600}
+.pp .vst b{color:#0B8137;font-size:15px;font-weight:800}
+.pp .vst.r b{color:#E40613}
+.pp .vhero .vpush{border:0}
+.pp .vpush .vok{margin:10px 12px;color:#0B8137;font-weight:700}
+.pp .vprog{display:grid;gap:8px;margin-top:12px}
+.pp .vprog h4{margin:0;font-size:13px;font-weight:800;color:#0B4A28;text-transform:uppercase;letter-spacing:.03em}
+.pp .vpg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.pp .vpc{border:1.5px solid #DCE5DF;border-left:5px solid #0B8137;border-radius:10px;padding:7px 10px;background:#fff;display:grid;gap:2px;min-width:0}
+.pp .vpc.sl{border-left-color:#E40613}
+.pp .vpn{display:flex;gap:6px;align-items:center;justify-content:space-between}.pp .vpn b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp .vk{flex:none;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;border:1.5px solid #0A84CF;color:#0A84CF}
+.pp .vps{font-size:12.5px;color:#56625B}.pp .vps b{color:#111A15}.pp .vps b.g{color:#0B8137}.pp .vps b.r{color:#E40613}
+/* Thẻ outlet giống thẻ visit trong app */
+.pp .vdone{margin:0;font-size:13.5px;color:#33423A}
+.pp .vjump button{display:inline-flex;align-items:center;gap:6px}
+.pp .vjump button i{width:8px;height:8px;border-radius:50%;background:#0B8137;flex:none}
+.pp .vjump button.kd i{background:#E40613}.pp .vjump button.na i{background:#0A84CF}
+.pp .vcard.vcard{border:2px solid #0B8137;border-radius:14px;background:#fff;overflow:hidden}
+.pp .vcard.done{border-color:#0A84CF}
+.pp .vcard .vch.vch{display:grid;grid-template-columns:1fr;gap:8px;background:#0B8137;color:#fff;padding:12px 14px;border-bottom:0}
+.pp .vcard.done .vch.vch{background:#0A84CF}
+.pp .vr1{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.pp .vr1 .vt{font-size:12.5px;font-weight:700;color:#fff;border:1.5px solid #fff;border-radius:999px;padding:1px 8px}
+.pp .vr1 .vcn{font-size:18px;font-weight:800;color:#fff;text-decoration:underline;text-underline-offset:3px}
+.pp .vr1 .vvol{font-size:13px;font-weight:800;color:#0B8137;background:#fff;border-radius:999px;padding:2px 10px}
+.pp .vr1 .vvol span{font-size:inherit!important;color:inherit!important}
+.pp .vr2{display:flex;gap:8px;flex-wrap:wrap}
+.pp .vch .vbtn{border-color:#fff;background:#fff;color:#0B4A28;min-height:34px}
+.pp .vch .vbtn.on{background:#0B4A28;border-color:#fff;color:#fff}
+.pp .vr3{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13.5px;font-weight:600}
+.pp .vtier{background:#fff;color:#0B4A28;font-weight:800;border-radius:6px;padding:1px 8px;font-size:12.5px}
+.pp .vtag{border:1.5px solid #fff;border-radius:6px;padding:0 7px;font-size:12px;font-weight:700}
+.pp .vcard .vcx{border-bottom:1.5px solid #E8ECE9}
+.pp .vcol .vno{margin:0;color:#56625B;font-size:13.5px}
+.pp .gy3{font-size:14px;font-weight:700;color:#0A84CF;border-left:4px solid #0A84CF;padding:2px 8px}
+@media (max-width:900px){.pp .vhero{grid-template-columns:1fr}}
+/* Bộ lọc từng cột */
+.pp th .cfb{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-left:4px;border-radius:5px;border:1.5px solid #CFDAD3;color:#56625B;font-size:11px;vertical-align:middle;background:#fff}
+.pp th .cfb.on{background:#0B8137;border-color:#0B8137;color:#fff}
+.cfpop{position:fixed;z-index:9999;width:260px;max-width:calc(100vw - 24px);background:#fff;border:1.5px solid #CFDAD3;border-radius:12px;padding:10px;display:grid;gap:8px;font:14px/1.35 inherit;color:#111A15;text-transform:none;letter-spacing:0;font-weight:500}
+.cfpop input[type=search]{font:inherit;min-height:38px;border:1.5px solid #CFDAD3;border-radius:8px;padding:0 10px}
+.cfpop .cfl{max-height:260px;overflow:auto;display:grid;gap:2px}
+.cfpop label{display:flex;gap:8px;align-items:center;min-height:32px;cursor:pointer;font-size:13.5px}
+.cfpop label span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cfpop label em{font-style:normal;color:#56625B;font-size:12px}
+.cfpop .cfa{display:flex;gap:8px;flex-wrap:wrap}
+.cfpop button{font:inherit;font-size:13px;font-weight:800;min-height:36px;border-radius:8px;border:1.5px solid #0B8137;background:#fff;color:#0B8137;padding:0 12px;cursor:pointer}
+.cfpop button.p{background:#0B8137;color:#fff}
+.pp .cfinfo{font-size:12.5px;color:#0B8137;font-weight:700;margin:4px 0}
+.pp table.acct{table-layout:auto;width:100%}
+.pp table.acct th{white-space:normal}
+.pp table.acct td.nm{min-width:0;width:auto}
+.pp table.acct tr.acc.l3 td.nm b{font-size:14px}
+.pp th{vertical-align:bottom}
+.pp .hero .scope.scope{background:#fff!important;border:1.5px solid #DCE5DF!important}
+.pp .plctl input[type=number]{width:120px;min-width:120px}

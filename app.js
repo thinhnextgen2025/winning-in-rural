@@ -176,7 +176,7 @@ put('wr_scope',()=>scopeName());put('wr_tg',()=>{const r=wr();return r?mn(r,'tg'
 put('wr_datp',()=>{const r=wr();return r?(r.dat==null?'':mn(r,'dat_pct',pc(r.dat_pct))):null;});put('wr_pot',()=>{const r=wr();return r?mn(r,'pot_none',vn(r.pot_none)):null;});
 /* OLD ACC
 S.open=S.open||{};
-const A2NOTE='Chưa có scheme cấp outlet (Rural Distributors, Target Sub D)';
+const A2NOTE='Chưa có scheme cấp outlet';
 const accRow=(r,lvl,open,onT,onGo)=>{const tr=E('tr','acc l'+lvl+(open?' open':''));const c=td(tr,null,'nm');
  if(onT){const bt=E('button','tg-btn',open?'▾':'▸');bt.type='button';bt.setAttribute('aria-expanded',open?'true':'false');bt.setAttribute('aria-label',open?'Thu gọn':'Xổ scheme');c.appendChild(bt);}
  const nmB=E('b',null,r.name);c.appendChild(nmB);
@@ -193,7 +193,7 @@ draw('tb_wr4',tb=>{if(!ready(tb,5,'nodes'))return;tb.replaceChildren();const K=c
 */
 /* OLD ACC3
 S.open=S.open||{};if(!S.N||S.N==='ROOT')S.N='WR';
-const A2NOTE='Chưa có scheme cấp outlet (Rural Distributors, Target Sub D)';
+const A2NOTE='Chưa có scheme cấp outlet';
 const ACTPLAN={'Expand Bivina Distribution':['Distribution Bivina'],'In-Outlet display':['In Outlet Display'],'In-Home Availability':['In Home Availability'],'TPO & TIP':['TPO','TIP'],'Break SGL / grass beer default':['Sell-out (1 get 2 can)']};
 const planTxt=a=>{const W=D('wr_plan');const ks=ACTPLAN[a];if(!W||!ks)return '';return ks.map(k=>{const r=W.find(x=>x.action===k);if(!r)return '';return 'MK1 '+k+': KH '+(r.plan_outlets!=null?vn(r.plan_outlets):'—')+' · re-submit '+vn(r.resub_outlets)+(r.gap_budget?' · GAP '+vn(r.gap_budget)+'đ':'');}).filter(Boolean).join(' | ');};
 const selN=n=>{S.N=n;redraw();};
@@ -216,20 +216,28 @@ draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();
  if(!top.length)empty(tb,4,'Không có dữ liệu.');});
 */
 S.open=S.open||{};if(!S.N||S.N==='ROOT')S.N='WR';
-const A2NOTE='Chưa có scheme cấp outlet (Rural Distributors, Target Sub D)';
+const A2NOTE='Chưa có scheme cấp outlet';
 const ACTPLAN={'Expand Bivina Distribution':['Distribution Bivina'],'In-Outlet display':['In Outlet Display'],'In-Home Availability':['In Home Availability'],'TPO & TIP':['TPO','TIP'],'Break SGL / grass beer default':['Sell-out (1 get 2 can)']};
 const planChips=a=>{const W=D('wr_plan');const ks=ACTPLAN[a];if(!W||!ks)return [];return ks.map(k=>{const r=W.find(x=>x.action===k);if(!r)return null;return 'MK1 '+k+': KH '+(r.plan_outlets!=null?vn(r.plan_outlets):'—')+' → '+vn(r.resub_outlets);}).filter(Boolean);};
 const selN=n=>{S.N=n;redraw();};
 const catKey=n=>{const m=/^[CJ]:(A\d|X|LME)/.exec(n)||[];return m[1]||'';};
+const tCell=(tr,main,sub)=>{const c=td(tr,null,'n tc');const b=E('b');b.append(...[].concat(main));c.appendChild(b);if(sub!=null){const sm=E('small');sm.append(...[].concat(sub));c.appendChild(sm);}return c;};
+const treeCells=(tr,r)=>{tCell(tr,mn(r,'tg',vn(r.tg)),[mn(r,'tg_pct',pc(r.tg_pct))]);
+ if(r.dat==null)tCell(tr,'—',r.n_wait?'chờ số '+vn(r.n_wait)+' outlet':'chưa đo');else tCell(tr,[mn(r,'dat',vn(r.dat)),E('span','of',' / '+vn(r.n_measured))],[mn(r,'dat_pct',pc(r.dat_pct)),' đạt']);
+ tCell(tr,mn(r,'pot_none',vn(r.pot_none)),[mn(r,'pot_pct',pc(r.pot_pct))]);};
+S.openNL=S.openNL||{};
+const nlRows=(tb,NL,ck,key)=>{if(!NL.length)return;const op=!!S.openNL[key];const h=E('tr','acc l2 nlh k-'+ck);const c=td(h,null,'nm');c.colSpan=4;const d=E('div','acth');
+ d.append(E('span','tgx',op?'▾':'▸'),E('b',null,NL.length+' scheme chưa có danh sách outlet'),E('span','muted',op?'Thu gọn':'Bấm để xem'));c.appendChild(d);h.onclick=()=>{S.openNL[key]=!op;dash.draw('tb_wr4');};tb.appendChild(h);if(!op)return;
+ NL.forEach(p=>{const t=E('tr','acc l3 nol k-'+ck);const c2=td(t,null,'nm');c2.colSpan=4;c2.appendChild(E('b',null,p.short||p.name));t.style.cursor='pointer';t.onclick=()=>selN('S:'+p.id);if(S.N==='S:'+p.id)t.classList.add('cur');tb.appendChild(t);});};
 const accRow=(r,lvl,open,onT,ck)=>{const _pth=pathOf(S.N).map(x=>x.node);const st=S.N===r.node?' cur':_pth.includes(r.node)?' path':(S.N!=='WR'&&S.N!=='LME'?' dim':'');
  const tr=E('tr','acc l'+lvl+(open?' open':'')+st+(ck?' k-'+ck:''));
- if(lvl===2){const c=td(tr,null,'nm');c.colSpan=4;const h=E('div','acth');h.appendChild(E('b',null,r.name));planChips(r.name).forEach(t=>h.appendChild(E('span','mk1c',t)));c.appendChild(h);tr.onclick=()=>selN(r.node);return tr;}
+ if(lvl===2){const c=td(tr,null,'nm');c.colSpan=4;const h=E('div','acth');h.appendChild(E('b',null,r.name));c.appendChild(h);tr.onclick=()=>selN(r.node);return tr;}
  const c=td(tr,null,'nm');
  if(lvl===1){const w=E('div','l1w');if(onT){const bt=E('button','tg-btn',open?'▾':'▸');bt.type='button';bt.setAttribute('aria-expanded',open?'true':'false');bt.setAttribute('aria-label',open?'Thu gọn':'Xổ');bt.onclick=e=>{e.stopPropagation();onT();};w.appendChild(bt);}else w.appendChild(E('span','tg-sp'));
   const t=E('div');t.appendChild(E('b',null,r.name));t.appendChild(E('span','muted',r.node==='C:A2'?A2NOTE:r.n_schemes+' scheme'));w.appendChild(t);c.appendChild(w);}
  else{const p=(D('programs')||[]).find(x=>'S:'+x.id===r.node);c.appendChild(E('b',null,r.name));
-  if(p){const m=E('div','sbadges');if(p.mk1)m.appendChild(E('span','sb mk','MK1'));m.appendChild(E('span','sb','Pool '+vn(p.pool)));if(p.period)m.appendChild(E('span','sb',p.period));c.appendChild(m);}}
- const base=nodeRow(r,'',null,null);const ch=[...base.children];[ch[2],ch[3],ch[5]].forEach(x=>tr.appendChild(x));
+  }
+ treeCells(tr,r);
  tr.onclick=()=>{if(lvl===1&&onT&&!open)S.open[r.node]=true;selN(r.node);};return tr;};
 draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();
  const top=S.tab==='lme'?childRows('LME',''):childRows('WR','').sort((a,b)=>a.node.localeCompare(b.node));
@@ -242,11 +250,8 @@ draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();
   if(S.N===r.node){const i0=tb.children.length;queueMicrotask(()=>{[...tb.children].slice(i0).forEach(x=>{if(!x.classList.contains('l1'))x.classList.remove('dim');});});}
   childRows(r.node,'').sort(byRk).forEach(j=>{if(j.node.startsWith('J:')){tb.appendChild(accRow(j,2,false,null,ck));childRows(j.node,'').sort(byRk).forEach(s=>tb.appendChild(accRow(s,3,false,null,ck)));}
    else tb.appendChild(accRow(j,3,false,null,ck));});
-  {const NL=(D('programs')||[]).filter(p=>p.nolist&&'C:'+p.cat===r.node);if(NL.length){const h=E('tr','acc l2 k-'+ck);const c=td(h,null,'nm');c.colSpan=4;const d=E('div','acth');d.append(E('b',null,'Chưa có danh sách outlet'),E('span','mk1c',NL.length+' scheme'));c.appendChild(d);tb.appendChild(h);
-   NL.forEach(p=>{const t=E('tr','acc l3 nol k-'+ck);const c2=td(t,null,'nm');c2.colSpan=4;c2.appendChild(E('b',null,p.short));const m=E('div','sbadges');if(p.period)m.appendChild(E('span','sb',p.period));if(p.pool)m.appendChild(E('span','sb','KH '+vn(p.pool)+' outlet'));if(p.status)m.appendChild(E('span','sb nl',p.status));c2.appendChild(m);t.style.cursor='pointer';t.onclick=()=>selN('S:'+p.id);if(S.N==='S:'+p.id)t.classList.add('cur');tb.appendChild(t);});}}
-  if(r.node==='C:A3'){const W=D('wr_plan')||[];W.filter(x=>/Taskforce/i.test(x.action)).forEach(x=>{const h=E('tr','acc l2 k-A3');const c=td(h,null,'nm');c.colSpan=4;const d=E('div','acth');d.append(E('b',null,x.action),E('span','mk1c','MK1 KH '+vn(x.plan_outlets)+' outlet'),E('span','muted',' chưa có danh sách outlet'));c.appendChild(d);tb.appendChild(h);});}});
- if(S.tab==='lme'){const NL=(D('programs')||[]).filter(p=>p.nolist&&p.project==='LME');if(NL.length){const h=E('tr','acc l2 k-LME');const c=td(h,null,'nm');c.colSpan=4;const d=E('div','acth');d.append(E('b',null,'Chưa có danh sách outlet'),E('span','mk1c',NL.length+' scheme'));c.appendChild(d);tb.appendChild(h);
-   NL.forEach(p=>{const t=E('tr','acc l3 nol k-LME');const c2=td(t,null,'nm');c2.colSpan=4;c2.appendChild(E('b',null,p.short));const m=E('div','sbadges');if(p.period)m.appendChild(E('span','sb',p.period));if(p.pool)m.appendChild(E('span','sb','KH '+vn(p.pool)+' outlet'));if(p.status)m.appendChild(E('span','sb nl',p.status));c2.appendChild(m);t.style.cursor='pointer';t.onclick=()=>selN('S:'+p.id);if(S.N==='S:'+p.id)t.classList.add('cur');tb.appendChild(t);});}}
+  {const NL=(D('programs')||[]).filter(p=>p.nolist&&'C:'+p.cat===r.node);if(r.node==='C:A3')(D('wr_plan')||[]).filter(x=>/Taskforce/i.test(x.action)).forEach(x=>NL.push({id:'',short:x.action}));nlRows(tb,NL,ck,r.node);}});
+ if(S.tab==='lme')nlRows(tb,(D('programs')||[]).filter(p=>p.nolist&&p.project==='LME'),'LME','LME');
  if(!top.length)empty(tb,4,'Không có dữ liệu.');});
 
 opts('f_plan_p','wr_plan','pillar','plan','pillar','Mọi hạng mục 4A');
@@ -385,13 +390,7 @@ document.querySelectorAll('.pp #vf [data-st]').forEach(b=>b.addEventListener('cl
 // ===== Tab 6: Chọn scheme → pool đề xuất =====
 const FAMN={H1:'Mở điểm / độ phủ SKU',H2:'Sell-in theo target',H3:'Trưng bày / nhận diện',H4:'Sell-out cho người uống',H5:'Gắn kết / hợp đồng',H6:'Dịp tiêu dùng',H7:'Trải nghiệm / ảnh hưởng'};
 const FDEF={H1:{vol:10,tier:'',rur:'Rural'},H2:{vol:30,tier:'Gold',rur:''},H3:{vol:40,tier:'Silver',rur:''},H4:{vol:10,tier:'',rur:'Rural'},H5:{vol:30,tier:'Gold',rur:''},H6:{vol:10,tier:'',rur:''},H7:{vol:0,tier:'Gold',rur:'Rural'}};
-const FRULE={H1:'Distribution chỉ cần vào 1–2 thùng để có điểm bán: chọn outlet vừa và nhỏ (tối đa Silver, sản lượng dưới ngưỡng), off-trade, không phải SubD, chưa bán brand của scheme; loại outlet đang có scheme cùng logic cùng SKU. Outlet lớn hướng sang TIP/P4G.',
- H2:'Outlet Gold/Platinum, đạt ngưỡng sản lượng, không phải SubD; loại outlet đang có sell-in cùng SKU cùng thời gian và outlet đang chạy display (trừ Mega display).',
- H3:'Display chỉ làm ở outlet vừa và nhỏ (tối đa Silver, sản lượng dưới ngưỡng), off-trade; loại outlet đang chạy sell-in (Target Inc, TIP, TPO, P4G, Tie-up). Mega display là ngoại lệ: làm ở outlet lớn. Outlet lớn còn lại hướng sang TIP/P4G.',
- H4:'Outlet đã bán brand của scheme, ưu tiên rural và có giao tận nhà; loại outlet đang có sell-out cùng SKU.',
- H5:'Outlet Gold trở lên, sản lượng ổn định; loại outlet đã có tie-up hoặc P4G.',
- H6:'Outlet có kênh tiệc / giao tận nhà / quán; đạt ngưỡng sản lượng.',
- H7:'Outlet rural Gold trở lên đang ký một phần với HVN (tie-up, P4G hoặc Target Inc); loại outlet đang TPO/TIP26.'};
+const FRULE={"H1": "Mở điểm bán chỉ cần outlet nhập 1–2 thùng: chọn outlet vừa và nhỏ (tối đa Silver, sản lượng dưới ngưỡng), bán mang về, không phải nhà phân phối phụ, chưa bán nhãn của chương trình. Bỏ outlet đang có chương trình mua hàng cùng loại bia. Outlet lớn nên mời TIP/P4G.", "H2": "Outlet Gold/Platinum, đủ sản lượng, không phải nhà phân phối phụ. Bỏ outlet đang có chương trình mua hàng cùng loại bia cùng thời gian, và outlet đang trưng bày (trừ Mega display).", "H3": "Trưng bày chỉ làm ở outlet vừa và nhỏ (tối đa Silver, sản lượng dưới ngưỡng), bán mang về. Bỏ outlet đang có chương trình mua hàng (Target Inc, TIP, TPO, P4G, Tie-up). Mega display thì ngược lại: làm ở outlet lớn. Outlet lớn còn lại nên mời TIP/P4G.", "H4": "Outlet đã bán nhãn của chương trình, ưu tiên nông thôn và có giao tận nhà. Bỏ outlet đang có chương trình tặng cho người uống cùng loại bia.", "H5": "Outlet Gold trở lên, sản lượng đều. Bỏ outlet đã có tie-up hoặc P4G.", "H6": "Outlet có bán cho tiệc, giao tận nhà hoặc là quán, đủ sản lượng.", "H7": "Outlet nông thôn Gold trở lên đang ký một phần với HVN (tie-up, P4G hoặc Target Inc). Bỏ outlet đang TPO/TIP26."};
 const TRK={Platinum:4,Gold:3,Silver:2,Bronze:1};
 const OFF=/Grocery|Beverage Retail|Wholesaler|Minimart|Sub Distributor/i,SUBD=/Sub Distributor/i,HD=/Home/i,PARTY=/Caterer|Home|Quan|Restaurant|Event|Group|Karaoke|Social/i;
 const brandOf=p=>{const s=(p.skus||'')+' '+p.name;return /BIX|BXB|BXP|BIP|Bivina/i.test(s)?'BIVINA':/LB355|LMC|LSC|Larue/i.test(s)?'LARUE':/HNK|TIGER|Heineken|Tiger/i.test(s)?'TIGER':'';};
@@ -538,18 +537,18 @@ draw('pl_schemes',el=>{el.replaceChildren();const P=D('programs');if(!P){el.text
 draw('pl_cfg',el=>{el.replaceChildren();if(!S.pls.length){el.appendChild(E('p','vempty','Chọn ít nhất 1 scheme ở bước 1.'));return;}const M=PM();
  S.pls.forEach(id=>{const p=M.get(id);const R=plEval(id);if(!p||!R)return;const f=plF(id);const k=pick(id);const c=E('div','plcard');
   const hd=E('div','plch');hd.append(E('b',null,p.short||p.name),E('span','muted',' '+FAMN[p.fam]));const x=E('button','plx','✕');x.type='button';x.setAttribute('aria-label','Bỏ scheme');x.onclick=()=>{S.pls=S.pls.filter(y=>y!==id);plDraw();};hd.appendChild(x);c.appendChild(hd);
-  c.appendChild(E('p','note-red','Luật (giả định): '+FRULE[p.fam]));
+  c.appendChild(E('p','note-red','Cách chọn (anh tự đặt): '+FRULE[p.fam]));
   const row=E('div','plctl');const mkSel=(opts,val,on)=>{const s=E('select','dash-select');opts.forEach(([v,t])=>s.appendChild(new Option(t,v)));s.value=val;s.onchange=()=>on(s.value);return s;};
   const upd=(kk,v)=>{S.plf[id]=Object.assign(plF(id),{[kk]:v});plDraw();};
   const sm=SMALL(p);row.append(sm?mkSel([['0','Mọi sản lượng'],['5','≤5 thùng'],['10','≤10 thùng'],['20','≤20 thùng'],['30','≤30 thùng'],['50','≤50 thùng']],String(f.vol),v=>upd('vol',+v)):mkSel([['0','Mọi sản lượng'],['10','≥10 thùng'],['20','≥20 thùng'],['30','≥30 thùng'],['40','≥40 thùng'],['60','≥60 thùng'],['100','≥100 thùng']],String(f.vol),v=>upd('vol',+v)),
    sm?mkSel([['','Mọi tier'],['Silver','Tối đa Silver'],['Bronze','Chỉ Bronze']],f.tier,v=>upd('tier',v)):mkSel([['','Mọi tier'],['Silver','Silver+'],['Gold','Gold+'],['Platinum','Platinum']],f.tier,v=>upd('tier',v)),
    mkSel([['','Rural + Urban'],['Rural','Chỉ Rural']],f.rur,v=>upd('rur',v)));
-  const q=E('input');q.type='number';q.min='1';q.placeholder='Quota';q.setAttribute('aria-label','Quota');q.value=S.plq[id]||'';q.onchange=()=>{S.plq[id]=q.value;};
-  const tp=E('button','more','Chọn top N');tp.type='button';tp.onclick=()=>{const n=parseInt(q.value,10)||R.ok.length;S.plq[id]=q.value;k.clear();R.ok.slice(0,n).forEach(y=>k.add(y.o.oid));plDraw();};
+  const q=E('input');q.type='number';q.min='1';q.placeholder='Số lượng';q.setAttribute('aria-label','Số lượng outlet muốn chọn');q.oninput=()=>{const n=parseInt(q.value,10);tp.textContent=n>0?'Chọn '+vn(Math.min(n,R.ok.length))+' outlet':'Chọn hết';};q.value=S.plq[id]||'';q.onchange=()=>{S.plq[id]=q.value;};
+  const tp=E('button','more',(parseInt(S.plq[id],10)>0)?'Chọn '+vn(Math.min(parseInt(S.plq[id],10),R.ok.length))+' outlet':'Chọn hết');tp.type='button';tp.onclick=()=>{const n=parseInt(q.value,10)||R.ok.length;S.plq[id]=q.value;k.clear();R.ok.slice(0,n).forEach(y=>k.add(y.o.oid));plDraw();};
   const cl=E('button','back','Bỏ chọn');cl.type='button';cl.onclick=()=>{k.clear();plDraw();};row.append(q,tp,cl);c.appendChild(row);
   const sel=[...k].filter(o=>R.okM.has(o)||R.exM.has(o));const by=d3.rollup(sel,v=>v.length,o=>(R.okM.get(o)||R.exM.get(o)).o.sr);
-  const st=E('p','muted');st.append('Đề xuất ',E('b',null,vn(R.ok.length)),' · đang chạy ',E('b',null,vn(R.cur.length)),' · bị loại '+vn(R.ex.length)+' · đã chọn ',E('b',null,vn(sel.length)));c.appendChild(st);
-  if(sel.length>=5&&[...by.values()].some(n=>n/sel.length>0.4))c.appendChild(E('p','note-red','1 SR chiếm hơn 40% pool (ngưỡng giả định): '+[...by].sort((a,b)=>b[1]-a[1]).map(([s,n])=>nm(s)+' '+n).join(', ')));
+  const st=E('p','muted');st.append('Nên mời ',E('b',null,vn(R.ok.length)),' outlet · đang tham gia ',E('b',null,vn(R.cur.length)),' · chưa phù hợp '+vn(R.ex.length)+' · đã chọn ',E('b',null,vn(sel.length)));c.appendChild(st);
+  if(sel.length>=5&&[...by.values()].some(n=>n/sel.length>0.4))c.appendChild(E('p','note-red','1 SR chiếm hơn 40% danh sách (ngưỡng anh tự đặt): '+[...by].sort((a,b)=>b[1]-a[1]).map(([s,n])=>nm(s)+' '+n).join(', ')));
   el.appendChild(c);});});
 draw('pl_mx',el=>{el.replaceChildren();if(!S.pls.length)return;const M=PM();const RS=S.pls.map(id=>[id,plEval(id)]).filter(x=>x[1]);
  const qv=((document.getElementById('pl_q')||{}).value||'').trim().toLowerCase();const only=!!(document.getElementById('pl_only')||{}).checked;
@@ -757,56 +756,99 @@ const vRow=r=>{const row=E('div','pr'+(r.active===false?' end':''));const top=E(
    if(!nores&&r.actual!=null&&r.gap>0)nb.appendChild(E('span','prg','thiếu '+vn(r.gap)+(r.need_day!=null?' · cần '+nd(r.need_day)+'/ngày':'')));
    const pct=r.pct!=null?r.pct:(r.actual!=null&&r.target?r.actual/r.target*100:null);if(pct!=null)nb.appendChild(bar(pct,pct>=100?'g':''));row.appendChild(nb);}
   return row;};
+const DONEK=oid=>'wir_done|'+(S.day||todayISO())+'|'+oid;
+const isDone=oid=>{try{return !!localStorage.getItem(DONEK(oid));}catch(e){return false;}};
+const SLOW=['Chậm','Rất chậm','Không đạt'];
+const pnm=r=>String(r.prog_name||'').split(' (')[0];
+const fitS=x=>{const P=D('programs')||[];const has=new Set(x.L.filter(r=>r.active!==false).map(r=>r.prog));const out=[];
+ P.filter(p=>p.active&&p.fam&&!has.has(p.id)).forEach(p=>{let R=null;try{R=plEval(p.id);}catch(e){}const y=R&&R.okM&&R.okM.get(x.o.oid);if(y)out.push({n:p.short||p.name,sc:y.sc});});
+ out.sort((a,b)=>b.sc-a.sc);const names=out.map(a=>a.n);if(x.g)String(x.g.de_xuat||'').split(' | ').filter(Boolean).forEach(t=>{if(!names.some(n=>n.toLowerCase()===t.toLowerCase()))names.push(t);});return names.slice(0,4);};
 draw('vsum',el=>{el.replaceChildren();const B=dueBase();if(!B){el.appendChild(E('p','muted','Đang tải…'));return;}
  const sr=pSR();if(!(D('visits')||[]).some(r=>r.sr===sr)){el.appendChild(E('p','vempty','Chưa có lịch visit của '+nm(sr)+' trong file All Visits (02/11–19/12).'));return;}
  const all=B.flatMap(x=>x.L.filter(r=>r.active!==false).map(r=>({x,r})));const has=B.filter(x=>x.L.some(r=>r.active!==false)).length;
- const slow=all.filter(a=>['Chậm','Rất chậm','Không đạt'].includes(a.r.status));const ok=all.filter(a=>a.r.status==='Đã đạt');
- const gapSum=d3.sum(slow,a=>a.r.gap>0&&a.r.actual!=null?a.r.gap:0);
- const k=E('div','vsk');const K=(cls,l,v,s)=>{const c=E('div','vsc '+cls);c.append(E('span','l',l),E('b',null,v));if(s)c.appendChild(E('em',null,s));k.appendChild(c);};
- K('','Outlet trong lịch',vn(B.length),vn(B.filter(x=>x.v.st==='Đã ghé').length)+' đã ghé');
- K('g','Outlet có chương trình',vn(has),B.length?Math.round(has/B.length*100)+'% outlet trong lịch':'');
- K('g','Lượt đã đạt',vn(ok.length),'trên '+vn(all.length)+' lượt chương trình');
- K('r','Lượt chậm / chưa đạt',vn(slow.length),gapSum?'còn thiếu '+vn(gapSum)+' thùng':'');
- K('b','Outlet nên mời CT',vn(B.filter(x=>x.g).length),vn(B.filter(x=>x.none).length)+' outlet chưa có CT');
- el.appendChild(k);
- const wrap=E('div','vsw');
- const push=E('div','vpush');push.appendChild(E('h4',null,'Cần chốt số hôm nay'));const PL=slow.filter(a=>a.r.gap>0&&a.r.actual!=null).sort((p,q)=>(q.r.gap||0)-(p.r.gap||0)).slice(0,6);
- if(!PL.length)push.appendChild(E('p','muted','Không có chương trình nào đang thiếu số trong lịch hôm nay.'));
- PL.forEach(a=>{const b=E('button','vpr');b.type='button';b.append(E('b',null,a.x.o.outlet),E('span',null,String(a.r.prog_name).split(' (')[0]),E('em',null,'thiếu '+vn(a.r.gap)+(a.r.need_day!=null?' · '+nd(a.r.need_day)+'/ngày':'')));b.onclick=()=>{const c=document.getElementById('vc-'+a.x.o.oid);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};push.appendChild(b);});
- wrap.appendChild(push);
- const pm=new Map();all.forEach(a=>{const key=a.r.prog;if(!pm.has(key))pm.set(key,{n:a.r.prog_name,col:colOf(a.r),o:0,ok:0,sl:0,gap:0});const m=pm.get(key);m.o++;if(a.r.status==='Đã đạt')m.ok++;if(['Chậm','Rất chậm','Không đạt'].includes(a.r.status)){m.sl++;m.gap+=a.r.gap>0&&a.r.actual!=null?a.r.gap:0;}});
- const tw=E('div','vpt');const t=E('table');const th=E('thead');const hr=E('tr');['Chương trình','Loại','Outlet hôm nay','Đã đạt','Chậm','Thiếu (thùng)'].forEach((x,i)=>hr.appendChild(E('th',i>1?'n':null,x)));th.appendChild(hr);t.appendChild(th);const tb=E('tbody');
- [...pm.values()].sort((a,b)=>b.sl-a.sl||b.o-a.o).forEach(m=>{const tr=E('tr');td(tr,String(m.n).split(' (')[0]);td(tr,(VCOL.find(c=>c[0]===m.col)||[])[1]);td(tr,vn(m.o),'n');td(tr,vn(m.ok),'n');const s=td(tr,vn(m.sl),'n');if(m.sl)s.classList.add('red');td(tr,m.gap?vn(m.gap):'—','n');tb.appendChild(tr);});
- if(!pm.size)empty(tb,6,'Không có chương trình nào trong lịch hôm nay.');t.appendChild(tb);tw.appendChild(t);wrap.appendChild(tw);el.appendChild(wrap);});
+ const slow=all.filter(a=>SLOW.includes(a.r.status));const ok=all.filter(a=>a.r.status==='Đã đạt');
+ const gapSum=d3.sum(slow,a=>a.r.gap>0&&a.r.actual!=null?a.r.gap:0);const done=B.filter(x=>x.v.st==='Đã ghé'||isDone(x.o.oid)).length;
+ const hero=E('div','vhero');const l=E('div','vhl');
+ const p1=E('p','vhs');p1.append('Ghé ',E('b',null,vn(B.length)),' outlet, ',E('b',null,vn(has)),' outlet đang có chương trình.');l.appendChild(p1);
+ const st=E('div','vstat');const C=(t,v,cls)=>{const c=E('span','vst'+(cls?' '+cls:''));c.append(E('b',null,v),' '+t);st.appendChild(c);};
+ C('outlet đã xong',vn(done)+'/'+vn(B.length));C('lượt đạt',vn(ok.length)+'/'+vn(all.length));C(gapSum?'lượt chậm · thiếu '+vn(gapSum)+' thùng':'lượt chậm',vn(slow.length),slow.length?'r':'');C('outlet nên mời chương trình',vn(B.filter(x=>x.g||x.none).length));
+ l.appendChild(st);hero.appendChild(l);
+ const push=E('div','vpush');push.appendChild(E('h4',null,'Cần chốt số hôm nay'));
+ const PL=slow.slice().sort((p,q)=>((q.r.gap>0&&q.r.actual!=null?q.r.gap:0)-(p.r.gap>0&&p.r.actual!=null?p.r.gap:0))).slice(0,5);
+ if(!PL.length)push.appendChild(E('p','vok','Mọi chương trình trong lịch hôm nay đang đúng nhịp.'));
+ PL.forEach(a=>{const b=E('button','vpr');b.type='button';b.append(E('b',null,a.x.o.outlet),E('span',null,pnm(a.r)),E('em',null,a.r.gap>0&&a.r.actual!=null?'thiếu '+vn(a.r.gap)+(a.r.need_day!=null?' · cần '+nd(a.r.need_day)+'/ngày':''):a.r.status));b.onclick=()=>{const c=document.getElementById('vc-'+a.x.o.oid);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};push.appendChild(b);});
+ hero.appendChild(push);el.appendChild(hero);
+ const pm=new Map();all.forEach(a=>{const key=a.r.prog;if(!pm.has(key))pm.set(key,{n:pnm(a.r),col:colOf(a.r),o:0,ok:0,sl:0,gap:0});const m=pm.get(key);m.o++;if(a.r.status==='Đã đạt')m.ok++;if(SLOW.includes(a.r.status)){m.sl++;m.gap+=a.r.gap>0&&a.r.actual!=null?a.r.gap:0;}});
+ if(pm.size){const pw=E('div','vprog');pw.appendChild(E('h4',null,'Chương trình trong lịch hôm nay'));const g=E('div','vpg');
+  [...pm.values()].sort((a,b)=>b.sl-a.sl||b.o-a.o).forEach(m=>{const c=E('div','vpc'+(m.sl?' sl':''));const t=E('div','vpn');t.append(E('b',null,m.n),E('span','vk k-'+m.col,(VCOL.find(c=>c[0]===m.col)||[])[1]));c.appendChild(t);
+   const s=E('div','vps');s.append(E('b',null,vn(m.o)),' outlet · ',E('b','g',vn(m.ok)),' đạt · ',E('b',m.sl?'r':null,vn(m.sl)),' chậm'+(m.gap?' · thiếu '+vn(m.gap)+' thùng':''));c.appendChild(s);g.appendChild(c);});
+  pw.appendChild(g);el.appendChild(pw);}});
 draw('vplan',el=>{el.replaceChildren();const B=vRows();if(!B){el.appendChild(E('p','muted','Đang tải…'));return;}const sr=pSR();
  if(!(D('visits')||[]).some(r=>r.sr===sr))return;
  if(!B.length){el.appendChild(E('p','vempty','Không có outlet nào khớp bộ lọc.'));return;}
  const OV=vMap()||new Map();
- const jump=E('div','vjump');B.forEach((x,i)=>{const b=E('button',x.kd?'kd':x.none?'na':null,(i+1)+'. '+x.o.outlet);b.type='button';b.onclick=()=>{const c=document.getElementById('vc-'+x.o.oid);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};jump.appendChild(b);});el.appendChild(jump);
- B.forEach((x,i)=>{const o=x.o;const a=E('article','vcard'+(x.v.st==='Đã ghé'?' done':''));a.id='vc-'+o.oid;
-  const h=E('header','vch');const lft=E('div','vcl');lft.append(E('span','vt',x.v.t),E('span','vi',String(i+1)));
-  const c360=E('button','vbtn','C360 ›');c360.type='button';const note=E('button','vbtn','Note');note.type='button';let hasN=false;try{hasN=!!localStorage.getItem(NOTEK(o.oid));}catch(e){}if(hasN)note.classList.add('on');
-  lft.append(c360,note);h.appendChild(lft);
-  const id=E('div','vcid');const t1=E('div','vcn');t1.append(E('b',null,o.outlet),E('span','muted',o.oid));id.appendChild(t1);
-  const t2=E('div','vcm');t2.append(pill(o.tier||'—','tier'),E('span',null,o.segment||'—'),E('span','vcv'));t2.lastChild.append('Vol TB3M ',mk(vn(o.vol3m),'outlets','vol3m',{oid:o.oid}),' thùng');if(x.v.st)t2.appendChild(pill(x.v.st,x.v.st==='Đã ghé'?'s-good':'s-na'));if(x.v.ah)t2.appendChild(pill('Đột xuất','s-mid'));id.appendChild(t2);h.appendChild(id);a.appendChild(h);
+ const cnt=E('p','vdone');const upCnt=()=>{const n=B.filter(x=>x.v.st==='Đã ghé'||isDone(x.o.oid)).length;cnt.replaceChildren('Đã xong ',E('b',null,vn(n)+'/'+vn(B.length)),' outlet');};upCnt();el.appendChild(cnt);
+ const jump=E('div','vjump');B.forEach((x,i)=>{const b=E('button',x.kd?'kd':x.none?'na':'ok');b.type='button';b.append(E('i'),(i+1)+'. '+x.o.outlet);b.onclick=()=>{const c=document.getElementById('vc-'+x.o.oid);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};jump.appendChild(b);});el.appendChild(jump);
+ B.forEach((x,i)=>{const o=x.o;const dn=x.v.st==='Đã ghé'||isDone(o.oid);const a=E('article','vcard'+(dn?' done':'')+(x.kd?' kd':''));a.id='vc-'+o.oid;
+  const h=E('header','vch');
+  const r1=E('div','vr1');r1.append(E('span','vt',x.v.t+' · #'+(i+1)));const t1=E('b','vcn',o.oid+' - '+o.outlet);r1.appendChild(t1);const vv=E('span','vvol');vv.append('Vol TB3M ',mk(vn(o.vol3m),'outlets','vol3m',{oid:o.oid}),' thùng');r1.appendChild(vv);h.appendChild(r1);
+  const r2=E('div','vr2');const c360=E('button','vbtn y','C360 ›');c360.type='button';const note=E('button','vbtn','Note');note.type='button';let hasN=false;try{hasN=!!localStorage.getItem(NOTEK(o.oid));}catch(e){}if(hasN)note.classList.add('on');
+  const dbt=E('button','vbtn'+(dn?' on':''),dn?'✓ Đã xong':'✓ Done');dbt.type='button';
+  dbt.onclick=()=>{if(x.v.st==='Đã ghé')return;try{if(isDone(o.oid))localStorage.removeItem(DONEK(o.oid));else localStorage.setItem(DONEK(o.oid),'1');}catch(e){}const d2=isDone(o.oid);a.classList.toggle('done',d2);dbt.classList.toggle('on',d2);dbt.textContent=d2?'✓ Đã xong':'✓ Done';upCnt();dash.draw('vsum');};
+  r2.append(c360,note,dbt);h.appendChild(r2);
+  const r3=E('div','vr3');r3.append(E('span','vtier',o.tier||'—'),E('span',null,o.segment||'—'));if(x.v.ah)r3.appendChild(E('span','vtag','Ghé đột xuất'));if(x.v.st==='Đã ghé')r3.appendChild(E('span','vtag','Đã ghé'));h.appendChild(r3);a.appendChild(h);
   const ex=E('div','vcx');ex.hidden=true;a.appendChild(ex);
-  const showX=k=>{ex.replaceChildren();if(ex.hidden===false&&ex.dataset.k===k){ex.hidden=true;ex.dataset.k='';return;}ex.dataset.k=k;ex.hidden=false;
+  const showX=k=>{if(ex.hidden===false&&ex.dataset.k===k){ex.hidden=true;ex.dataset.k='';return;}ex.replaceChildren();ex.dataset.k=k;ex.hidden=false;
    if(k==='c360'){const g=E('dl','c360');const add=(l,v)=>{g.append(E('dt',null,l),E('dd',null,v));};add('Mã outlet',o.oid);add('SR/DSM',nm(o.sr));add('SS',nm(o.ss||ssOf()[o.sr]||'—'));add('Tier',o.tier||'—');add('Segment',o.segment||'—');add('Vol TB 3 tháng',vn(o.vol3m)+' thùng/tháng');add('Chương trình',x.L.length?vn(x.L.filter(r=>r.active!==false).length)+' đang chạy · '+vn(x.L.filter(r=>r.active===false).length)+' đã kết thúc':'Chưa có');
-    const ov=OV.get(o.oid)||[];add('Trùng promotion',ov.length?ov.map(r=>r.prog_a+' × '+r.prog_b+' ('+r.skus+')').join('; '):'Không');ex.appendChild(g);}
-   else{const ta=E('textarea');ta.rows=3;ta.placeholder='Ghi chú cho outlet này (chỉ lưu trên máy này)';try{ta.value=localStorage.getItem(NOTEK(o.oid))||'';}catch(e){}
+    const ov=OV.get(o.oid)||[];add('Trùng promotion',ov.length?ov.map(r=>r.prog_a+' × '+r.prog_b+(r.skus?' ('+r.skus+')':'')).join('; '):'Không');ex.appendChild(g);}
+   else{const ta=E('textarea');ta.rows=3;ta.placeholder='Ghi chú cho outlet này (lưu trên máy này)';try{ta.value=localStorage.getItem(NOTEK(o.oid))||'';}catch(e){}
     const sv=E('button','vbtn on','Lưu note');sv.type='button';const msg=E('span','muted');sv.onclick=()=>{try{const v=ta.value.trim();if(v)localStorage.setItem(NOTEK(o.oid),v);else localStorage.removeItem(NOTEK(o.oid));note.classList.toggle('on',!!v);msg.textContent='Đã lưu';}catch(e){msg.textContent='Trình duyệt không cho lưu';}};
     const r=E('div','vnr');r.append(sv,msg);ex.append(ta,r);ta.focus();}};
   c360.onclick=()=>showX('c360');note.onclick=()=>showX('note');
   const cols=E('div','vcols');const G={si:[],so:[],dp:[],gy:[]};x.L.slice().sort((p,q)=>rkV(p)-rkV(q)).forEach(r=>G[colOf(r)].push(r));
   VCOL.forEach(([k,l])=>{const c=E('section','vcol k-'+k);const hd=E('h5',null,l);c.appendChild(hd);
-   if(k!=='gy'){const L=G[k];hd.appendChild(E('span','n',L.length?String(L.filter(r=>r.active!==false).length):'0'));if(!L.length)c.appendChild(E('p','vno','Chưa có'));L.forEach(r=>c.appendChild(vRow(r)));}
-   else{const sl=x.L.filter(r=>r.active!==false&&['Chậm','Rất chậm'].includes(r.status)&&r.gap>0).sort((p,q)=>(q.gap||0)-(p.gap||0))[0];let n=0;
-    if(sl){c.appendChild(E('div','gy1','Chốt thêm '+vn(sl.gap)+' thùng · '+String(sl.prog_name).split(' (')[0]));n++;}
-    G.gy.filter(r=>r.active!==false).forEach(r=>{c.appendChild(E('div','gy2',r.prog==='BREWERY'?'Nhắc lịch tham quan nhà máy 03/12':String(r.prog_name).split(' (')[0]));n++;});
-    if(x.g){c.appendChild(E('div','gyh','Nên mời chương trình'));String(x.g.de_xuat||'').split(' | ').filter(Boolean).forEach(t=>{c.appendChild(E('div','gy3','• '+t));n++;});}
-    (OV.get(o.oid)||[]).forEach(r=>{c.appendChild(E('div','vwarn','Trùng '+r.logic+': '+r.prog_a+' × '+r.prog_b+' ('+r.skus+')'));n++;});
-    if(!n)c.appendChild(E('p','vno',x.none?'Giới thiệu chương trình phù hợp':'Giữ nhịp, không có việc gấp'));
-    c.appendChild(E('small','gyn','Gợi ý tự động, anh kiểm tra trước khi làm'));}
+   if(k!=='gy'){const L=G[k];if(L.length)hd.appendChild(E('span','n',String(L.filter(r=>r.active!==false).length)));if(!L.length)c.appendChild(E('p','vno','Chưa tham gia'));L.forEach(r=>c.appendChild(vRow(r)));}
+   else{let n=0;const sl=x.L.filter(r=>r.active!==false&&SLOW.includes(r.status)&&r.gap>0&&r.actual!=null).sort((p,q)=>(q.gap||0)-(p.gap||0))[0];
+    if(sl){c.appendChild(E('div','gy1','Chốt thêm '+vn(sl.gap)+' thùng cho '+pnm(sl)));n++;}
+    G.gy.filter(r=>r.active!==false).forEach(r=>{c.appendChild(E('div','gy2',r.prog==='BREWERY'?'Nhắc lịch tham quan nhà máy':pnm(r)));n++;});
+    const fit=fitS(x);if(fit.length){c.appendChild(E('div','gyh','Phù hợp mời thêm'));fit.forEach(t=>c.appendChild(E('div','gy3',t)));n++;}
+    (OV.get(o.oid)||[]).forEach(r=>{c.appendChild(E('div','vwarn','Trùng '+r.logic+': '+r.prog_a+' × '+r.prog_b));n++;});
+    if(!n)c.appendChild(E('p','vno','Outlet đang ổn, giữ nhịp'));
+    c.appendChild(E('small','gyn','Gợi ý tự động theo cách chọn ở tab Chọn pool'));}
    cols.appendChild(c);});
   a.appendChild(cols);el.appendChild(a);});});
 document.querySelectorAll('.pp #vf [data-st]').forEach(b=>b.addEventListener('click',()=>{dash.draw('vplan');}));
+
+/* ===== v22/11: lọc theo từng cột ở mọi bảng (kiểu Excel) ===== */
+(()=>{const FS={};let pop=null,popKey=null;
+ const ctx=t=>{const h=t.closest('[data-draw]')||t.parentElement;const d=h&&h.dataset?h.dataset.draw||h.id||'':'';const all=h?[...h.querySelectorAll('table')]:[];return d+'#'+all.indexOf(t);};
+ const keyOf=t=>{const tb=t.querySelector('tbody[data-draw]');return tb?tb.dataset.draw:ctx(t);};
+ const txt=c=>(c?c.textContent:'').replace(/\s+/g,' ').trim().slice(0,80)||'(trống)';
+ const rows=t=>[...t.tBodies].flatMap(b=>[...b.rows]).filter(r=>!r.querySelector('td[colspan]')&&r.cells.length>1);
+ const cell=(r,i)=>r.cells[i];
+ const apply=t=>{const f=FS[t.dataset.cfk]||{};const ks=Object.keys(f).filter(k=>f[k]&&f[k].size);const R=rows(t);let shown=0;
+  R.forEach(r=>{const hide=ks.some(k=>f[k].has(txt(cell(r,+k))));r.style.display=hide?'none':'';if(!hide)shown++;});
+  [...t.tHead.rows[0].cells].forEach((th,i)=>{const b=th.querySelector('.cfb');if(b)b.classList.toggle('on',!!(f[i]&&f[i].size));});
+  let inf=t.previousElementSibling&&t.previousElementSibling.classList&&t.previousElementSibling.classList.contains('cfinfo')?t.previousElementSibling:null;
+  if(ks.length){if(!inf){inf=E('p','cfinfo');t.parentNode.insertBefore(inf,t);}inf.replaceChildren('Đang lọc: hiện '+vn(shown)+'/'+vn(R.length)+' dòng · ');const x=E('button','linkbtn','Bỏ lọc');x.type='button';x.onclick=()=>{FS[t.dataset.cfk]={};apply(t);};inf.appendChild(x);}else if(inf)inf.remove();};
+ const close=()=>{if(pop){pop.remove();pop=null;popKey=null;}};
+ const open=(t,i,btn)=>{const k=t.dataset.cfk+'|'+i;if(popKey===k){close();return;}close();popKey=k;const f=FS[t.dataset.cfk]=FS[t.dataset.cfk]||{};const ex=new Set(f[i]||[]);
+  const cnt=new Map();rows(t).forEach(r=>{const v=txt(cell(r,i));cnt.set(v,(cnt.get(v)||0)+1);});
+  const vals=[...cnt.keys()].sort((a,b)=>{const na=parseFloat(a.replace(/\./g,'').replace(',','.')),nb=parseFloat(b.replace(/\./g,'').replace(',','.'));return (!isNaN(na)&&!isNaN(nb))?na-nb:a.localeCompare(b,'vi');});
+  pop=E('div','cfpop');pop.addEventListener('click',e=>e.stopPropagation());const q=E('input');q.type='search';q.placeholder='Tìm trong cột này…';pop.appendChild(q);
+  const l=E('div','cfl');const boxes=[];vals.forEach(v=>{const lb=E('label');const cb=E('input');cb.type='checkbox';cb.checked=!ex.has(v);lb.append(cb,E('span',null,v),E('em',null,vn(cnt.get(v))));boxes.push([v,cb,lb]);l.appendChild(lb);});pop.appendChild(l);
+  q.oninput=()=>{const s=q.value.toLowerCase();boxes.forEach(([v,,lb])=>{lb.style.display=v.toLowerCase().includes(s)?'':'none';});};
+  const a=E('div','cfa');const B=(t2,cls,fn)=>{const b=E('button',cls,t2);b.type='button';b.onclick=fn;a.appendChild(b);};
+  B('Chọn hết','',()=>boxes.forEach(([,cb,lb])=>{if(lb.style.display!=='none')cb.checked=true;}));
+  B('Bỏ hết','',()=>boxes.forEach(([,cb,lb])=>{if(lb.style.display!=='none')cb.checked=false;}));
+  B('Áp dụng','p',()=>{f[i]=new Set(boxes.filter(([,cb])=>!cb.checked).map(([v])=>v));apply(t);close();});pop.appendChild(a);
+  document.body.appendChild(pop);const r=btn.getBoundingClientRect();const w=pop.offsetWidth,h=pop.offsetHeight;
+  pop.style.left=Math.max(12,Math.min(r.left,window.innerWidth-w-12))+'px';pop.style.top=(r.bottom+h+8<window.innerHeight?r.bottom+4:Math.max(12,r.top-h-4))+'px';q.focus();};
+ const enh=t=>{if(t.closest('.cfpop')||t.classList.contains('acct')||t.classList.contains('scht')||!t.tHead||!t.tHead.rows.length||!t.tBodies.length)return;
+  t.dataset.cfk=keyOf(t);const hr=t.tHead.rows[0];
+  [...hr.cells].forEach((th,i)=>{if(th.querySelector('.cfb')||th.colSpan>1)return;const b=E('button','cfb','▾');b.type='button';b.title='Lọc cột này';b.setAttribute('aria-label','Lọc cột '+th.textContent.trim());b.onclick=e=>{e.stopPropagation();e.preventDefault();open(t,i,b);};th.appendChild(b);});
+  const R=rows(t);if(FS[t.dataset.cfk]&&R.some(r=>!r._cf))apply(t);R.forEach(r=>{r._cf=1;});};
+ let q=false;const run=()=>{q=false;document.querySelectorAll('.pp table').forEach(enh);};
+ const mo=new MutationObserver(()=>{if(!q){q=true;requestAnimationFrame(run);}});
+ const root=document.querySelector('.pp')||document.body;mo.observe(root,{childList:true,subtree:true});run();
+ document.addEventListener('click',close);window.addEventListener('scroll',e=>{if(pop&&!pop.contains(e.target))close();},true);window.addEventListener('resize',close);})();
