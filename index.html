@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta id="vp" name="viewport" content="width=device-width,initial-scale=1">
+<script>
+/* Điện thoại / Fold / tablet: hiện nguyên khung laptop (rộng 1536px) thu nhỏ vừa màn, tự zoom bằng 2 ngón.
+   Chỉ điện thoại cầm dọc (màn < 500px) giữ giao diện điện thoại. */
+(function(){var DW=1536,m=document.getElementById('vp');
+function set(){var touch=matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);
+var land=matchMedia('(orientation:landscape)').matches;var sw=Math.min(screen.width,screen.height);
+var desk=touch&&(land||sw>=500);
+var c=desk?'width='+DW+',user-scalable=yes,maximum-scale=5':'width=device-width,initial-scale=1';
+if(m.getAttribute('content')!==c)m.setAttribute('content',c);}
+set();try{matchMedia('(orientation:landscape)').addEventListener('change',set)}catch(e){}window.addEventListener('orientationchange',function(){setTimeout(set,50)});})();
+</script>
 <meta name="robots" content="noindex,nofollow">
 <title>Winning in Rural · S27</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

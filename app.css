@@ -1245,3 +1245,5 @@
 }
 /* Tab S10 FE ngang (~1333px): đủ chỗ cho cả 5 tab */
 @media (max-width:1400px){.pp .tabs button small{display:none!important}.pp .tabs button{padding:0 10px 0 6px!important}}
+/* 1501–1700px (cũng là khổ điện thoại/tablet thu nhỏ 1536px): khung trái rộng thêm chút cho đủ cột Tiềm năng */
+@media (min-width:1501px) and (max-width:1700px){.pp .wrgrid.wrgrid{grid-template-columns:minmax(0,3fr) minmax(0,5fr)}}
