@@ -128,7 +128,7 @@ const cmpK=(a,b)=>(a.m-b.m)||((a.m%2===0&&a.m<8)?a.n.localeCompare(b.n,'vi'):0);
 const childRows=(parent,t)=>{const R=D('nodes');return R?R.filter(r=>r.parent===parent&&r.scope_type===S.ST&&r.scope===S.SV&&q(t,r.name)).sort((a,b)=>cmpK(mkN(a),mkN(b))||b.tg-a.tg):[];};
 // Đường dẫn của dòng đang chọn (kể cả scheme chưa có danh sách outlet)
 const nSch=r=>(r.n_schemes||0)+(r.node&&r.node.startsWith('C:')?(D('programs')||[]).filter(p=>p.nolist&&'C:'+p.cat===r.node).length:0);
-const selPath=()=>{const P=pathOf(S.N).map(x=>x.node);if(P.length||!S.N||!S.N.startsWith('S:'))return P;const p=PMc().get(S.N.slice(2));return p?(p.project==='LME'?['LME']:['WR','C:'+p.cat]):P;};
+const selPath=()=>{const P=pathOf(S.N).map(x=>x.node);if(S.N&&S.N.startsWith('S:')){const p=PMc().get(S.N.slice(2));if(p){if(p.cat&&!P.includes('C:'+p.cat))P.push('C:'+p.cat);if(p.project==='LME'&&!P.includes('LME'))P.push('LME');}}return P;};
 const schemeSub=r=>hasKid(r.node)?nSch(r)+' scheme':null;
 draw('tb_kids',tb=>{if(!ready(tb,6,'nodes'))return;tb.replaceChildren();const K=childRows(S.N,'kids');
  K.forEach(r=>tb.appendChild(nodeRow(r,r.name,schemeSub(r),()=>goNode(r.node))));
