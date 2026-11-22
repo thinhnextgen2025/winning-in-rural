@@ -1116,3 +1116,21 @@
 .pp .rmper button{font:inherit;font-size:13.5px;font-weight:800;border:0;background:#fff;color:#0B8137;padding:0 16px;min-height:40px;cursor:pointer}
 .pp .rmper button+button{border-left:1.5px solid #0B8137}
 .pp .rmper button.on{background:#0B8137;color:#fff}
+/* Tổng quan */
+.pp #trk.ovw #trkst,.pp #trk.ovw>.fbar,.pp #trk.ovw>p.muted,.pp #trk.ovw>.tw,.pp #trk.ovw>#trk_more{display:none!important}
+.pp .ovw-b:empty{display:none}
+.pp .ovw-b{display:grid;gap:10px}
+.pp table.ovt{width:100%;border-collapse:collapse;font-size:14px}
+.pp table.ovt th{font-size:11.5px;padding:7px 8px;white-space:nowrap}
+.pp table.ovt td{padding:8px;white-space:nowrap;border-bottom:1px solid #E8ECE9;cursor:pointer}
+.pp table.ovt td b{font-weight:800}
+.pp table.ovt td small{color:#56625B;font-size:11.5px}
+.pp table.ovt tr.tot td{border-top:2px solid #0B8137;font-weight:800;background:#fff}
+.pp table.ovt tbody tr:hover td{background:#F4F6F5}
+.pp .ovdl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pp table.acct.acct tr.acc.tq td.nm .l1n b{color:#0B4A28}
+.pp .ovw-b,.pp .ovw-b .tw{min-width:0;max-width:100%}
+.pp .ovw-b .tw{overflow-x:auto}
+.pp table.ovt th{white-space:normal}
+.pp table.ovt td{padding:7px 6px}
+.pp .wrgrid>.wrr{min-width:0}
