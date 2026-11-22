@@ -334,7 +334,7 @@ const todayISO=()=>isoOf(new Date());
 const WDN=['CN','T2','T3','T4','T5','T6','T7'];
 const dayLabel=iso=>{const d=new Date(iso+'T00:00:00');return WDN[d.getDay()]+' '+pad(d.getDate())+'/'+pad(d.getMonth()+1)+(iso===todayISO()?' (hôm nay)':'');};
 const dayList=()=>{const L=[];const d=new Date();const a=new Date(Math.min(new Date(d.getFullYear(),d.getMonth(),d.getDate()-6),new Date(2026,10,2))),z=new Date(Math.max(new Date(d.getFullYear(),d.getMonth(),d.getDate()+14),new Date(2026,11,19)));for(let x=new Date(a);x<=z;x.setDate(x.getDate()+1)){if(x.getDay()!==0)L.push(isoOf(x));}return L;};
-const setDay=v=>{S.day=v;['sel_day','day_nav','v_title','vcards','vlist','vdet','vsum','vplan','v_all','v_kd','v_none','v_pot','tl_where'].forEach(n=>dash.draw(n));};
+const setDay=v=>{S.day=v;['sel_day','day_nav','v_title','vcards','vlist','vdet','vsum','vplan','vremind','v_all','v_kd','v_none','v_pot','tl_where'].forEach(n=>dash.draw(n));};
 draw('day_nav',el=>{el.replaceChildren();const L=dayList();const t=todayISO();const tv=L.includes(t)?t:(L.find(v=>v>t)||L[L.length-1]);const i=L.indexOf(S.day||tv);
  const mk=(txt,v,cls,lab)=>{const b=E('button',cls,txt);b.type='button';b.setAttribute('aria-label',lab);if(v==null)b.disabled=true;else b.onclick=()=>setDay(v);return b;};
  el.append(mk('‹',i>0?L[i-1]:null,'dn-b','Lùi 1 ngày'),mk('Hôm nay',tv,'dn-t'+((S.day||tv)===tv?' on':''),'Về hôm nay'),mk('›',i>=0&&i<L.length-1?L[i+1]:null,'dn-b','Tới 1 ngày'));});
@@ -863,3 +863,116 @@ document.querySelectorAll('.pp #vf [data-st]').forEach(b=>b.addEventListener('cl
  const mo=new MutationObserver(()=>{if(!q){q=true;requestAnimationFrame(run);}});
  const root=document.querySelector('.pp')||document.body;mo.observe(root,{childList:true,subtree:true});run();
  document.addEventListener('click',close);window.addEventListener('scroll',e=>{if(pop&&!pop.contains(e.target))close();},true);window.addEventListener('resize',close);})();
+
+/* ===== v22/11: Tạo lời nhắc Daily plan (Excel + tin nhắn) ===== */
+const XS=async sh=>{const enc=new TextEncoder();const used=new Set();const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';const F=[];
+ const names=sh.map((s,i)=>{let n=String(s.n||'').replace(/[\[\]:*?\/\\]/g,'_').trim().slice(0,31)||('Sheet'+(i+1));const b=n;let k=2;while(used.has(n.toLowerCase()))n=b.slice(0,27)+'_'+(k++);used.add(n.toLowerCase());return n;});
+ const ST={'':0,h:1,t:2,b:3,r:4,g:5,m:6,bl:7,w:8,n:9};
+ F.push({name:'[Content_Types].xml',data:enc.encode(H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'+sh.map((s,i)=>'<Override PartName="/xl/worksheets/sheet'+(i+1)+'.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>').join('')+'</Types>')});
+ F.push({name:'_rels/.rels',data:enc.encode(H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')});
+ F.push({name:'xl/workbook.xml',data:enc.encode(H+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'+names.map((n,i)=>'<sheet name="'+XE(n).replace(/"/g,'&quot;')+'" sheetId="'+(i+1)+'" r:id="rId'+(i+1)+'"/>').join('')+'</sheets></workbook>')});
+ F.push({name:'xl/_rels/workbook.xml.rels',data:enc.encode(H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+sh.map((s,i)=>'<Relationship Id="rId'+(i+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet'+(i+1)+'.xml"/>').join('')+'<Relationship Id="rId'+(sh.length+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>')});
+ F.push({name:'xl/styles.xml',data:enc.encode(H+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+  +'<fonts count="8"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="14"/><color rgb="FF0B4A28"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFE40613"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FF0B8137"/><name val="Calibri"/></font><font><i/><sz val="10"/><color rgb="FF56625B"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FF0A84CF"/><name val="Calibri"/></font></fonts>'
+  +'<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0B8137"/><bgColor indexed="64"/></patternFill></fill></fills>'
+  +'<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left/><right/><top/><bottom style="thin"><color rgb="FFDCE5DF"/></bottom><diagonal/></border></borders>'
+  +'<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="10">'
+  +'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"><alignment vertical="top"/></xf>'
+  +'<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>'
+  +'<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>'
+  +'<xf numFmtId="0" fontId="3" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment vertical="top"/></xf>'
+  +'<xf numFmtId="3" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyNumberFormat="1" applyBorder="1"><alignment vertical="top"/></xf>'
+  +'<xf numFmtId="3" fontId="5" fillId="0" borderId="1" xfId="0" applyFont="1" applyNumberFormat="1" applyBorder="1"><alignment vertical="top"/></xf>'
+  +'<xf numFmtId="0" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf>'
+  +'<xf numFmtId="0" fontId="7" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment vertical="top"/></xf>'
+  +'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf>'
+  +'<xf numFmtId="3" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"><alignment vertical="top"/></xf>'
+  +'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>')});
+ sh.forEach((s,i)=>{const P=[H+'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'];
+  if(s.freeze)P.push('<sheetViews><sheetView workbookViewId="0"><pane ySplit="'+s.freeze+'" topLeftCell="A'+(s.freeze+1)+'" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>');
+  if(s.cols)P.push('<cols>'+s.cols.map((w,ci)=>'<col min="'+(ci+1)+'" max="'+(ci+1)+'" width="'+w+'" customWidth="1"/>').join('')+'</cols>');
+  P.push('<sheetData>');
+  (s.r||[]).forEach((row,ri)=>{if(!row||!row.length)return;let x='<row r="'+(ri+1)+'">';row.forEach((c,ci)=>{const o=(c&&typeof c==='object')?c:{v:c};const v=o.v;const si=ST[o.s||(typeof v==='number'?'n':'')]||0;if((v===null||v===undefined||v==='')&&!o.s)return;const a=XC(ci)+(ri+1);
+   if(v===null||v===undefined||v==='')x+='<c r="'+a+'" s="'+si+'"/>';else if(typeof v==='number'&&isFinite(v))x+='<c r="'+a+'" s="'+si+'"><v>'+v+'</v></c>';else x+='<c r="'+a+'" s="'+si+'" t="inlineStr"><is><t xml:space="preserve">'+XE(v)+'</t></is></c>';});P.push(x+'</row>');});
+  P.push('</sheetData>');
+  (s.bars||[]).forEach(([ref,col],k)=>P.push('<conditionalFormatting sqref="'+ref+'"><cfRule type="dataBar" priority="'+(k+1)+'"><dataBar><cfvo type="num" val="0"/><cfvo type="max"/><color rgb="FF'+(col||'0B8137')+'"/></dataBar></cfRule></conditionalFormatting>'));
+  P.push('</worksheet>');F.push({name:'xl/worksheets/sheet'+(i+1)+'.xml',data:enc.encode(P.join(''))});});
+ if(typeof CompressionStream==='function'){for(const f of F){try{f.comp=new Uint8Array(await new Response(new Blob([f.data]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer());}catch(e){f.comp=null;}}}
+ return new Uint8Array(await ZIPB(F).arrayBuffer());};
+
+const RTYPE={si:'Sell-in',so:'Sell-out',dp:'Display',gy:'Khác'};
+const shortNm=(sr,all)=>{const w=String(nm(sr)||sr).trim().split(/\s+/);const one=w[w.length-1];const dup=all.filter(x=>{const z=String(nm(x)||x).trim().split(/\s+/);return z[z.length-1]===one;}).length>1;return dup&&w.length>1?w.slice(-2).join(' '):one;};
+const codesOf=id=>{const p=PM().get(id)||{};return JA(p.codes).map(c=>c.code).filter(Boolean).join(', ');};
+const skuTxt=id=>{const p=PM().get(id)||{};const s=String(p.skus||'').trim();return s&&s!=='ALL'?s:'';};
+/* việc cần làm của 1 SR trong 1 ngày, từ lịch visit + tracking */
+const tasksOf=(sr,iso)=>{const V=D('visits')||[],O=oMap()||new Map(),T=tMap()||new Map(),G=gMap()||new Map();const out=[];
+ V.filter(r=>r.sr===sr&&r.d===iso).sort((a,b)=>String(a.t).localeCompare(String(b.t))).forEach(v=>{const o=O.get(v.oid);if(!o)return;const L=(T.get(v.oid)||[]).filter(r=>r.active!==false);const p0=PM();
+  L.forEach(r=>{const col=colOf(r);const p=p0.get(r.prog)||{};const slow=SLOW.includes(r.status);const gap=r.gap>0&&r.actual!=null?r.gap:null;
+   let todo='';if(r.status==='Đã đạt')todo='Đã đạt · giữ nhịp';else if(gap!=null)todo='Thiếu '+vn(gap)+' thùng'+(skuTxt(r.prog)?' '+skuTxt(r.prog):'')+' > đạt '+pnm(r);else if(col==='dp')todo='Kiểm tra trưng bày, chụp hình · '+pnm(r);else if(col==='gy')todo=r.prog==='BREWERY'?'Nhắc lịch tham quan nhà máy':'Nhắc '+pnm(r);else todo='Nhắc thực hiện '+pnm(r);
+   out.push({sr,v,o,r,col,prog:pnm(r),project:p.project||'—',status:r.status||'—',actual:r.actual,target:r.target,gap,need:r.need_day,code:codesOf(r.prog),todo,act:r.status!=='Đã đạt',slow});});
+  if(!L.length){const g=G.get(v.oid);const fit=fitS({o,L:[],g});out.push({sr,v,o,r:null,col:'gy',prog:'Chưa có chương trình',project:'Mời chương trình mới',status:'—',gap:null,code:'',todo:fit.length?'Giới thiệu chương trình: '+fit.join(', '):'Giới thiệu chương trình phù hợp',act:true,slow:false});}});
+ return out;};
+const remindTxt=(sr,iso,TK)=>{const head=dayLabel(iso).replace(' (hôm nay)','')+' ra thị trường, '+nm(sr)+' cần làm:';const lines=[head];
+ ['si','so','dp','gy'].forEach(k=>{const L=TK.filter(t=>t.col===k&&t.act).sort((a,b)=>(b.gap||0)-(a.gap||0));if(!L.length)return;lines.push('','* '+RTYPE[k]+':');
+  L.forEach(t=>lines.push('  - '+t.o.outlet+' ('+t.o.oid+', '+t.v.t+'): '+t.todo+(t.code?'. Code promotion: '+t.code:'')));});
+ if(lines.length===1)lines.push('Không có việc cần nhắc, giữ nhịp ghé outlet theo lịch.');return lines.join('\n');};
+const todoHead=['Xong','SR/DSM','Giờ','Mã outlet','Outlet','Tier','Loại','Chương trình','Project','Việc cần làm','Đã bán','Target','Thiếu (thùng)','Cần/ngày','Code promotion'];
+const todoRow=t=>[{v:'☐',s:'b'},nm(t.sr),t.v.t,t.o.oid,{v:t.o.outlet,s:'b'},t.o.tier||'',{v:RTYPE[t.col],s:'bl'},t.prog,t.project,{v:t.todo,s:t.gap?'r':(t.act?'w':'g')},t.actual!=null?t.actual:'',t.target!=null?t.target:'',t.gap!=null?{v:t.gap,s:'r'}:'',t.need!=null?Math.round(t.need*10)/10:'',t.code||''];
+const TW=[6,18,7,11,26,9,9,24,16,46,9,9,11,9,16];
+const buildRemind=async(srs,iso)=>{const all=srs.map(sr=>({sr,TK:tasksOf(sr,iso)}));const d=new Date(iso+'T00:00:00');const dd=pad(d.getDate())+'.'+pad(d.getMonth()+1);
+ const fname=('Daily plan_'+dd+'_'+srs.map(s=>shortNm(s,srs)).join('_')).replace(/[\\/:*?"<>|]+/g,'-').slice(0,150)+'.xlsx';
+ const TK=all.flatMap(a=>a.TK);const act=TK.filter(t=>t.act);const R=[];
+ R.push([{v:'Daily plan '+dayLabel(iso).replace(' (hôm nay)','')+'/'+d.getFullYear()+' · '+srs.length+' SR/DSM',s:'t'}]);
+ R.push([{v:'Tạo từ trang Winning in Rural lúc '+new Date().toLocaleString('vi-VN')+'. Việc tính từ lịch All Visits và số tracking; "Thiếu" là số thùng còn thiếu để đạt target của chương trình (số tổng, chưa tách theo nhãn).',s:'m'}]);
+ R.push([]);
+ R.push([{v:'1. Theo SR/DSM',s:'t'}]);const r1=R.length+1;
+ R.push(['SR/DSM','Outlet trong lịch','Outlet có CT','Sell-in','Sell-out','Display','Khác','Tổng việc','Thiếu (thùng)'].map(v=>({v,s:'h'})));
+ all.forEach(a=>{const A=a.TK.filter(t=>t.act);const n=k=>A.filter(t=>t.col===k).length;R.push([{v:nm(a.sr),s:'b'},new Set(a.TK.map(t=>t.o.oid)).size,new Set(a.TK.filter(t=>t.r).map(t=>t.o.oid)).size,n('si'),n('so'),n('dp'),n('gy'),{v:A.length,s:'b'},{v:d3.sum(A,t=>t.gap||0),s:'r'}]);});
+ const e1=R.length;R.push([{v:'Tổng',s:'b'},{v:new Set(TK.map(t=>t.o.oid)).size,s:'b'},{v:new Set(TK.filter(t=>t.r).map(t=>t.o.oid)).size,s:'b'},...['si','so','dp','gy'].map(k=>({v:act.filter(t=>t.col===k).length,s:'b'})),{v:act.length,s:'b'},{v:d3.sum(act,t=>t.gap||0),s:'r'}]);
+ R.push([]);R.push([{v:'2. Theo loại việc',s:'t'}]);const r2=R.length+1;
+ R.push(['Loại','Số việc','Outlet','Chậm / chưa đạt','Thiếu (thùng)'].map(v=>({v,s:'h'})));
+ ['si','so','dp','gy'].forEach(k=>{const A=act.filter(t=>t.col===k);R.push([{v:RTYPE[k],s:'bl'},A.length,new Set(A.map(t=>t.o.oid)).size,A.filter(t=>t.slow).length,{v:d3.sum(A,t=>t.gap||0),s:'r'}]);});const e2=R.length;
+ R.push([]);R.push([{v:'3. Theo project',s:'t'}]);const r3=R.length+1;
+ R.push(['Project','Sell-in','Sell-out','Display','Khác','Tổng việc','Thiếu (thùng)'].map(v=>({v,s:'h'})));
+ [...d3.group(act,t=>t.project)].sort((a,b)=>b[1].length-a[1].length).forEach(([pj,A])=>{R.push([{v:pj,s:'b'},...['si','so','dp','gy'].map(k=>A.filter(t=>t.col===k).length),{v:A.length,s:'b'},{v:d3.sum(A,t=>t.gap||0),s:'r'}]);});const e3=R.length;
+ R.push([]);R.push([{v:'4. Danh sách việc (tick cột Xong khi làm xong)',s:'t'}]);R.push(todoHead.map(v=>({v,s:'h'})));
+ act.forEach(t=>R.push(todoRow(t)));
+ const sheets=[{n:'Tổng hợp',r:R,cols:[24,14,12,12,12,12,12,12,13,46,9,9,11,9,16],bars:[['H'+(r1+1)+':H'+e1],['I'+(r1+1)+':I'+e1,'E40613'],['B'+(r2+1)+':B'+e2],['E'+(r2+1)+':E'+e2,'E40613'],['F'+(r3+1)+':F'+e3]]}];
+ all.forEach(a=>{const A=a.TK.filter(t=>t.act);const txt=remindTxt(a.sr,iso,a.TK);const S2=[[{v:nm(a.sr)+' · '+dayLabel(iso).replace(' (hôm nay)',''),s:'t'}],[{v:'Lời nhắc',s:'b'}]];
+  txt.split('\n').forEach(l=>S2.push([{v:l,s:l.startsWith('*')?'bl':''}]));S2.push([]);
+  const st=S2.length+1;S2.push(todoHead.map(v=>({v,s:'h'})));A.forEach(t=>S2.push(todoRow(t)));
+  const done=a.TK.filter(t=>!t.act);if(done.length){S2.push([]);S2.push([{v:'Đã đạt, giữ nhịp',s:'b'}]);done.forEach(t=>S2.push(todoRow(t)));}
+  sheets.push({n:String(nm(a.sr)),r:S2,cols:TW,freeze:0});});
+ const text=all.map(a=>remindTxt(a.sr,iso,a.TK)).join('\n\n------\n\n');
+ return {fname,data:await XS(sheets),text,n:act.length};};
+
+/* giao diện: chọn ASM > SS > SR/DSM theo phạm vi đang chọn ở trên */
+S.rm=S.rm||{open:false,asm:'',ss:'',srs:null};
+draw('vremind',el=>{el.replaceChildren();const O=D('outlets'),V=D('visits');if(!O||!V){return;}const iso=S.day||todayISO();
+ const bt=E('button','xbtn rmbtn',S.rm.open?'✕ Đóng tạo lời nhắc':'✎ Tạo lời nhắc đầu ngày');bt.type='button';bt.onclick=()=>{S.rm.open=!S.rm.open;dash.draw('vremind');};el.appendChild(bt);if(!S.rm.open)return;
+ const vSR=new Set(V.filter(r=>r.d===iso).map(r=>r.sr));const SRI=new Map();O.forEach(o=>{if(vSR.has(o.sr)&&!SRI.has(o.sr))SRI.set(o.sr,{asm:o.asm,ss:o.ss});});
+ const lvl=S.ST==='Toàn S27'?'all':S.ST==='ASM'?'asm':S.ST==='SS'?'ss':'sr';
+ if(lvl==='asm')S.rm.asm=S.SV;if(lvl==='ss'){S.rm.ss=S.SV;S.rm.asm='';}if(lvl==='sr'){S.rm.srs=[S.SV];}
+ const box=E('div','rmbox');box.appendChild(E('p','rmh','Tạo lời nhắc cho '+dayLabel(iso).replace(' (hôm nay)','')+': chọn người nhận rồi bấm Tạo. Mỗi lần tạo sẽ tải 1 file Excel và hiện lời nhắc để sao chép.'));
+ const row=E('div','rmrow');const mkS=(lab,opts,val,on)=>{const w=E('label','rmsel');w.appendChild(E('span',null,lab));const s=E('select','dash-select');opts.forEach(([v,t])=>s.appendChild(new Option(t,v)));s.value=val;s.onchange=()=>on(s.value);w.appendChild(s);row.appendChild(w);};
+ const asms=[...new Set([...SRI.values()].map(x=>x.asm).filter(Boolean))].sort();
+ if(lvl==='all')mkS('ASM',[['','Tất cả ASM'],...asms.map(a=>[a,nm(a)])],S.rm.asm,v=>{S.rm.asm=v;S.rm.ss='';S.rm.srs=null;dash.draw('vremind');});
+ const sss=[...new Set([...SRI.values()].filter(x=>!S.rm.asm||x.asm===S.rm.asm).map(x=>x.ss).filter(Boolean))].sort();
+ if(lvl==='all'||lvl==='asm')mkS('SS',[['','Tất cả SS'],...sss.map(a=>[a,nm(a)])],S.rm.ss,v=>{S.rm.ss=v;S.rm.srs=null;dash.draw('vremind');});
+ box.appendChild(row);
+ const cand=[...SRI].filter(([sr,x])=>(!S.rm.asm||x.asm===S.rm.asm)&&(!S.rm.ss||x.ss===S.rm.ss)).map(([sr])=>sr).sort((a,b)=>String(nm(a)).localeCompare(String(nm(b)),'vi'));
+ if(!S.rm.srs)S.rm.srs=cand.slice();S.rm.srs=S.rm.srs.filter(s=>cand.includes(s));
+ const sw=E('div','rmsr');sw.appendChild(E('span','rml','SR/DSM có lịch ngày này ('+cand.length+')'));
+ if(lvl!=='sr'){const all=E('label','rmck all');const ca=E('input');ca.type='checkbox';ca.checked=cand.length>0&&S.rm.srs.length===cand.length;ca.onchange=()=>{S.rm.srs=ca.checked?cand.slice():[];dash.draw('vremind');};all.append(ca,' Tất cả');sw.appendChild(all);}
+ cand.forEach(sr=>{const l=E('label','rmck');const c=E('input');c.type='checkbox';c.checked=S.rm.srs.includes(sr);c.disabled=lvl==='sr';c.onchange=()=>{S.rm.srs=c.checked?[...S.rm.srs,sr]:S.rm.srs.filter(x=>x!==sr);dash.draw('vremind');};l.append(c,' '+nm(sr));sw.appendChild(l);});
+ if(!cand.length)sw.appendChild(E('span','muted','Không có SR/DSM nào có lịch visit ngày này trong phạm vi đã chọn.'));
+ box.appendChild(sw);
+ const go=E('button','vbtn on','Tạo lời nhắc ('+S.rm.srs.length+' SR/DSM)');go.type='button';go.disabled=!S.rm.srs.length;const msg=E('span','muted');const act=E('div','rmact');act.append(go,msg);box.appendChild(act);
+ const out=E('div','rmout');box.appendChild(out);
+ go.onclick=async()=>{go.disabled=true;msg.textContent='Đang tạo…';try{const r=await buildRemind(S.rm.srs.slice(),iso);r.iso=iso;S.rm.last=r;await xSave(r.fname,r.data);msg.textContent='Đã tạo '+r.fname+' · '+vn(r.n)+' việc';showOut(r);}catch(e){console.error(e);msg.textContent='Không tạo được lời nhắc ('+(e&&e.message||'lỗi')+')';}go.disabled=false;};
+ const showOut=r=>{out.replaceChildren();const ta=E('textarea','rmtxt');ta.value=r.text;ta.rows=Math.min(18,r.text.split('\n').length+1);ta.readOnly=true;
+  const cp=E('button','vbtn','Sao chép lời nhắc');cp.type='button';const cm=E('span','muted');cp.onclick=()=>{try{navigator.clipboard.writeText(r.text).then(()=>{cm.textContent='Đã sao chép';},()=>{ta.select();cm.textContent='Bấm Ctrl+C để sao chép';});}catch(e){ta.select();cm.textContent='Bấm Ctrl+C để sao chép';}};
+  const dl=E('button','vbtn','Tải lại file Excel');dl.type='button';dl.onclick=()=>xSave(r.fname,r.data);
+  const b=E('div','rmact');b.append(cp,dl,cm);out.append(b,ta);};
+ if(S.rm.last&&S.rm.last.iso===iso)showOut(S.rm.last);
+ el.appendChild(box);});

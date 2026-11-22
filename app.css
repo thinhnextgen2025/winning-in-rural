@@ -1089,3 +1089,19 @@
 .pp table.acct.acct tbody tr.acc.acc.path.path td.nm b{font-weight:800}
 .pp table.acct.acct tbody tr.acc.acc.cur.cur.cur td.nm b{font-weight:800}
 .pp table.acct.acct tbody tr.acc.acc.path.path .tg-btn{background:#fff!important;border:1.5px solid #0B8137!important;color:#0B8137!important}
+/* ===== Tạo lời nhắc ===== */
+.pp .vrm{display:grid;gap:10px}
+.pp .rmbtn{justify-self:start;background:#0B8137;color:#fff;border-color:#0B8137;min-height:40px;font-size:14px}
+.pp .rmbox{border:2px solid #0B8137;border-radius:12px;background:#fff;padding:12px 14px;display:grid;gap:10px}
+.pp .rmh{margin:0;font-size:13.5px;color:#33423A}
+.pp .rmrow{display:flex;flex-wrap:wrap;gap:10px}
+.pp .rmsel{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#0B4A28}
+.pp .rmsel select{min-height:40px;max-width:260px}
+.pp .rmsr{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.pp .rml{width:100%;font-size:12.5px;font-weight:800;color:#0B4A28;text-transform:uppercase;letter-spacing:.03em}
+.pp .rmck{display:inline-flex;align-items:center;gap:6px;min-height:36px;font-size:14px;cursor:pointer}
+.pp .rmck.all{font-weight:800}
+.pp .rmck input{width:18px;height:18px;accent-color:#0B8137}
+.pp .rmact{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pp .rmout{display:grid;gap:8px}
+.pp .rmtxt{width:100%;box-sizing:border-box;font:13.5px/1.5 ui-monospace,Consolas,monospace;border:1.5px solid #CFDAD3;border-radius:10px;padding:10px;resize:vertical;color:#111A15;background:#fff}
