@@ -93,12 +93,14 @@
 <section class="view" id="plan" hidden>
  <div class="ask" data-source="outlets visits"><span class="qq">Hôm nay ghé outlet nào, outlet đó đang chạy gì?</span>
   <div class="fbar"><select class="dash-select" data-draw="sel_sr" data-source="outlets" aria-label="Chọn SR/DSM"></select><select class="dash-select" data-draw="sel_day" aria-label="Chọn ngày visit"></select><span class="daynav" data-draw="day_nav"></span><span class="muted">SS: <b data-draw="sr_ss">—</b></span></div></div>
- <section class="card" id="visit">
+ <section class="card" id="vday">
   <h2 data-draw="v_title">Lịch visit</h2>
-  <p class="muted">Lịch lấy từ file All Visits xuất 20/11 12:45 (02/11–19/12, mọi SR/DSM S27), đã bỏ lượt bị huỷ. "Đã ghé / Chưa ghé" là trạng thái tại lúc xuất file.</p>
+  <div data-draw="vsum" data-source="visits tracking gap outlets"></div>
+ </section>
+ <section class="card" id="visit">
   <div class="seg" id="vf" data-source="visits tracking gap"><button type="button" data-st="" aria-pressed="true">Mọi outlet <b data-draw="v_all">—</b></button><button type="button" data-st="kd" aria-pressed="false">Có scheme chưa đạt <b data-draw="v_kd">—</b></button><button type="button" data-st="none" aria-pressed="false">Chưa có chương trình <b data-draw="v_none">—</b></button><button type="button" data-st="pot" aria-pressed="false">Potential cần đề xuất <b data-draw="v_pot">—</b></button></div>
   <div class="xbar"><p class="srcl" data-draw="src_plan" data-source="sources visits tracking"></p><button type="button" class="xbtn" data-x="visit">⤓ Xuất lịch visit</button></div>
-  <div class="vsplit"><div class="vlist" data-draw="vlist" data-source="visits outlets tracking gap"></div><div class="vdet" data-draw="vdet" data-source="visits tracking gap overlap outlets"></div></div>
+  <div class="vplan" data-draw="vplan" data-source="visits outlets tracking gap overlap"></div>
  </section>
 </section>
 
