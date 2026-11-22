@@ -948,11 +948,10 @@ const buildRemind=async(srs,P)=>{const all=srs.map(sr=>({sr,TK:tasksP(sr,P)}));
  R.push([]);R.push([{v:'4. Danh sách việc (tick cột Xong khi làm xong)',s:'t'}]);R.push(todoHead.map(v=>({v,s:'h'})));
  act.forEach(t=>R.push(todoRow(t)));
  const sheets=[{n:'Tổng hợp',r:R,cols:[24,14,12,12,12,12,12,12,13,46,9,9,11,9,16],bars:[['H'+(r1+1)+':H'+e1],['I'+(r1+1)+':I'+e1,'E40613'],['B'+(r2+1)+':B'+e2],['E'+(r2+1)+':E'+e2,'E40613'],['F'+(r3+1)+':F'+e3]]}];
- all.forEach(a=>{const A=a.TK.filter(t=>t.act);const txt=remindTxt(a.sr,P,a.TK);const S2=[[{v:nm(a.sr)+' · '+P.label,s:'t'}],[{v:'Lời nhắc',s:'b'}]];
-  txt.split('\n').forEach(l=>S2.push([{v:l,s:l.startsWith('*')?'bl':''}]));S2.push([]);
-  const st=S2.length+1;S2.push(todoHead.map(v=>({v,s:'h'})));A.forEach(t=>S2.push(todoRow(t)));
+ all.forEach(a=>{const A=a.TK.filter(t=>t.act);const S2=[[{v:nm(a.sr)+' · '+P.label+' · '+vn(A.length)+' việc',s:'t'}]];
+  S2.push(todoHead.map(v=>({v,s:'h'})));A.forEach(t=>S2.push(todoRow(t)));
   const done=a.TK.filter(t=>!t.act);if(done.length){S2.push([]);S2.push([{v:'Đã đạt, giữ nhịp',s:'b'}]);done.forEach(t=>S2.push(todoRow(t)));}
-  sheets.push({n:String(nm(a.sr)),r:S2,cols:TW,freeze:0});});
+  sheets.push({n:String(nm(a.sr)),r:S2,cols:TW,freeze:2});});
  const text=all.map(a=>remindTxt(a.sr,P,a.TK)).join('\n\n------\n\n');
  return {fname,data:await XS(sheets),text,n:act.length};};
 
