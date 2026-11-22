@@ -1105,3 +1105,10 @@
 .pp .rmact{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pp .rmout{display:grid;gap:8px}
 .pp .rmtxt{width:100%;box-sizing:border-box;font:13.5px/1.5 ui-monospace,Consolas,monospace;border:1.5px solid #CFDAD3;border-radius:10px;padding:10px;resize:vertical;color:#111A15;background:#fff}
+/* ===== lần 5: cấp con nhỏ và mảnh hơn A1–A4 ===== */
+.pp table.acct.acct tbody tr.acc.l3 td.nm b{font-size:13px!important;font-weight:500!important}
+.pp table.acct.acct tbody tr.acc.l3 td.tc b{font-size:12.5px!important;font-weight:600!important}
+.pp table.acct.acct tbody tr.acc.l3 td.tc small{font-size:11px}
+.pp table.acct.acct tbody tr.acc.l3 td{padding-top:4px;padding-bottom:4px}
+.pp table.acct.acct tbody tr.acc.l2 .acth b{font-size:11px!important;font-weight:700!important}
+.pp table.acct.acct tbody tr.acc.l3.cur.cur.cur td.nm b,.pp table.acct.acct tbody tr.acc.l3.cur.cur.cur td.tc b{font-weight:800!important}
