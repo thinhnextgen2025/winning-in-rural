@@ -455,3 +455,67 @@
 .pp .acct tr.acc.l3.nol td{background:#fff!important}
 .pp .acct tr.acc.l3.nol .sbadges{margin-top:4px}
 .pp .acct tr.acc.dim td{opacity:.45!important}
+
+/* ============ v30 — Redesign báo cáo chuyên nghiệp (Heineken) ============ */
+.pp{--g:#0A7B33;--gd:#083B20;--g2:#0E8E3C;--gsoft:#EAF4EC;--gline:#D6E6DB;--star:#E3120B;--ink:#16271D;--mut:#5E6C63;--line:#E7EDE8;--bg:#EDF2EE;--sh:0 1px 2px rgba(12,42,24,.05),0 8px 24px -12px rgba(12,42,24,.18)}
+
+/* Header + thương hiệu */
+.pp .hero{background:linear-gradient(135deg,#0B4A28 0%,#0A7B33 100%);border-radius:0 0 24px 24px;padding:18px 24px;gap:16px 26px;box-shadow:0 12px 32px -16px rgba(8,45,26,.7);align-items:center}
+.pp .hero-t{display:flex;align-items:center;gap:14px;flex:0 0 auto}
+.pp .brandmark{flex:none;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.pp .brandmark svg{width:27px;height:27px;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.pp .hero-tt{display:grid;gap:3px}
+.pp .eyebrow{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#BFE6CB}
+.pp .hero h1{color:#fff!important;font-size:25px;font-weight:800;letter-spacing:-.025em;text-shadow:0 1px 2px rgba(0,0,0,.18)}
+.pp .hero .sub{color:#C6E6CF;font-weight:500}
+.pp .scope{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:13px}
+.pp .scope .lb{color:#CDEAD5;font-weight:800;font-size:12px}
+.pp .scope select{border-radius:9px}
+.pp .tabs{background:rgba(0,0,0,.24);border-radius:15px;padding:6px}
+.pp .tabs button{border-radius:11px;color:#EAF7EE;font-weight:700}
+.pp .tabs button:hover{background:rgba(255,255,255,.1)}
+.pp .tabs button i{background:rgba(255,255,255,.22);color:#fff}
+.pp .tabs button[aria-selected="true"]{background:#fff;color:var(--gd);box-shadow:0 4px 14px rgba(0,0,0,.24)}
+.pp .tabs button[aria-selected="true"] i{background:var(--g);color:#fff}
+.pp .tabs button small{opacity:.82;font-weight:600}
+
+/* Thẻ chung + bóng mềm */
+.pp .card{border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh)}
+
+/* Banner tóm tắt */
+.pp .ask{background:linear-gradient(180deg,#F2FAF4,#fff);border:1px solid var(--gline);border-left:5px solid var(--g);border-radius:16px;padding:14px 18px;box-shadow:var(--sh)}
+.pp .ask .qq{color:var(--g);font-weight:800}
+.pp .ask p{color:var(--ink)}
+
+/* Thẻ KPI */
+.pp .kpi{border:1px solid var(--line)!important;border-top:1px solid var(--line)!important;border-radius:15px;padding:13px 15px 14px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.pp .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--g)}
+.pp .kpi .l{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.pp .kpi .v,.pp .kpi.ok .v,.pp .kpi.am .v,.pp .kpi.tg .v,.pp .kpi.bl .v{font-size:30px;font-weight:800;color:var(--gd)}
+.pp .kpi .s{font-size:12.5px}
+
+/* Bảng kiểu báo cáo: bỏ lưới dọc, chỉ gạch ngang nhạt */
+.pp .tw{border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);background:#fff}
+.pp table{font-size:14px}
+.pp th,.pp td{border-right:0!important;border-bottom:1px solid var(--line)!important;padding:11px 14px}
+.pp th{background:var(--gd)!important;color:#fff;font-size:11.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-bottom-color:var(--gd)!important}
+.pp tbody tr:nth-child(even) td{background:#FAFCFA}
+.pp tbody tr:hover td{background:var(--gsoft)}
+.pp tr.grp td{background:var(--gsoft)!important;color:var(--gd)}
+.pp tr.go td.nm b,.pp td.nm .chev,.pp .lk,.pp .bc button,.pp .tl-where button{color:var(--g)!important}
+
+/* Nút */
+.pp .xbtn{border:1px solid var(--gline);background:#fff;color:var(--g);font-weight:700;border-radius:11px}
+.pp .xbtn:hover{background:var(--gsoft)}
+.pp .more,.pp .back{border-radius:11px}
+.pp .seg button{border-radius:11px}
+.pp .seg button[aria-pressed="true"]{background:var(--g);border-color:var(--g)}
+.pp .seg button[aria-pressed="true"] b{color:var(--g)}
+
+/* Pill mềm + đổi xanh dương "đúng tiến độ" sang xanh ngọc cho hợp tông */
+.pp .pill{border-radius:999px;padding:3px 11px;font-size:12.5px}
+.pp .s-mid,.pp .t-on{background:#E4F1EC;color:#236B55}
+
+/* Thanh tiến độ bo tròn */
+.pp .bar{border-radius:999px;overflow:hidden}
+.pp .bar i{border-radius:999px}
