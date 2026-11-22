@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
 .pp{--g:#0B8137;--gd:#0B4A28;--b:#0A84CF;--ink:#111A15;--mut:#56625B;--line:#DCE5DF;--bg:#F2F5F3;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.45;color:var(--ink);background:var(--bg);font-variant-numeric:tabular-nums;padding:0 0 28px;display:grid;gap:14px;min-width:0}
 .pp [hidden]{display:none!important}
 .pp *{box-sizing:border-box}
@@ -628,3 +629,130 @@
   .pp .wrgrid>.wrl,.pp .wrgrid>.wrr{display:block!important;position:static!important;height:auto!important;max-height:none!important;overflow:visible!important}
   .pp .wrl .tw,.pp .wrr .tw{max-height:none!important;overflow:visible!important}
 }
+
+
+/* ============ v32 — DECLUTTER: calm hierarchy, quiet the repeats ============ */
+.pp{--brand:#008200;--brand2:#0A9B2E;--deep:#073A1A;--mut:#6B7872;--faint:#9BA7A0;--dim:#AEB8B1;--line:#ECF0ED;--line2:#E2E8E4}
+.pp,.pp input,.pp select,.pp button,.pp table,.pp th,.pp td{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.pp{font-variant-numeric:tabular-nums lining-nums}
+
+/* breathing room: taller rows, hairline separators, more gap between the two panels */
+.pp .wrgrid{gap:22px}
+.pp th,.pp td{padding:12px 14px}
+.pp tbody tr td{border-bottom:1px solid #F0F3F1!important}
+.pp .tw{box-shadow:none;border-color:var(--line)}
+.pp table{font-size:13.5px}
+
+/* table header: quiet label row */
+.pp thead th{background:#F7FAF8!important;color:var(--mut)!important;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--line2)!important}
+.pp thead th.n{color:var(--mut)!important}
+
+/* --- LEFT accordion: kill the repeated "Potential chưa TG" noise (4th column only) --- */
+.pp .acct th:nth-child(4),.pp .acct td:nth-child(4){color:var(--faint);font-weight:400;font-size:12px;text-align:right}
+.pp .acct td:nth-child(4) *{color:var(--faint)!important;font-weight:400!important;font-size:12px!important}
+/* calm, thin progress bars */
+.pp .acct .bar{height:4px;background:#EEF2EF;min-width:40px}
+.pp .acct .bar i{background:var(--brand)}
+.pp .acct .cv{margin-bottom:3px;font-size:13px}
+.pp .acct .cv span:first-child{font-weight:700}
+/* scheme-name hierarchy: primary dark, secondary faint */
+.pp .acct tr.acc.l3 td.nm>b{font-size:14px;color:var(--ink);font-weight:700}
+.pp .acct tr.acc.l3 .sreq{color:var(--faint);font-weight:500}
+.pp .acct .muted{color:var(--faint)}
+
+/* --- RIGHT tracking table: let placeholders recede, keep only real signal --- */
+.pp td .sub2.muted{color:var(--faint);font-weight:500}
+.pp td .sub2.red{color:#B45B54;font-weight:600}            /* calmer "thiếu N" */
+.pp td.n{color:var(--ink2)}
+/* soften the wall of status / percent pills into quiet tags */
+.pp .pill{border-radius:6px;padding:2px 8px;font-size:12px;font-weight:600;margin:1px 3px 1px 0}
+.pp .s-na,.pp .t-na{background:#F1F4F2;color:var(--faint)}
+.pp .s-low{background:#FaF4E6;color:#9A7A33}
+.pp .s-mid{background:#EEF3F0;color:#3C6B57}
+.pp .s-good,.pp .t-ok{background:#E9F3EC;color:#17733A}
+.pp .t-on{background:#EEF3F0;color:#3C6B57}
+.pp .t-slow{background:#FaF4E6;color:#8A6B2E}
+.pp .t-vslow{background:#F8ECEA;color:#9E4E46}
+.pp .t-fail{background:#F2EDEC;color:#7C4F4A}
+
+/* mute the red threshold legend — it's a note, not an alert */
+.pp p.muted .red{color:var(--faint)!important;font-weight:500}
+.pp p.muted{color:var(--faint)}
+
+/* mini KPI tiles: one calm accent, big quiet number */
+.pp .kpi{border-top:1px solid var(--line)!important;box-shadow:none}
+.pp .kpi .v,.pp .kpi.ok .v,.pp .kpi.am .v,.pp .kpi.bl .v,.pp .kpi.tg .v{color:var(--deep);font-weight:700}
+.pp .kpi .l{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+
+/* segmented filter + search: calmer */
+.pp .seg button{border-radius:8px;font-weight:600}
+.pp .ask{box-shadow:none}
+.pp .card{box-shadow:none;border-color:var(--line)}
+
+/* header: tiny bit calmer, official green star kept as sole accent */
+.pp .hero{box-shadow:0 1px 0 rgba(0,0,0,.04)}
+
+/* v32b — neutralize repeating placeholder stripes; status pill carries the signal */
+.pp td .sub2.red{color:var(--faint)!important;font-weight:500!important}   /* "thiếu N" recedes; gap still in Trạng thái + Cần/ngày */
+.pp .t-fail{background:#F2F4F2;color:#8A7A74}
+.pp .t-vslow{background:#F6EEEC;color:#9A5A52}
+.pp .s-low{background:#F6F2EA;color:#8F7C4E}
+/* keep real, differentiated signals legible: on-track/achieved stay green */
+.pp .t-ok,.pp .s-good{background:#E7F3EB;color:#0F7A38}
+/* tidy the % đạt header so it doesn't wrap awkwardly */
+.pp thead th[data-field="pct"]{white-space:nowrap}
+/* dashes/empties read as faint */
+.pp td.n{color:var(--ink2)}
+
+/* ============ v33 — BASE.VN CONSULTING LAYOUT: airy floating cards, monochrome ============ */
+.pp{--bg:#EDF0F3;--canvas:#EDF0F3;--card-sh:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--card-sh-h:0 2px 4px rgba(16,24,40,.06),0 4px 12px -4px rgba(16,24,40,.08);--line:#E6EAEF;--line2:#DDE3E9}
+.pp{background:var(--canvas)}
+
+/* generous rhythm + real gaps between blocks */
+.pp{gap:18px}
+.pp .view{gap:18px;padding:0 16px}
+.pp .wrgrid{gap:20px;align-items:start}
+
+/* every block is a distinct white floating card */
+.pp .card,.pp .kpi,.pp .ask,.pp .hvn{border-radius:14px}
+.pp .card{background:#fff;border:1px solid var(--line);box-shadow:var(--card-sh);padding:18px 20px}
+.pp .kpi{background:#fff;border:1px solid var(--line)!important;border-top:1px solid var(--line)!important;box-shadow:var(--card-sh)}
+.pp .ask{background:#fff;border:1px solid var(--line);border-left:3px solid var(--brand);box-shadow:var(--card-sh);padding:15px 20px}
+.pp .tw{border:1px solid var(--line);border-radius:12px;box-shadow:none;background:#fff}
+
+/* table inside a card = flush, let the card be the frame */
+.pp .wrl,.pp .wrr{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--card-sh);padding:6px}
+.pp .wrl .tw,.pp .wrr .tw{border:0;border-radius:10px}
+
+/* card-header feel: title with a small square brand accent + lighter meta */
+.pp .ask .qq{font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.05em}
+.pp .ask p{font-size:15.5px;font-weight:500;color:var(--ink);line-height:1.5}
+.pp .ask b{font-weight:700;color:var(--deep)}
+
+/* sticky left tree card header spacing */
+.pp .acct thead th{padding-top:14px;padding-bottom:12px}
+
+/* accordion bars → tiny sparkline feel */
+.pp .acct .bar{height:3px;max-width:56px;background:#EEF1F4;border-radius:999px}
+.pp .acct .cv{font-size:12.5px;letter-spacing:-.01em}
+
+/* KPI tiles: Base.vn calm — label up top, number large & quiet */
+.pp .kpi .l{font-size:11px;letter-spacing:.04em;color:var(--mut);font-weight:600;text-transform:uppercase}
+.pp .kpi .v{font-size:26px;font-weight:700;letter-spacing:-.02em;color:var(--deep)}
+.pp .kpi .s{font-size:12px;color:var(--faint);font-weight:500}
+
+/* roomier rows, true hairlines */
+.pp th,.pp td{padding:13px 16px}
+.pp thead th{background:#FBFCFD!important;border-bottom:1px solid var(--line2)!important}
+.pp tbody tr td{border-bottom:1px solid #F1F4F6!important}
+.pp tbody tr:hover td{background:#F8FAFB}
+.pp tbody tr:nth-child(even) td{background:transparent}
+
+/* primary row label stands out, meta recedes (Base.vn hierarchy) */
+.pp tbody td b{color:var(--ink);font-weight:700}
+.pp tbody td .muted{color:var(--faint);font-weight:500;font-size:12.5px}
+
+/* segmented + search: quiet, pill */
+.pp .seg button{border:1px solid var(--line2);background:#fff;border-radius:8px}
+.pp .seg button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.pp .fbar input,.pp .fbar select{border:1px solid var(--line2);border-radius:8px;background:#fff}
