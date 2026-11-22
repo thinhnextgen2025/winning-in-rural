@@ -764,3 +764,22 @@
 .pp .hero h1{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.14)}
 .pp .eyebrow{color:#E0F5E7!important}
 .pp .hero .sub{color:#D4EEDD!important}
+
+/* ===== v32 — Header nền trắng, chỉ giữ nền xanh ở cụm filter ===== */
+.pp .lock{background:#F4F6F4}
+.pp .hero{background:#fff!important;color:#13241B!important;border-bottom:1px solid #E6ECE7;border-radius:0 0 16px 16px;box-shadow:0 6px 18px -14px rgba(16,48,32,.25)}
+.pp .hero h1{color:#13241B!important;text-shadow:none!important}
+.pp .eyebrow{color:#008200!important}
+.pp .hero .sub{color:#5E6C63!important}
+/* cụm filter: nền xanh nhạt */
+.pp .scope{background:#E9F5EC!important;border:1px solid #CFE7D6!important;border-radius:12px}
+.pp .scope .lb{color:#046A2A!important}
+.pp .scope select{background:#fff;border:1px solid #CFE0D4}
+/* tabs trên nền trắng */
+.pp .tabs{background:transparent!important;padding:0!important}
+.pp .tabs button{color:#3C4C42!important;background:transparent!important;font-weight:600}
+.pp .tabs button:hover{background:#F1F7F2!important}
+.pp .tabs button i{background:#E9F5EC!important;color:#046A2A!important}
+.pp .tabs button small{color:#7A8C80!important}
+.pp .tabs button[aria-selected="true"]{background:#E9F5EC!important;color:#046A2A!important;box-shadow:none!important}
+.pp .tabs button[aria-selected="true"] i{background:#008200!important;color:#fff!important}
