@@ -756,3 +756,11 @@
 .pp .seg button{border:1px solid var(--line2);background:#fff;border-radius:8px}
 .pp .seg button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
 .pp .fbar input,.pp .fbar select{border:1px solid var(--line2);border-radius:8px;background:#fff}
+
+
+/* ===== v31 — Header xanh HVN chuẩn #008200, bỏ sao đỏ ===== */
+.pp .hero{background:linear-gradient(135deg,#0A8C22 0%,#007A1C 100%)!important;box-shadow:0 8px 22px -16px rgba(0,70,18,.5)}
+.pp .brandmark{display:none!important}
+.pp .hero h1{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.14)}
+.pp .eyebrow{color:#E0F5E7!important}
+.pp .hero .sub{color:#D4EEDD!important}
