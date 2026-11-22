@@ -1005,3 +1005,6 @@ draw('trk_ovw',el=>{el.replaceChildren();const root=S.N==='WR'||S.N==='LME';cons
  const tw=E('div','tw');tw.appendChild(t);el.appendChild(tw);
  const n=(trkRows()||[]).length;const bar=E('div','ovdl');const b=E('button','xbtn','⤓ Tải danh sách '+vn(n)+' dòng outlet · scheme');b.type='button';b.onclick=()=>{const x=document.querySelector('.pp #trk .fbar [data-x="trk"]');if(x)x.click();};
  bar.append(b,E('span','muted','Danh sách outlet không hiện ở đây cho gọn, bấm để tải file.'));el.appendChild(bar);});
+
+// Màn hẹp: tab vừa bấm luôn hiện trọn trong thanh tab
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.pp #tabs button');if(b){const n=b.parentElement;n.scrollTo({left:Math.max(0,b.offsetLeft-n.clientWidth/2+b.offsetWidth/2),behavior:'smooth'});}});

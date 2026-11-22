@@ -1183,3 +1183,65 @@
 .pp #trk>.tw td{padding:6px 10px!important;font-size:13px!important}
 .pp #trk>.tw td b{font-size:13px!important}
 .pp #trk>.tw th{padding:6px 10px!important;font-size:10.5px!important}
+
+/* ===== lần 8: màn ngang điện thoại · Z Fold (cả chia đôi màn) · Tab S10 FE ===== */
+/* tab đang ẩn thì ẩn hẳn (trước đây ≤1120px Tracking vẫn hiện dưới các tab khác) */
+@media (max-width:1120px){
+  .pp #wr[hidden]{display:none!important}
+  .pp .wrl .tw,.pp .wrr .tw,.pp #wrplan .tw{overflow-x:auto!important}
+}
+/* đầu trang gọn: 1 hàng tên + bộ lọc, 1 hàng tab — cho màn thấp (điện thoại ngang) và màn hẹp (Fold chia đôi) */
+@media (orientation:landscape) and (max-height:600px),(max-width:760px){
+  .pp .lock{padding-bottom:6px!important;gap:6px!important}
+  .pp .hero{flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;padding:6px 12px!important;gap:6px 10px!important;border-radius:0 0 12px 12px!important}
+  .pp .hero .eyebrow{display:none!important}
+  .pp .hero-t{flex:0 0 auto!important;min-width:0}
+  .pp .hero-tt{display:flex!important;align-items:baseline;gap:8px;flex-wrap:nowrap}
+  .pp .hero h1{font-size:16px!important;line-height:1.2!important;margin:0!important;white-space:nowrap}
+  .pp .hero .sub{display:block!important;font-size:0!important;margin:0!important;white-space:nowrap}
+  .pp .hero .sub .ver{font-size:11px!important}
+  .pp .hero-r{display:contents!important}
+  .pp .scope{flex:1 1 360px!important;max-width:100%!important;flex-wrap:nowrap!important;padding:3px 6px!important;gap:4px!important;border-radius:9px!important;align-self:center!important}
+  .pp .scope .lb{display:none!important}
+  .pp .scope select{flex:1 1 0!important;min-width:0!important;max-width:none!important;height:30px!important;min-height:30px!important;font-size:13px!important;padding-top:0!important;padding-bottom:0!important}
+  .pp .tabs{flex:1 1 100%!important;width:100%!important;max-width:100%!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none}
+  .pp .tabs::-webkit-scrollbar{display:none}
+  .pp .tabs button{min-height:30px!important;font-size:13px!important;padding:0 10px 0 5px!important;white-space:nowrap!important;flex:0 0 auto!important}
+  .pp .tabs button small{display:none!important}
+  .pp .tabs button i{width:18px!important;height:18px!important;font-size:11px!important}
+  .pp .hero .xmsg{flex:1 1 100%;margin:0}
+  .pp #wr>.ask{padding:8px 12px!important}
+  .pp #wr>.ask p{font-size:13.5px!important;line-height:1.4!important}
+  .pp .card[id],.pp .view{scroll-margin-top:calc(var(--lockh,90px) + 8px)}
+}
+/* màn ngang 840–1120px (iPhone ngang, Fold ngoài/trong ngang): Tracking 2 cột như tablet, bên trái dính khi cuộn */
+@media (min-width:840px) and (max-width:1120px) and (orientation:landscape){
+  .pp #wr .wrgrid.wrgrid{display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,3fr)!important;gap:10px!important;align-items:start!important}
+  .pp #wr:not([hidden]){overflow-x:clip!important;overflow-y:visible!important}
+  .pp .wrgrid>.wrl.wrl,.pp .wrgrid>.wrr.wrr{align-self:start!important;margin-top:0!important}
+  .pp .wrgrid>.wrl.wrl{margin-bottom:0;position:sticky!important;top:calc(var(--lockh,90px) + 6px)!important;max-height:calc(100vh - var(--lockh,90px) - 12px)!important;overflow-y:auto!important}
+  .pp .wrl table.acct th,.pp .wrl table.acct td{padding-left:6px!important;padding-right:6px!important}
+  .pp #wr .wrgrid.wrgrid{grid-template-columns:minmax(0,5fr) minmax(0,7fr)!important}
+  .pp .wrl table.acct{width:100%!important;min-width:0!important;table-layout:auto}
+  .pp .wrl table.acct td small,.pp .wrl table.acct .l1n .muted{display:none!important}
+  .pp .wrl table.acct td.nm,.pp .wrl table.acct td.nm *{white-space:normal!important}
+  .pp .wrl table.acct th{font-size:9.5px!important;white-space:normal!important;line-height:1.15}
+  .pp .wrl table.acct td.n{font-size:12.5px!important;white-space:nowrap}
+  .pp #trk .minis{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important}
+  .pp #trk .minis .mini{padding:5px 7px!important}
+  .pp #trk .minis .mini>span{font-size:10.5px!important;line-height:1.15!important;white-space:normal!important}
+  .pp #trk .minis .mini b,.pp #trk .minis .mini b span{font-size:19px!important}
+  .pp #trk .minis .mini em,.pp #trk .minis .mini em span{font-size:10.5px!important}
+}
+/* Daily visit plan: danh sách outlet trái, thẻ phải — giữ 2 cột tới 700px */
+@media (min-width:701px) and (max-width:900px){
+  .pp .vmd{grid-template-columns:minmax(220px,2fr) minmax(0,3fr)!important}
+  .pp .vlw{position:sticky!important}
+  .pp .vol{max-height:calc(100vh - var(--lockh,90px) - 70px)!important}
+}
+@media (orientation:landscape) and (max-height:600px){
+  .pp .vmd{grid-template-columns:minmax(220px,2fr) minmax(0,3fr)!important}
+  .pp .vol{max-height:calc(100vh - var(--lockh,90px) - 60px)!important}
+}
+/* Tab S10 FE ngang (~1333px): đủ chỗ cho cả 5 tab */
+@media (max-width:1400px){.pp .tabs button small{display:none!important}.pp .tabs button{padding:0 10px 0 6px!important}}
