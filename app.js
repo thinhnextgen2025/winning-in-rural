@@ -244,7 +244,7 @@ const treeCells=(tr,r)=>{tCell(tr,mn(r,'tg',vn(r.tg)),[mn(r,'tg_pct',pc(r.tg_pct
 S.openNL=S.openNL||{};
 const nlRows=(tb,NL,ck)=>{NL.forEach(p=>{const t=E('tr','acc l3 nol k-'+ck);const c2=td(t,null,'nm');c2.appendChild(E('b',null,p.short||p.name));t.title='Chưa đếm được: mail chưa có danh sách outlet đăng ký của scheme này';
  ['—','—','—'].forEach(x=>td(t,x,'n tc na'));if(p.id){t.style.cursor='pointer';t.onclick=()=>selN('S:'+p.id);}if(S.N==='S:'+p.id)t.classList.add('cur');tb.appendChild(t);});};
-const accRow=(r,lvl,open,onT,ck)=>{const _pth=selPath();const st=S.N===r.node?' cur':_pth.includes(r.node)?' path':(S.N!=='WR'&&S.N!=='LME'?' dim':'');
+const accRow=(r,lvl,open,onT,ck)=>{const _pth=selPath();const st=S.N===r.node?' cur':_pth.includes(r.node)?' path':'';
  const tr=E('tr','acc l'+lvl+(open?' open':'')+st+(ck?' k-'+ck:''));
  if(lvl===2){const c=td(tr,null,'nm');c.colSpan=4;const h=E('div','acth');h.appendChild(E('b',null,r.name));c.appendChild(h);tr.onclick=()=>selN(r.node);return tr;}
  const c=td(tr,null,'nm');
@@ -254,7 +254,7 @@ const accRow=(r,lvl,open,onT,ck)=>{const _pth=selPath();const st=S.N===r.node?' 
   }
  treeCells(tr,r);
  tr.onclick=()=>{if(lvl===1&&onT&&!open)S.open[r.node]=true;selN(r.node);};return tr;};
-draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();{const T=tb.closest('table');if(T)T.classList.toggle('hassel',!!S.N&&S.N!=='WR'&&S.N!=='LME');}
+draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();{const T=tb.closest('table');if(T)T.classList.remove('hassel');}
  const top=S.tab==='lme'?childRows('LME',''):childRows('WR','').sort((a,b)=>a.node.localeCompare(b.node));
  const rkS=n=>{const p=(D('programs')||[]).find(x=>'S:'+x.id===n);return !p?3:p.has_target?0:p.fam==='H1'?1:2;};
  {const W=wr();if(W){const rt=S.tab==='lme'?'LME':'WR';const tr=E('tr','acc l1 tq'+(S.N===rt?' cur':''));const c=td(tr,null,'nm');const w=E('div','l1w');w.appendChild(E('span','tg-sp'));const t=E('div','l1n');t.append(E('b',null,'Tổng quan'),E('span','muted',S.tab==='lme'?'tất cả scheme LME':'tất cả scheme A1–A4'));w.appendChild(t);c.appendChild(w);treeCells(tr,W);tr.onclick=()=>{S.open={};selN(rt);};tb.appendChild(tr);}}

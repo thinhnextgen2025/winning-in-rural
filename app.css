@@ -1281,3 +1281,14 @@
 .pp #wr4a table.acct tbody tr.acc.cur td *{color:#fff!important;opacity:1!important}
 .pp #wr4a table.acct tbody tr.acc.cur td b{font-weight:800!important}
 .pp #wr4a table.acct tbody tr.acc.cur .tg-btn{background:#fff!important;border-color:#fff!important;color:#0B8137!important}
+
+/* ===== lần 10: bỏ làm mờ; dòng chọn + dòng A cha của nó đều tô xanh đặc chữ trắng ===== */
+.pp #wr4a table.acct tbody tr.acc:not(.cur):not(.path){opacity:1!important}
+.pp #wr4a table.acct tbody tr.acc.l2.path td{background:#fff!important}
+.pp #wr4a table.acct tbody tr.acc.l2.path td *{color:#0B4A28!important}
+.pp #wr4a table.acct tbody tr.acc.l1.path td{background:#0B8137!important;color:#fff!important;box-shadow:none!important;opacity:1!important}
+.pp #wr4a table.acct tbody tr.acc.l1.path td *{color:#fff!important;opacity:1!important}
+.pp #wr4a table.acct tbody tr.acc.path td b{font-weight:800!important}
+.pp #wr4a table.acct tbody tr.acc.path .tg-btn{background:#fff!important;border-color:#fff!important;color:#0B8137!important}
+.pp #wr4a table.acct tbody tr.acc.nol:not(.cur) td,.pp #wr4a table.acct tbody tr.acc.nol:not(.cur) td *{color:#13241B!important;opacity:1!important}
+.pp #wr4a table.acct tbody tr.acc.l1.path td .tg-btn.tg-btn{background:#fff!important;border-color:#fff!important;color:#0B8137!important}
