@@ -783,3 +783,19 @@
 .pp .tabs button small{color:#7A8C80!important}
 .pp .tabs button[aria-selected="true"]{background:#E9F5EC!important;color:#046A2A!important;box-shadow:none!important}
 .pp .tabs button[aria-selected="true"] i{background:#008200!important;color:#fff!important}
+
+/* ===== v33 — kẻ line mảnh + làm rõ số key + bỏ tag "Không có target" ===== */
+/* line kẻ mảnh: vạch dọc nhạt giữa cột + vạch ngang rõ hơn chút */
+.pp th,.pp td{border-right:1px solid var(--line)!important}
+.pp tr>:last-child{border-right:0!important}
+.pp tbody td{border-bottom:1px solid var(--line2)!important}
+.pp thead th{border-bottom:1px solid var(--line2)!important}
+/* số KEY: cột Potential (accordion) rõ lại, không còn mờ */
+.pp .acct th:nth-child(4),.pp .acct td:nth-child(4){color:var(--ink)!important;font-weight:600!important;font-size:13.5px!important}
+.pp .acct td:nth-child(4) *{color:var(--ink)!important;font-weight:600!important;font-size:13.5px!important}
+/* số KEY: thẻ KPI to & rõ hơn */
+.pp .kpi .v,.pp .kpi.ok .v,.pp .kpi.am .v,.pp .kpi.bl .v,.pp .kpi.tg .v{font-size:29px!important;font-weight:800!important;color:var(--ink)!important}
+.pp .kpi .s{color:var(--mut)!important;font-weight:600!important}
+.pp .kpi .s b{color:var(--ink)!important}
+/* "Không có target" giờ chỉ là dấu "–" nhạt */
+.pp .nostat{color:var(--faint);font-weight:600}

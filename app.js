@@ -153,7 +153,7 @@ draw('tb_trk',tb=>{if(!ready(tb,9,'tracking','nodes'))return;tb.replaceChildren(
   if(r.status==='Không có target')c.appendChild(E('span','sub2 muted','không có target'));else if(r.target!=null){if(nos)c.appendChild(E('span','sub2 muted','chưa có số'));else if(nores)c.appendChild(E('span','sub2 grn','đạt (theo file kết quả)'));else if(r.gap>0)c.appendChild(E('span','sub2 red','thiếu '+vn(r.gap)));
    else if(r.actual>r.target)c.appendChild(E('span','sub2 grn','vượt '+vn(r.actual-r.target)));else c.appendChild(E('span','sub2 grn','đạt'));}
   td(tr).appendChild(pill(r.pct==null||nores||nos?'—':pc(r.pct),r.pct==null||nores||nos?'s-na':r.pct>=100?'s-good':r.pct>=60?'s-mid':'s-low'));
-  td(tr,pc(r.time_pct),'n');td(tr,nd(r.need_day),'n');td(tr).appendChild(pill(r.status||'—',TCLS[r.status]||'t-na'));tb.appendChild(tr);}
+  td(tr,pc(r.time_pct),'n');td(tr,nd(r.need_day),'n');td(tr).appendChild(r.status==='Không có target'?E('span','nostat','–'):pill(r.status||'—',TCLS[r.status]||'t-na'));tb.appendChild(tr);}
  if(!L.length)empty(tb,9,'Không có dòng khớp bộ lọc.');
  document.querySelectorAll('.pp #trk_more').forEach(b=>{const h=L.length<=n;if(b.hidden!==h)b.hidden=h;});});
 */
@@ -163,7 +163,7 @@ draw('tb_trk',tb=>{if(!ready(tb,6,'tracking','nodes'))return;tb.replaceChildren(
   if(r.status==='Không có target')c.textContent='—';else if(r.target!=null){if(nos)c.appendChild(E('span','sub2 muted','chưa có số'));else if(nores)c.appendChild(E('span','sub2 grn','đạt (theo file kết quả)'));else if(r.gap>0)c.appendChild(E('span','sub2 red','thiếu '+vn(r.gap)));
    else if(r.actual>r.target)c.appendChild(E('span','sub2 grn','vượt '+vn(r.actual-r.target)));else c.appendChild(E('span','sub2 grn','đạt'));}
   td(tr).appendChild(pill(r.pct==null||nores||nos?'—':pc(r.pct),r.pct==null||nores||nos?'s-na':r.pct>=100?'s-good':r.pct>=60?'s-mid':'s-low'));
-  td(tr,nd(r.need_day),'n');td(tr).appendChild(pill(r.status||'—',TCLS[r.status]||'t-na'));tb.appendChild(tr);}
+  td(tr,nd(r.need_day),'n');td(tr).appendChild(r.status==='Không có target'?E('span','nostat','–'):pill(r.status||'—',TCLS[r.status]||'t-na'));tb.appendChild(tr);}
  if(!L.length)empty(tb,6,'Không có dòng khớp bộ lọc.');
  document.querySelectorAll('.pp #trk_more').forEach(b=>{const h=L.length<=n;if(b.hidden!==h)b.hidden=h;});});
 document.querySelectorAll('.pp #trk_more').forEach(b=>b.addEventListener('click',()=>{S.trkN+=200;dash.draw('tb_trk');dash.draw('n_trk_show');}));
