@@ -1070,3 +1070,22 @@
 .pp details.vprog[open]>summary::before{content:"▾"}
 .pp details.vprog .vpg{margin-top:8px}
 .pp .vhero{padding:10px}.pp .vpush .vpr{min-height:38px;padding:7px 12px}
+/* ===== lần 4: dòng chọn đậm, các dòng khác đậm nhưng mờ ===== */
+.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) td,.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) td *{color:#9AA5A0!important}
+.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) td.nm b{font-weight:700}
+.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) .tg-btn{border-color:#DCE5DF!important}
+.pp table.acct.acct tbody tr.acc.acc.path.path td{background:#fff!important;color:#0B4A28!important}
+.pp table.acct.acct tbody tr.acc.acc.path.path td *{color:#0B4A28!important}
+.pp table.acct.acct tbody tr.acc.acc.path.path td.nm{box-shadow:inset 5px 0 0 #0B8137}
+.pp table.acct.acct tbody tr.acc.acc.path.path td.nm b{font-weight:800}
+.pp table.acct.acct tbody tr.acc.acc.cur.cur.cur td.nm b{font-weight:800}
+/* ===== lần 4: dòng chọn đậm, các dòng khác đậm nhưng mờ ===== */
+.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) td,.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) td *{color:#9AA5A0!important}
+.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) td.nm b{font-weight:700}
+.pp table.acct.hassel tbody tr.acc.acc:not(.cur):not(.path) .tg-btn{border-color:#DCE5DF!important}
+.pp table.acct.acct tbody tr.acc.acc.path.path td{background:#fff!important;color:#0B4A28!important}
+.pp table.acct.acct tbody tr.acc.acc.path.path td *{color:#0B4A28!important}
+.pp table.acct.acct tbody tr.acc.acc.path.path td.nm{box-shadow:inset 5px 0 0 #0B8137}
+.pp table.acct.acct tbody tr.acc.acc.path.path td.nm b{font-weight:800}
+.pp table.acct.acct tbody tr.acc.acc.cur.cur.cur td.nm b{font-weight:800}
+.pp table.acct.acct tbody tr.acc.acc.path.path .tg-btn{background:#fff!important;border:1.5px solid #0B8137!important;color:#0B8137!important}

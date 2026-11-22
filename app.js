@@ -15,6 +15,8 @@ const pill=(x,cls)=>E('span','pill '+cls,x);
 const pcls=p=>p==null?'s-na':p>=80?'s-good':p>=50?'s-mid':'s-low';
 const bar=(p,cls)=>{const b=E('span','bar '+(cls||''));const i=E('i');i.style.width=Math.max(0,Math.min(100,p||0))+'%';b.appendChild(i);return b;};
 const D=id=>{const d=dash.data(id);return d.status==='ok'?d.data:null;};
+/* v22/11: anh Thịnh đổi tên TPO Q4 thành P4G Q4 (chỉ đổi tên hiển thị) */
+{const RN=v=>typeof v==='string'?v.replace(/\bTPO Q4\b/g,'P4G Q4'):v;[['nodes',['name']],['programs',['name','short']],['tracking',['prog_name']],['detail',['prog_name']],['overlap',['prog_a','prog_b']]].forEach(([id,fs])=>{(D(id)||[]).forEach(r=>fs.forEach(f=>{if(r[f]!=null)r[f]=RN(r[f]);}));});}
 const ready=(tb,cols,...ids)=>{const ss=ids.map(i=>dash.data(i).status);if(ss.every(s=>s==='ok'))return true;const tr=E('tr');const c=td(tr,ss.includes('error')?'Chưa tải được dữ liệu, thử tải lại trang.':'Đang tải…','msg');c.colSpan=cols;tb.replaceChildren(tr);return false;};
 const empty=(tb,cols,x)=>{const tr=E('tr');const c=td(tr,x,'msg');c.colSpan=cols;tb.appendChild(tr);};
 const NM={"Thịnh": "Huỳnh Văn Thịnh", "Điệp": "Văn Công Điệp", "Liêm": "Nguyễn Hoàng Liêm", "Sỹ": "Phùng Quốc Sỷ", "Giàu": "Nguyễn Ngọc Giàu", "Hảo (SubD)": "Lê Hoàn Hảo (SubD)", "Giang Phan Thanh": "Phan Thanh Giảng", "Hanh Nguyen Thi": "Nguyễn Thị Hạnh", "Huynh Thanh Hau": "Huỳnh Thanh Hậu", "Quan Tran Trung": "Trần Trung Quân", "Vinh Huynh Phu": "Huỳnh Phú Vĩnh", "Le Hoan Hao": "Lê Hoàn Hảo", "Nguyen Hoang Liem": "Nguyễn Hoàng Liêm", "Phan Thanh Nhan": "Phan Thanh Nhân", "TRI TRAN TRONG": "Trần Trọng Trí", "Thanh Diep Truong": "Diệp Trường Thành", "Hao Nguyen Nhat": "Nguyễn Nhật Hào", "Huy Ho Gia": "Hồ Gia Huy", "Loc Phan Ba": "Phan Bá Lộc", "Nguyen Huu Hanh": "Nguyễn Hữu Hạnh", "Tran Trung Tien": "Trần Trung Tiên", "Bao Diep Quoc": "Diệp Quốc Bảo", "Bao Tran Gia": "Trần Gia Bảo", "Le Phuoc Hau": "Lê Phước Hậu", "Nguyen Tan Thanh": "Nguyễn Tấn Thành", "Nam Phan Hoai": "Phan Hoài Nam", "Phong Duong Hoai": "Dương Hoài Phong", "Tan Pham Duy": "Phạm Duy Tân", "Vo Chi Trung": "Võ Chí Trung"};
@@ -238,7 +240,7 @@ const accRow=(r,lvl,open,onT,ck)=>{const _pth=pathOf(S.N).map(x=>x.node);const s
   }
  treeCells(tr,r);
  tr.onclick=()=>{if(lvl===1&&onT&&!open)S.open[r.node]=true;selN(r.node);};return tr;};
-draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();
+draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();{const T=tb.closest('table');if(T)T.classList.toggle('hassel',!!S.N&&S.N!=='WR'&&S.N!=='LME');}
  const top=S.tab==='lme'?childRows('LME',''):childRows('WR','').sort((a,b)=>a.node.localeCompare(b.node));
  const rkS=n=>{const p=(D('programs')||[]).find(x=>'S:'+x.id===n);return !p?3:p.has_target?0:p.fam==='H1'?1:2;};
  const rkN=n=>n.startsWith('S:')?rkS(n):Math.min(3,...childRows(n,'').map(x=>rkN(x.node)));
