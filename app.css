@@ -1247,3 +1247,29 @@
 @media (max-width:1400px){.pp .tabs button small{display:none!important}.pp .tabs button{padding:0 10px 0 6px!important}}
 /* 1501–1700px (cũng là khổ điện thoại/tablet thu nhỏ 1536px): khung trái rộng thêm chút cho đủ cột Tiềm năng */
 @media (min-width:1501px) and (max-width:1700px){.pp .wrgrid.wrgrid{grid-template-columns:minmax(0,3fr) minmax(0,5fr)}}
+
+/* ===== v34 (22/11): dòng đang chọn trong Cây scheme = style y chang tab "Winning in Rural tracking"
+   (nền xanh nhạt #E9F5EC, chữ xanh #046A2A), BỎ line xanh đậm trên/dưới. Giữ số key đọc rõ. ===== */
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td{
+  background:#E9F5EC!important;color:#046A2A!important;
+  border-top:1px solid #DCE5DF!important;border-bottom:1px solid #DCE5DF!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td *{color:#046A2A!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td:first-child{border-left:4px solid #008200!important}
+/* nhãn hạng mục / "Tổng quan" đậm, xanh chuẩn như chữ tab */
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td.nm>b,
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .l1w b,
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .l1n b{color:#046A2A!important;font-weight:800}
+/* số key (tham gia/đạt/tiềm năng) giữ gần đen cho dễ đọc, không hoà vào nền */
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td.n,
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td.n *{color:#111A15!important;font-weight:700}
+/* nút xổ ▸/▾ trong dòng chọn: nền xanh đậm, mũi tên trắng — như badge số của tab */
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .tg-btn{background:#008200!important;border-color:#008200!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .tg-btn,
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .tg-btn *{color:#fff!important}
+/* pill / badge / thanh bar trong dòng chọn: đọc được trên nền nhạt */
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .pill,
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .sb{background:#fff!important;border-color:#CDE7D6!important;color:#33423A!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .pill *,
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .sb *{color:#33423A!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .bar{background:#D4E8DB!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .bar i{background:#008200!important}

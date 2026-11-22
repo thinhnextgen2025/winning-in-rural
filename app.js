@@ -245,7 +245,11 @@ draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();{const T=
  const rkS=n=>{const p=(D('programs')||[]).find(x=>'S:'+x.id===n);return !p?3:p.has_target?0:p.fam==='H1'?1:2;};
  {const W=wr();if(W){const rt=S.tab==='lme'?'LME':'WR';const tr=E('tr','acc l1 tq'+(S.N===rt?' cur':''));const c=td(tr,null,'nm');const w=E('div','l1w');w.appendChild(E('span','tg-sp'));const t=E('div','l1n');t.append(E('b',null,'Tổng quan'),E('span','muted',S.tab==='lme'?'tất cả scheme LME':'tất cả scheme A1–A4'));w.appendChild(t);c.appendChild(w);treeCells(tr,W);tr.onclick=()=>{S.open={};selN(rt);};tb.appendChild(tr);}}
  const rkN=n=>n.startsWith('S:')?rkS(n):Math.min(3,...childRows(n,'').map(x=>rkN(x.node)));
- const byRk=(a,b)=>(rkN(a.node)-rkN(b.node))||((b.tg||0)-(a.tg||0));
+ // Thứ tự cơ chế (ngầm, không chia nhóm): sell-in → sell-out → display → bundle → other
+ const MECH=p=>{const lg=(p.logic||'').toLowerCase();if(lg==='sell-in')return 0;if(lg==='sell-out')return 1;if(lg==='display'||/trưng bày/i.test(p.logic||''))return 2;const t=(p.name||'')+' '+(p.mechanic||'');return /mua .*tặng|tặng \d|combo|\d\s*\+\s*\d|\+\s*\d+\s*lon|get \d/i.test(t)?3:4;};
+ const rkMS=n=>{const p=(D('programs')||[]).find(x=>'S:'+x.id===n);return p?MECH(p):4;};
+ const rkM=n=>n.startsWith('S:')?rkMS(n):Math.min(4,...childRows(n,'').map(x=>rkM(x.node)));
+ const byRk=(a,b)=>(rkM(a.node)-rkM(b.node))||(rkN(a.node)-rkN(b.node))||((b.tg||0)-(a.tg||0));
  const tog=n=>()=>{S.open=S.open[n]?{}:{[n]:true};selN(n);};
  {const pth=pathOf(S.N).map(x=>x.node);const cn=top.map(x=>x.node).find(n=>n!==S.N&&pth.includes(n));if(cn&&!S.open[cn])S.open={[cn]:true};}
  top.forEach(r=>{const ck=catKey(r.node)||'LME';const op=!!S.open[r.node];const r1=accRow(r,1,op,r.n_schemes?tog(r.node):null,ck);r1.onclick=()=>{S.open=r.n_schemes?{[r.node]:true}:{};selN(r.node);};tb.appendChild(r1);if(!op)return;
