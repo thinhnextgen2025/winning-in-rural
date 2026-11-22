@@ -998,3 +998,75 @@
 .pp th{vertical-align:bottom}
 .pp .hero .scope.scope{background:#fff!important;border:1.5px solid #DCE5DF!important}
 .pp .plctl input[type=number]{width:120px;min-width:120px}
+/* ===== v22/11 lần 3: cây scheme mỏng, tên 1 dòng ===== */
+.pp table.acct.acct{table-layout:auto;width:100%;border-collapse:collapse}
+.pp table.acct.acct th{font-size:11.5px;padding:6px 8px;white-space:nowrap}
+.pp table.acct.acct th:first-child{width:auto}
+.pp table.acct.acct th.n,.pp table.acct.acct td.tc{width:1%;white-space:nowrap;text-align:right;padding:5px 8px}
+.pp table.acct.acct tr.acc td{padding-top:5px;padding-bottom:5px;border-left:0;border-right:0;vertical-align:middle}
+.pp table.acct.acct td.nm{white-space:nowrap;padding-left:8px;padding-right:8px}
+.pp table.acct.acct td.nm b{white-space:nowrap}
+.pp table.acct.acct td.tc b{display:inline;font-size:13.5px;font-weight:800}
+.pp table.acct.acct td.tc b .of{font-weight:600;color:#56625B}
+.pp table.acct.acct td.tc small{display:inline;margin:0 0 0 5px;font-size:11.5px;color:#56625B}
+.pp table.acct.acct td.tc.na{color:#8A958F}
+.pp table.acct.acct tr.acc.l1 td{padding-top:8px;padding-bottom:8px;border-top:1.5px solid #DCE5DF}
+.pp table.acct.acct tr.acc.l1 td.nm .l1w{display:flex;align-items:center;gap:8px}
+.pp table.acct.acct tr.acc.l1 .tg-btn{width:26px;height:26px;min-height:0}
+.pp table.acct.acct tr.acc.l1 .l1n{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.pp table.acct.acct tr.acc.l1 .l1n b{font-size:15px}
+.pp table.acct.acct tr.acc.l1 .l1n .muted{display:inline;font-size:12px}
+.pp table.acct.acct tr.acc.l2 td{padding:7px 8px 2px 34px!important;border:0}
+.pp table.acct.acct tr.acc.l2 .acth b{font-size:12px}
+.pp table.acct.acct tr.acc.l2 .acth::before,.pp table.acct.acct tr.acc.l2 td::before{display:none!important}
+.pp table.acct.acct tr.acc.l3 td.nm{padding-left:34px}
+.pp table.acct.acct tr.acc.l3.in td.nm{padding-left:48px}
+.pp table.acct.acct tr.acc.l3 td.nm::before,.pp table.acct.acct tr.acc.l3 td.nm>*::before{display:none!important}
+.pp table.acct.acct tr.acc.l3 td.nm b{font-size:14px;font-weight:700;color:#111A15}
+.pp table.acct.acct tr.acc.nol td.nm b{font-weight:600;color:#56625B}
+.pp table.acct.acct tr.acc:hover td{background:#F4F6F5}
+/* dòng đang chọn: tô nền đặc */
+.pp table.acct.acct tr.acc.cur.cur.cur td{background:#0B8137!important;color:#fff!important;border-color:#0B8137!important}
+.pp table.acct.acct tr.acc.cur.cur.cur td *{color:#fff!important}
+.pp table.acct.acct tr.acc.cur.cur.cur .tg-btn{background:#fff!important;color:#0B8137!important}
+.pp table.acct.acct tr.acc.cur.cur.cur .tg-btn *{color:#0B8137!important}
+.pp table.acct.acct tr.acc.l3 td.nm{padding:5px 8px 5px 34px!important;border-left:4px solid #E8ECE9!important}
+.pp table.acct.acct tr.acc.l3.in td.nm{padding-left:50px!important}
+.pp table.acct.acct tr.acc.l2 td{border-left:4px solid #E8ECE9!important}
+.pp table.acct.acct tr.acc.l3.cur td.nm,.pp table.acct.acct tr.acc.l2.cur td{border-left-color:#0B4A28!important}
+/* ===== Daily visit plan: danh sách outlet | thẻ chi tiết ===== */
+.pp .vmd{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:14px;align-items:start}
+.pp .vlw{border:1.5px solid #DCE5DF;border-radius:12px;background:#fff;overflow:hidden;position:sticky;top:calc(var(--lockh,120px) + 8px)}
+.pp .vlw .vdone{margin:0;padding:9px 12px;font-size:13px;font-weight:700;color:#33423A;border-bottom:1.5px solid #E8ECE9}
+.pp .vol{display:grid;max-height:calc(100vh - var(--lockh,120px) - 70px);overflow-y:auto}
+.pp .vit{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:2px;padding:8px 12px;border-bottom:1px solid #E8ECE9;border-left:5px solid #fff;min-height:48px}
+.pp .vit:hover{background:#F4F6F5}
+.pp .vit.on{background:#0B8137;border-left-color:#0B4A28}
+.pp .vit.on *{color:#fff!important}.pp .vit.on em{border-color:#fff!important}
+.pp .vit.done:not(.on){border-left-color:#0A84CF}
+.pp .vi1{display:flex;gap:8px;align-items:baseline;min-width:0}
+.pp .vi1 .vtm{font-size:12px;font-weight:700;color:#56625B;flex:none}
+.pp .vi1 b{font-size:14.5px;font-weight:800;color:#111A15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:underline;text-underline-offset:3px}
+.pp .vi2{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;color:#56625B}
+.pp .vi2 em{font-style:normal;font-weight:800;font-size:11.5px;border:1.5px solid #0B8137;color:#0B8137;border-radius:999px;padding:0 7px}
+.pp .vi2 em.r{border-color:#E40613;color:#E40613}.pp .vi2 em.na{border-color:#0A84CF;color:#0A84CF}
+.pp .vdet2{min-width:0}
+.pp .vdet2 .vcols{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pp .vdet2 .vcol:nth-child(3){border-left:0}.pp .vdet2 .vcol:nth-child(n+3){border-top:1.5px solid #E8ECE9}
+@media (min-width:1500px){.pp .vdet2 .vcols{grid-template-columns:repeat(4,minmax(0,1fr))}.pp .vdet2 .vcol:nth-child(3){border-left:1.5px solid #E8ECE9}.pp .vdet2 .vcol:nth-child(n+3){border-top:0}}
+@media (max-width:900px){.pp .vmd{grid-template-columns:1fr}.pp .vlw{position:static}.pp .vol{max-height:320px}}
+@media (max-width:640px){.pp .vdet2 .vcols{grid-template-columns:1fr}.pp .vdet2 .vcol{border-left:0!important;border-top:1.5px solid #E8ECE9}.pp .vdet2 .vcol:first-child{border-top:0}}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td{background:#0B8137!important;color:#fff!important;border-color:#0B8137!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur td *{color:#fff!important}
+.pp table.acct.acct tbody tr.acc.acc.acc.cur.cur.cur .tg-btn{background:#fff!important;border-color:#fff!important;color:#0B8137!important}
+.pp table.acct.acct th,.pp table.acct.acct td{min-width:0!important}
+.pp .vit.vit.done{opacity:1}
+@media (min-width:1001px){.pp .wrgrid.wrgrid{grid-template-columns:minmax(0,6fr) minmax(0,7fr)}}
+.pp table.acct.acct th.n,.pp table.acct.acct td.tc{padding:5px 6px}.pp table.acct.acct td.tc small{margin-left:3px}.pp table.acct.acct td.nm{padding-left:6px}
+.pp details.vprog{margin-top:10px}
+.pp details.vprog>summary{cursor:pointer;display:flex;align-items:baseline;gap:6px;list-style:none;min-height:32px;align-items:center}
+.pp details.vprog>summary::-webkit-details-marker{display:none}
+.pp details.vprog>summary::before{content:"▸";color:#0B4A28;font-weight:800}
+.pp details.vprog[open]>summary::before{content:"▾"}
+.pp details.vprog .vpg{margin-top:8px}
+.pp .vhero{padding:10px}.pp .vpush .vpr{min-height:38px;padding:7px 12px}

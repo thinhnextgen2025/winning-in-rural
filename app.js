@@ -176,7 +176,7 @@ put('wr_scope',()=>scopeName());put('wr_tg',()=>{const r=wr();return r?mn(r,'tg'
 put('wr_datp',()=>{const r=wr();return r?(r.dat==null?'':mn(r,'dat_pct',pc(r.dat_pct))):null;});put('wr_pot',()=>{const r=wr();return r?mn(r,'pot_none',vn(r.pot_none)):null;});
 /* OLD ACC
 S.open=S.open||{};
-const A2NOTE='Chưa có scheme cấp outlet';
+const A2NOTE='chưa có scheme';
 const accRow=(r,lvl,open,onT,onGo)=>{const tr=E('tr','acc l'+lvl+(open?' open':''));const c=td(tr,null,'nm');
  if(onT){const bt=E('button','tg-btn',open?'▾':'▸');bt.type='button';bt.setAttribute('aria-expanded',open?'true':'false');bt.setAttribute('aria-label',open?'Thu gọn':'Xổ scheme');c.appendChild(bt);}
  const nmB=E('b',null,r.name);c.appendChild(nmB);
@@ -193,7 +193,7 @@ draw('tb_wr4',tb=>{if(!ready(tb,5,'nodes'))return;tb.replaceChildren();const K=c
 */
 /* OLD ACC3
 S.open=S.open||{};if(!S.N||S.N==='ROOT')S.N='WR';
-const A2NOTE='Chưa có scheme cấp outlet';
+const A2NOTE='chưa có scheme';
 const ACTPLAN={'Expand Bivina Distribution':['Distribution Bivina'],'In-Outlet display':['In Outlet Display'],'In-Home Availability':['In Home Availability'],'TPO & TIP':['TPO','TIP'],'Break SGL / grass beer default':['Sell-out (1 get 2 can)']};
 const planTxt=a=>{const W=D('wr_plan');const ks=ACTPLAN[a];if(!W||!ks)return '';return ks.map(k=>{const r=W.find(x=>x.action===k);if(!r)return '';return 'MK1 '+k+': KH '+(r.plan_outlets!=null?vn(r.plan_outlets):'—')+' · re-submit '+vn(r.resub_outlets)+(r.gap_budget?' · GAP '+vn(r.gap_budget)+'đ':'');}).filter(Boolean).join(' | ');};
 const selN=n=>{S.N=n;redraw();};
@@ -216,25 +216,24 @@ draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();
  if(!top.length)empty(tb,4,'Không có dữ liệu.');});
 */
 S.open=S.open||{};if(!S.N||S.N==='ROOT')S.N='WR';
-const A2NOTE='Chưa có scheme cấp outlet';
+const A2NOTE='chưa có scheme';
 const ACTPLAN={'Expand Bivina Distribution':['Distribution Bivina'],'In-Outlet display':['In Outlet Display'],'In-Home Availability':['In Home Availability'],'TPO & TIP':['TPO','TIP'],'Break SGL / grass beer default':['Sell-out (1 get 2 can)']};
 const planChips=a=>{const W=D('wr_plan');const ks=ACTPLAN[a];if(!W||!ks)return [];return ks.map(k=>{const r=W.find(x=>x.action===k);if(!r)return null;return 'MK1 '+k+': KH '+(r.plan_outlets!=null?vn(r.plan_outlets):'—')+' → '+vn(r.resub_outlets);}).filter(Boolean);};
 const selN=n=>{S.N=n;redraw();};
 const catKey=n=>{const m=/^[CJ]:(A\d|X|LME)/.exec(n)||[];return m[1]||'';};
 const tCell=(tr,main,sub)=>{const c=td(tr,null,'n tc');const b=E('b');b.append(...[].concat(main));c.appendChild(b);if(sub!=null){const sm=E('small');sm.append(...[].concat(sub));c.appendChild(sm);}return c;};
 const treeCells=(tr,r)=>{tCell(tr,mn(r,'tg',vn(r.tg)),[mn(r,'tg_pct',pc(r.tg_pct))]);
- if(r.dat==null)tCell(tr,'—',r.n_wait?'chờ số '+vn(r.n_wait)+' outlet':'chưa đo');else tCell(tr,[mn(r,'dat',vn(r.dat)),E('span','of',' / '+vn(r.n_measured))],[mn(r,'dat_pct',pc(r.dat_pct)),' đạt']);
+ if(r.dat==null)tCell(tr,'—',null);else tCell(tr,[mn(r,'dat',vn(r.dat)),E('span','of','/'+vn(r.n_measured))],[mn(r,'dat_pct',pc(r.dat_pct))]);
  tCell(tr,mn(r,'pot_none',vn(r.pot_none)),[mn(r,'pot_pct',pc(r.pot_pct))]);};
 S.openNL=S.openNL||{};
-const nlRows=(tb,NL,ck,key)=>{if(!NL.length)return;const op=!!S.openNL[key];const h=E('tr','acc l2 nlh k-'+ck);const c=td(h,null,'nm');c.colSpan=4;const d=E('div','acth');
- d.append(E('span','tgx',op?'▾':'▸'),E('b',null,NL.length+' scheme chưa có danh sách outlet'),E('span','muted',op?'Thu gọn':'Bấm để xem'));c.appendChild(d);h.onclick=()=>{S.openNL[key]=!op;dash.draw('tb_wr4');};tb.appendChild(h);if(!op)return;
- NL.forEach(p=>{const t=E('tr','acc l3 nol k-'+ck);const c2=td(t,null,'nm');c2.colSpan=4;c2.appendChild(E('b',null,p.short||p.name));t.style.cursor='pointer';t.onclick=()=>selN('S:'+p.id);if(S.N==='S:'+p.id)t.classList.add('cur');tb.appendChild(t);});};
+const nlRows=(tb,NL,ck)=>{NL.forEach(p=>{const t=E('tr','acc l3 nol k-'+ck);const c2=td(t,null,'nm');c2.appendChild(E('b',null,p.short||p.name));t.title='Chưa đếm được: mail chưa có danh sách outlet đăng ký của scheme này';
+ ['—','—','—'].forEach(x=>td(t,x,'n tc na'));if(p.id){t.style.cursor='pointer';t.onclick=()=>selN('S:'+p.id);}if(S.N==='S:'+p.id)t.classList.add('cur');tb.appendChild(t);});};
 const accRow=(r,lvl,open,onT,ck)=>{const _pth=pathOf(S.N).map(x=>x.node);const st=S.N===r.node?' cur':_pth.includes(r.node)?' path':(S.N!=='WR'&&S.N!=='LME'?' dim':'');
  const tr=E('tr','acc l'+lvl+(open?' open':'')+st+(ck?' k-'+ck:''));
  if(lvl===2){const c=td(tr,null,'nm');c.colSpan=4;const h=E('div','acth');h.appendChild(E('b',null,r.name));c.appendChild(h);tr.onclick=()=>selN(r.node);return tr;}
  const c=td(tr,null,'nm');
  if(lvl===1){const w=E('div','l1w');if(onT){const bt=E('button','tg-btn',open?'▾':'▸');bt.type='button';bt.setAttribute('aria-expanded',open?'true':'false');bt.setAttribute('aria-label',open?'Thu gọn':'Xổ');bt.onclick=e=>{e.stopPropagation();onT();};w.appendChild(bt);}else w.appendChild(E('span','tg-sp'));
-  const t=E('div');t.appendChild(E('b',null,r.name));t.appendChild(E('span','muted',r.node==='C:A2'?A2NOTE:r.n_schemes+' scheme'));w.appendChild(t);c.appendChild(w);}
+  const t=E('div','l1n');t.appendChild(E('b',null,r.name));t.appendChild(E('span','muted',r.node==='C:A2'?A2NOTE:r.n_schemes+' scheme'));w.appendChild(t);c.appendChild(w);}
  else{const p=(D('programs')||[]).find(x=>'S:'+x.id===r.node);c.appendChild(E('b',null,r.name));
   }
  treeCells(tr,r);
@@ -248,10 +247,10 @@ draw('tb_wr4',tb=>{if(!ready(tb,4,'nodes'))return;tb.replaceChildren();
  {const pth=pathOf(S.N).map(x=>x.node);const cn=top.map(x=>x.node).find(n=>n!==S.N&&pth.includes(n));if(cn&&!S.open[cn])S.open={[cn]:true};}
  top.forEach(r=>{const ck=catKey(r.node)||'LME';const op=!!S.open[r.node];const r1=accRow(r,1,op,r.n_schemes?tog(r.node):null,ck);r1.onclick=()=>{S.open=r.n_schemes?{[r.node]:true}:{};selN(r.node);};tb.appendChild(r1);if(!op)return;
   if(S.N===r.node){const i0=tb.children.length;queueMicrotask(()=>{[...tb.children].slice(i0).forEach(x=>{if(!x.classList.contains('l1'))x.classList.remove('dim');});});}
-  childRows(r.node,'').sort(byRk).forEach(j=>{if(j.node.startsWith('J:')){tb.appendChild(accRow(j,2,false,null,ck));childRows(j.node,'').sort(byRk).forEach(s=>tb.appendChild(accRow(s,3,false,null,ck)));}
+  childRows(r.node,'').sort(byRk).forEach(j=>{if(j.node.startsWith('J:')){const K=childRows(j.node,'').sort(byRk);if(K.length===1){tb.appendChild(accRow(K[0],3,false,null,ck));return;}if(!K.length)return;tb.appendChild(accRow(j,2,false,null,ck));K.forEach(s=>{const x=accRow(s,3,false,null,ck);x.classList.add('in');tb.appendChild(x);});}
    else tb.appendChild(accRow(j,3,false,null,ck));});
-  {const NL=(D('programs')||[]).filter(p=>p.nolist&&'C:'+p.cat===r.node);if(r.node==='C:A3')(D('wr_plan')||[]).filter(x=>/Taskforce/i.test(x.action)).forEach(x=>NL.push({id:'',short:x.action}));nlRows(tb,NL,ck,r.node);}});
- if(S.tab==='lme')nlRows(tb,(D('programs')||[]).filter(p=>p.nolist&&p.project==='LME'),'LME','LME');
+  nlRows(tb,(D('programs')||[]).filter(p=>p.nolist&&'C:'+p.cat===r.node),ck);});
+ if(S.tab==='lme')nlRows(tb,(D('programs')||[]).filter(p=>p.nolist&&p.project==='LME'),'LME');
  if(!top.length)empty(tb,4,'Không có dữ liệu.');});
 
 opts('f_plan_p','wr_plan','pillar','plan','pillar','Mọi hạng mục 4A');
@@ -774,22 +773,16 @@ draw('vsum',el=>{el.replaceChildren();const B=dueBase();if(!B){el.appendChild(E(
  C('outlet đã xong',vn(done)+'/'+vn(B.length));C('lượt đạt',vn(ok.length)+'/'+vn(all.length));C(gapSum?'lượt chậm · thiếu '+vn(gapSum)+' thùng':'lượt chậm',vn(slow.length),slow.length?'r':'');C('outlet nên mời chương trình',vn(B.filter(x=>x.g||x.none).length));
  l.appendChild(st);hero.appendChild(l);
  const push=E('div','vpush');push.appendChild(E('h4',null,'Cần chốt số hôm nay'));
- const PL=slow.slice().sort((p,q)=>((q.r.gap>0&&q.r.actual!=null?q.r.gap:0)-(p.r.gap>0&&p.r.actual!=null?p.r.gap:0))).slice(0,5);
+ const PL=slow.slice().sort((p,q)=>((q.r.gap>0&&q.r.actual!=null?q.r.gap:0)-(p.r.gap>0&&p.r.actual!=null?p.r.gap:0))).slice(0,3);
  if(!PL.length)push.appendChild(E('p','vok','Mọi chương trình trong lịch hôm nay đang đúng nhịp.'));
- PL.forEach(a=>{const b=E('button','vpr');b.type='button';b.append(E('b',null,a.x.o.outlet),E('span',null,pnm(a.r)),E('em',null,a.r.gap>0&&a.r.actual!=null?'thiếu '+vn(a.r.gap)+(a.r.need_day!=null?' · cần '+nd(a.r.need_day)+'/ngày':''):a.r.status));b.onclick=()=>{const c=document.getElementById('vc-'+a.x.o.oid);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};push.appendChild(b);});
+ PL.forEach(a=>{const b=E('button','vpr');b.type='button';b.append(E('b',null,a.x.o.outlet),E('span',null,pnm(a.r)),E('em',null,a.r.gap>0&&a.r.actual!=null?'thiếu '+vn(a.r.gap)+(a.r.need_day!=null?' · cần '+nd(a.r.need_day)+'/ngày':''):a.r.status));b.onclick=()=>{S.vsel=a.x.o.oid;S.vf='';document.querySelectorAll('.pp #vf [data-st]').forEach(z=>z.setAttribute('aria-pressed',z.dataset.st===''?'true':'false'));dash.draw('vplan');const c=document.querySelector('.pp .vmd');if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};push.appendChild(b);});
  hero.appendChild(push);el.appendChild(hero);
  const pm=new Map();all.forEach(a=>{const key=a.r.prog;if(!pm.has(key))pm.set(key,{n:pnm(a.r),col:colOf(a.r),o:0,ok:0,sl:0,gap:0});const m=pm.get(key);m.o++;if(a.r.status==='Đã đạt')m.ok++;if(SLOW.includes(a.r.status)){m.sl++;m.gap+=a.r.gap>0&&a.r.actual!=null?a.r.gap:0;}});
- if(pm.size){const pw=E('div','vprog');pw.appendChild(E('h4',null,'Chương trình trong lịch hôm nay'));const g=E('div','vpg');
+ if(pm.size){const pw=E('details','vprog');const sm=E('summary');sm.append(E('h4',null,'Hiệu quả '+vn(pm.size)+' chương trình trong lịch hôm nay'),E('span','muted',' · bấm để xem'));pw.appendChild(sm);const g=E('div','vpg');
   [...pm.values()].sort((a,b)=>b.sl-a.sl||b.o-a.o).forEach(m=>{const c=E('div','vpc'+(m.sl?' sl':''));const t=E('div','vpn');t.append(E('b',null,m.n),E('span','vk k-'+m.col,(VCOL.find(c=>c[0]===m.col)||[])[1]));c.appendChild(t);
    const s=E('div','vps');s.append(E('b',null,vn(m.o)),' outlet · ',E('b','g',vn(m.ok)),' đạt · ',E('b',m.sl?'r':null,vn(m.sl)),' chậm'+(m.gap?' · thiếu '+vn(m.gap)+' thùng':''));c.appendChild(s);g.appendChild(c);});
   pw.appendChild(g);el.appendChild(pw);}});
-draw('vplan',el=>{el.replaceChildren();const B=vRows();if(!B){el.appendChild(E('p','muted','Đang tải…'));return;}const sr=pSR();
- if(!(D('visits')||[]).some(r=>r.sr===sr))return;
- if(!B.length){el.appendChild(E('p','vempty','Không có outlet nào khớp bộ lọc.'));return;}
- const OV=vMap()||new Map();
- const cnt=E('p','vdone');const upCnt=()=>{const n=B.filter(x=>x.v.st==='Đã ghé'||isDone(x.o.oid)).length;cnt.replaceChildren('Đã xong ',E('b',null,vn(n)+'/'+vn(B.length)),' outlet');};upCnt();el.appendChild(cnt);
- const jump=E('div','vjump');B.forEach((x,i)=>{const b=E('button',x.kd?'kd':x.none?'na':'ok');b.type='button';b.append(E('i'),(i+1)+'. '+x.o.outlet);b.onclick=()=>{const c=document.getElementById('vc-'+x.o.oid);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});};jump.appendChild(b);});el.appendChild(jump);
- B.forEach((x,i)=>{const o=x.o;const dn=x.v.st==='Đã ghé'||isDone(o.oid);const a=E('article','vcard'+(dn?' done':'')+(x.kd?' kd':''));a.id='vc-'+o.oid;
+const vCard=(x,i,B,OV,upCnt)=>{const o=x.o;const dn=x.v.st==='Đã ghé'||isDone(o.oid);const a=E('article','vcard'+(dn?' done':'')+(x.kd?' kd':''));a.id='vc-'+o.oid;
   const h=E('header','vch');
   const r1=E('div','vr1');r1.append(E('span','vt',x.v.t+' · #'+(i+1)));const t1=E('b','vcn',o.oid+' - '+o.outlet);r1.appendChild(t1);const vv=E('span','vvol');vv.append('Vol TB3M ',mk(vn(o.vol3m),'outlets','vol3m',{oid:o.oid}),' thùng');r1.appendChild(vv);h.appendChild(r1);
   const r2=E('div','vr2');const c360=E('button','vbtn y','C360 ›');c360.type='button';const note=E('button','vbtn','Note');note.type='button';let hasN=false;try{hasN=!!localStorage.getItem(NOTEK(o.oid));}catch(e){}if(hasN)note.classList.add('on');
@@ -816,7 +809,23 @@ draw('vplan',el=>{el.replaceChildren();const B=vRows();if(!B){el.appendChild(E('
     if(!n)c.appendChild(E('p','vno','Outlet đang ổn, giữ nhịp'));
     c.appendChild(E('small','gyn','Gợi ý tự động theo cách chọn ở tab Chọn pool'));}
    cols.appendChild(c);});
-  a.appendChild(cols);el.appendChild(a);});});
+  a.appendChild(cols);return a;};
+S.vsel=S.vsel||'';
+draw('vplan',el=>{el.replaceChildren();const B=vRows();if(!B){el.appendChild(E('p','muted','Đang tải…'));return;}const sr=pSR();
+ if(!(D('visits')||[]).some(r=>r.sr===sr))return;
+ if(!B.length){el.appendChild(E('p','vempty','Không có outlet nào khớp bộ lọc.'));return;}
+ const OV=vMap()||new Map();if(!B.some(x=>x.o.oid===S.vsel))S.vsel=B[0].o.oid;
+ const md=E('div','vmd');const lw=E('div','vlw');const cnt=E('p','vdone');
+ const upCnt=()=>{const n=B.filter(x=>x.v.st==='Đã ghé'||isDone(x.o.oid)).length;cnt.replaceChildren('Danh sách outlet · đã xong ',E('b',null,vn(n)+'/'+vn(B.length)));lw.querySelectorAll('.vit').forEach(b=>b.classList.toggle('done',B.some(x=>x.o.oid===b.dataset.oid&&(x.v.st==='Đã ghé'||isDone(x.o.oid)))));};
+ lw.appendChild(cnt);const ul=E('div','vol');
+ B.forEach((x,i)=>{const o=x.o;const act=x.L.filter(r=>r.active!==false);const sl=act.filter(r=>SLOW.includes(r.status)).length;
+  const it=E('button','vit'+(o.oid===S.vsel?' on':''));it.type='button';it.dataset.oid=o.oid;
+  const r1=E('span','vi1');r1.append(E('span','vtm',x.v.t),E('b',null,o.outlet));it.appendChild(r1);
+  const r2=E('span','vi2');r2.append(E('span',null,o.oid+' · '+(o.tier||'—')));
+  if(!act.length)r2.appendChild(E('em','na','Chưa có CT'));else{r2.appendChild(E('em',null,vn(act.length)+' CT'));if(sl)r2.appendChild(E('em','r',vn(sl)+' chậm'));}
+  it.appendChild(r2);it.onclick=()=>{S.vsel=o.oid;ul.querySelectorAll('.vit').forEach(b=>b.classList.toggle('on',b===it));showD();if(window.innerWidth<=900)det.scrollIntoView({behavior:'smooth',block:'start'});};ul.appendChild(it);});
+ lw.appendChild(ul);md.appendChild(lw);
+ const det=E('div','vdet2');const showD=()=>{const i=B.findIndex(x=>x.o.oid===S.vsel);det.replaceChildren(vCard(B[i],i,B,OV,upCnt));};showD();md.appendChild(det);el.appendChild(md);upCnt();});
 document.querySelectorAll('.pp #vf [data-st]').forEach(b=>b.addEventListener('click',()=>{dash.draw('vplan');}));
 
 /* ===== v22/11: lọc theo từng cột ở mọi bảng (kiểu Excel) ===== */

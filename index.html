@@ -60,7 +60,7 @@ function loadJs(src){return new Promise((res,rej)=>{const s=document.createEleme
 async function boot(B){
   // B = {data, files}
   document.getElementById('gate').remove();
-  await loadCss('app.css');
+  const V=Date.now();await loadCss('app.css?v='+V);
   const bodyHtml=await (await OF('app-body.html',{cache:'no-cache'})).text();
   const wrap=document.createElement('div');wrap.innerHTML=bodyHtml;document.body.appendChild(wrap);
   const lb=document.createElement('button');lb.id='lockbtn';lb.textContent='Khoá';lb.onclick=()=>{try{sessionStorage.removeItem(SK)}catch(e){}location.reload();};document.body.appendChild(lb);
@@ -75,7 +75,7 @@ async function boot(B){
   window.fetch=async(u,o)=>{const s=typeof u==='string'?u:(u&&u.url)||'';const p=B.files[s];
     if(!p)return OF(u,o);const plain=await dec(await getBin(p));
     return new Response(plain,{status:200,headers:{'Content-Type':'application/json'}});};
-  await loadJs('app.js');
+  await loadJs('app.js?v='+V);
 }
 
 async function open(){
