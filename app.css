@@ -1134,3 +1134,28 @@
 .pp table.ovt th{white-space:normal}
 .pp table.ovt td{padding:7px 6px}
 .pp .wrgrid>.wrr{min-width:0}
+/* ===== lần 6: trái 1/3, phải 2/3; ô số nhỏ lại ===== */
+@media (min-width:1001px){.pp .wrgrid.wrgrid{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}}
+.pp table.acct.acct th{font-size:10.5px;padding:5px 5px}
+.pp table.acct.acct th.n,.pp table.acct.acct td.tc{padding:4px 5px}
+.pp table.acct.acct tbody tr.acc.l1 td{padding-top:6px;padding-bottom:6px}
+.pp table.acct.acct tbody tr.acc.l1 .l1n b{font-size:13.5px}
+.pp table.acct.acct tbody tr.acc.l1 .l1n .muted{font-size:11px}
+.pp table.acct.acct tbody tr.acc.l1 .tg-btn{width:22px;height:22px;font-size:11px;margin-right:2px}
+.pp table.acct.acct tbody tr.acc.l1 td.tc b{font-size:12.5px}
+.pp table.acct.acct tbody tr.acc.l3 td.nm b{font-size:12px!important}
+.pp table.acct.acct tbody tr.acc.l3 td.tc b{font-size:11.5px!important}
+.pp table.acct.acct td.tc small{font-size:10px!important}
+.pp table.acct.acct tbody tr.acc.l2 .acth b{font-size:10.5px!important}
+.pp table.acct.acct tbody tr.acc.l3 td.nm{padding-left:26px!important}
+.pp table.acct.acct tbody tr.acc.l3.in td.nm{padding-left:38px!important}
+.pp table.acct.acct tbody tr.acc.l2 td{padding-left:26px!important}
+@media (max-width:1700px){.pp table.acct.acct td.tc small{display:none!important}}
+/* ô số key nhỏ lại */
+.pp #trk .minis .mini{padding:8px 12px!important;min-height:0!important;gap:2px!important}
+.pp #trk .minis .mini>span{font-size:12.5px!important}
+.pp #trk .minis .mini b,.pp #trk .minis .mini b span{font-size:26px!important;line-height:1.15!important}
+.pp #trk .minis .mini em,.pp #trk .minis .mini em span{font-size:12.5px!important}
+.pp #trk .minis .mini{border-top-width:4px!important}
+@media (min-width:1001px) and (max-width:1500px){.pp .wrgrid.wrgrid{grid-template-columns:minmax(0,2fr) minmax(0,3fr)}}
+.pp table.acct.acct thead th{font-size:10.5px!important;font-weight:800!important;color:#56625B!important}
