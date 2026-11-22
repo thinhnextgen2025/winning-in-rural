@@ -1,5 +1,8 @@
 # Winning in Rural · S27
 
-Dashboard Promotion Pool S27 (Winning in Rural tracking, Chọn pool, Daily visit plan, Issue, LME promotion).
+Web báo cáo (chỉ xem, có đăng nhập). Dữ liệu mã hoá AES-256-GCM.
 
-Toàn bộ dữ liệu được mã hoá AES-256-GCM; trang chỉ mở được sau khi đăng nhập.
+## Sửa qua GitHub
+- **Code** sửa tự do rồi push là chạy: `app.js`, `app.css`, `app-body.html`.
+- **Dữ liệu** (`data.enc`, `f/*.bin`) đã mã hoá — đổi số liệu phải build lại bằng mật khẩu (chủ repo / Claude).
+- `index.html` là màn hình đăng nhập; sau khi đăng nhập nó giải mã `data.enc` rồi nạp `app.css` + `app-body.html` + `app.js`.

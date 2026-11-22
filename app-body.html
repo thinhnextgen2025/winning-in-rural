@@ -1,0 +1,128 @@
+
+
+
+<div class="pp">
+<div class="lock" id="top">
+<header class="hero">
+ <div class="hero-t"><h1>Promotion Pool S27</h1><div class="sub">1.100 mail · 856 file · SIS export · 3.841 outlet</div></div>
+ <div class="hero-r">
+ <div class="scope" id="scope"><span class="lb">ASM</span><select class="dash-select" data-draw="sc_asm" data-source="outlets" aria-label="ASM"></select><span class="lb">SS/SE</span><select class="dash-select" data-draw="sc_ss" data-source="outlets" aria-label="SS"></select><span class="lb">SR/DSM</span><select class="dash-select" data-draw="sc_sr" data-source="outlets" aria-label="SR/DSM"></select></div>
+ <nav class="tabs" role="tablist" id="tabs" aria-label="Các trang">
+  <button role="tab" data-tab="wr" aria-selected="true"><i>1</i>Winning in Rural tracking</button>
+  <button role="tab" data-tab="pool" aria-selected="false"><i>2</i>Chọn pool<small>SS/SE</small></button>
+  <button role="tab" data-tab="plan" aria-selected="false"><i>3</i>Daily visit plan<small>SR/DSM</small></button>
+  <button role="tab" data-tab="issue" aria-selected="false"><i>4</i>Issue<small>trùng · potential</small></button>
+  <button role="tab" data-tab="lme" aria-selected="false"><i>5</i>LME promotion</button>
+ </nav>
+ <p class="xmsg" data-draw="x_msg" aria-live="polite"></p>
+ </div>
+</header>
+</div>
+
+<section class="view" id="wr">
+ <div class="ask" data-source="nodes hvn"><span class="qq"><span data-draw="wr_label">Winning Rural</span> · <span data-draw="wr_scope">—</span></span>
+  <p><b data-draw="wr_tg">—</b> outlet tham gia (<b data-draw="wr_tgp">—</b> outlet phụ trách) · đạt <b data-draw="wr_datp">—</b> trên outlet có target · <b data-draw="wr_pot">—</b> outlet potential chưa tham gia · <b data-draw="hv_pct">—</b> sản lượng TB 3T đang được HVN support.</p></div>
+ <div class="wrgrid">
+  <section class="card wrl" id="wr4a">
+   <div class="tw" data-source="nodes"><table class="acct"><thead><tr><th>Hạng mục / scheme <button type="button" class="xbtn xs" data-x="wr4" title="Xuất bảng" aria-label="Xuất bảng hạng mục">⤓</button></th><th class="n">Tham gia</th><th>Đạt / có target</th><th class="n">Potential chưa TG</th></tr></thead><tbody data-draw="tb_wr4"></tbody></table></div>
+ <details class="wrmore"><summary>HVN support và kế hoạch MK1 → SIS</summary>
+ <div id="hvn">
+  <div class="hvn" data-source="hvn"><div class="big"><span data-draw="hv_pct">—</span> <small>sản lượng TB 3T đang được HVN support</small></div>
+   <p class="muted"><span data-draw="hv_scope">—</span> · tổng <b data-draw="hv_volall">—</b> thùng TB 3T của <b data-draw="hv_nout">—</b> outlet</p></div>
+  <div class="hvs" data-source="hvn">
+   <div class="kpi ok"><span class="l">Outlet có promotion</span><div class="v" data-draw="hv_sup">—</div><div class="s"><b data-draw="hv_supp">—</b> outlet trong phạm vi</div></div>
+   <div class="kpi am"><span class="l">Chưa có support</span><div class="v" data-draw="hv_none">—</div><div class="s"><b data-draw="hv_nonep">—</b> outlet trong phạm vi</div></div>
+   <div class="kpi tg"><span class="l">Thùng TB3T được hỗ trợ</span><div class="v" data-draw="hv_vol">—</div><div class="s">thùng/tháng của outlet có promotion</div></div>
+   <div class="kpi"><span class="l">% outlet theo 4A</span>
+    <div class="cb"><span>A3 · Availability</span><span class="bar" data-draw="hv_b_si"></span><span data-draw="hv_p_si">—</span></div>
+    <div class="cb"><span>A4 · Affordability</span><span class="bar" data-draw="hv_b_so"></span><span data-draw="hv_p_so">—</span></div>
+    <div class="cb"><span>A1 · Awareness</span><span class="bar" data-draw="hv_b_dp"></span><span data-draw="hv_p_dp">—</span></div>
+    <div class="s">A2 chưa có scheme cấp outlet</div></div>
+  </div>
+  <p class="muted">Có support = outlet đang có ít nhất 1 chương trình trong pool. % theo 4A tính trên tổng outlet của phạm vi đang xem; một outlet có thể nằm ở nhiều nhóm.</p>
+ </div>
+ <div id="wrplan">
+  <h2>Kế hoạch → re-submit → thực tế SIS</h2>
+  <p class="muted">Plan và re-submit lấy từ ảnh họp MK1 Update Winning Rural (re-submit 10/11), là số toàn S27, không đổi theo phạm vi. Thực tế lấy từ file SIS export ngày 20/11, là số tạm tính trong tháng. GAP âm = dùng ít hơn kế hoạch, dương = dùng nhiều hơn kế hoạch.</p>
+  <div class="fbar"><input type="search" class="flt" data-t="plan" data-k="q" placeholder="Tìm action, owner…" aria-label="Tìm action"><select class="flt dash-select" data-t="plan" data-k="pillar" data-draw="f_plan_p" data-source="wr_plan" aria-label="4A"></select><button type="button" class="xbtn" data-x="plan">⤓ Xuất bảng</button></div>
+  <p class="srcl" data-draw="src_plan2"></p>
+  <div class="tw"><table data-source="wr_plan" data-row-key="action"><thead><tr><th data-field="action">Action</th><th data-field="pillar">4A</th><th data-field="owner">Owner</th><th class="n" data-field="plan_outlets">Plan outlet</th><th class="n" data-field="plan_budget">Plan (đ)</th><th class="n" data-field="resub_outlets">Re-submit</th><th class="n" data-field="resub_budget">Re-submit (đ)</th><th class="n" data-field="gap_budget">GAP (đ)</th><th>Thực tế SIS: outlet đăng ký · đạt</th></tr></thead><tbody data-draw="tb_plan"></tbody></table></div>
+ </div>
+ </details>
+  </section>
+  <section class="card wrr" id="trk">
+   <div class="trh"><p class="bc" data-draw="bc" data-source="nodes"></p><h2 data-draw="trk_of">—</h2><p class="trinfo" data-draw="trk_info" data-source="programs"></p><div class="schtbl" data-draw="sch_tbl" data-source="programs"></div><p class="srcl" data-draw="src_trk" data-source="sources nodes"></p></div>
+   <div class="minis" data-source="nodes">
+    <div class="mini"><span>Outlet phụ trách</span><b data-draw="ok_total">—</b></div>
+    <div class="mini tg"><span>Tham gia</span><b data-draw="ok_tg">—</b><em data-draw="ok_tgp">—</em></div>
+    <div class="mini ok"><span>Đạt</span><b data-draw="ok_dat">—</b><em data-draw="ok_meas">—</em></div>
+    <div class="mini am"><span>Chưa đạt</span><b data-draw="ok_gap">—</b><em data-draw="ok_gapp">—</em></div>
+    <div class="mini bl"><span>Potential chưa TG</span><b data-draw="ok_pot">—</b><em data-draw="ok_potp">—</em></div>
+   </div>
+   <p class="plk" data-draw="trk_locked" data-source="tracking" hidden></p>
+   <div class="seg" id="trkst" data-source="tracking"><button type="button" data-st="" aria-pressed="true">Tất cả <b data-draw="ts_all">—</b></button><button type="button" data-st="Đã đạt" aria-pressed="false">Đã đạt <b data-draw="ts_ok">—</b></button><button type="button" data-st="__chua" aria-pressed="false">Chưa đạt <b data-draw="ts_chua">—</b></button></div>
+   <div class="fbar"><input type="search" class="flt" data-t="trk" data-k="q" placeholder="Tìm outlet, mã, SR, scheme…" aria-label="Tìm trong tracking">
+    <select class="flt dash-select" data-t="trk" data-k="sort" aria-label="Sắp xếp"><option value="pct">Chậm nhất trước</option><option value="gap">Thiếu nhiều nhất</option><option value="name">Tên</option></select><button type="button" class="xbtn" data-x="trk">⤓ Xuất bảng</button></div>
+   <p class="muted"><b data-draw="n_trk">—</b> dòng · đang hiện <b data-draw="n_trk_show">—</b> · ngưỡng tiến độ <span class="red">≥90% đúng tiến độ, 60–89% chậm, &lt;60% rất chậm (giả định)</span></p>
+   <div class="tw"><table data-source="tracking" data-row-key="oid,prog"><thead><tr><th data-field="outlet">Outlet · SR</th><th data-field="prog_name">Scheme</th><th class="n" data-field="actual">Bán / Target</th><th data-field="pct">% đạt</th><th class="n" data-field="need_day">Cần/ngày</th><th data-field="status">Trạng thái</th></tr></thead><tbody data-draw="tb_trk"></tbody></table></div>
+   <button type="button" class="more" id="trk_more" hidden>Xem thêm 200 dòng</button>
+   <details><summary>Theo người phụ trách</summary>
+    <div class="fbar"><select class="flt dash-select" data-t="ppl" data-k="grp" aria-label="Xem theo"><option value="SR/DSM">Theo SR/DSM</option><option value="SS">Theo SS</option></select>
+     <select class="flt dash-select" data-t="ppl" data-k="sort" aria-label="Sắp xếp"><option value="pot_none">Potential chưa TG nhiều nhất</option><option value="gap">Chưa đạt nhiều nhất</option><option value="tg_pct">% tham gia cao nhất</option><option value="dat_pct">% đạt cao nhất</option></select><button type="button" class="xbtn" data-x="ppl">⤓ Xuất bảng</button></div>
+    <div class="tw" data-source="nodes"><table class="nt"><thead><tr><th>SR/DSM hoặc SS</th><th class="n">Outlet phụ trách</th><th>Tham gia</th><th>Đạt / có target</th><th class="n">Chưa đạt</th><th class="n">Potential chưa TG</th></tr></thead><tbody data-draw="tb_ppl"></tbody></table></div>
+   </details>
+  </section>
+ </div>
+</section>
+
+<section class="view" id="pool" hidden>
+ <section class="card" id="pl_pick">
+  <h2>1 · Chọn scheme cần xử lý <span class="muted" data-draw="pl_scope">—</span></h2>
+  <p class="muted">Chọn được nhiều scheme cùng lúc (tối đa 5). Pool đề xuất hiện ngay bên dưới, mỗi scheme một cột.</p>
+  <div class="tw plgrid" data-draw="pl_tbl" data-source="programs"></div>
+ </section>
+ <section class="card" id="pl_sug">
+  <h2>2 · Pool đề xuất &amp; chỉnh</h2>
+  <div class="plcfg" data-draw="pl_cfg" data-source="outlets tracking"></div>
+  <div class="fbar"><input type="search" id="pl_q" placeholder="Tìm outlet, mã, SR…" aria-label="Tìm outlet"><label class="muted"><input type="checkbox" id="pl_only"> Chỉ hiện outlet đã chọn</label></div>
+  <div class="tw plmx" data-draw="pl_mx" data-source="outlets tracking"></div>
+  <div class="plbar"><div data-draw="pl_lockv"></div><div class="fbar"><button type="button" class="more" id="pl_save">Chốt pool các scheme đã chọn</button><button type="button" class="back" id="pl_copy">Sao chép danh sách</button><button type="button" class="xbtn" data-x="pool">⤓ Xuất pool</button></div><p class="srcl" data-draw="src_pool" data-source="sources programs"></p></div>
+ </section>
+</section>
+
+<section class="view" id="plan" hidden>
+ <div class="ask" data-source="outlets visits"><span class="qq">Hôm nay ghé outlet nào, outlet đó đang chạy gì?</span>
+  <div class="fbar"><select class="dash-select" data-draw="sel_sr" data-source="outlets" aria-label="Chọn SR/DSM"></select><select class="dash-select" data-draw="sel_day" aria-label="Chọn ngày visit"></select><span class="daynav" data-draw="day_nav"></span><span class="muted">SS: <b data-draw="sr_ss">—</b></span></div></div>
+ <section class="card" id="visit">
+  <h2 data-draw="v_title">Lịch visit</h2>
+  <p class="muted">Lịch lấy từ file All Visits xuất 20/11 12:45 (02/11–19/12, mọi SR/DSM S27), đã bỏ lượt bị huỷ. "Đã ghé / Chưa ghé" là trạng thái tại lúc xuất file.</p>
+  <div class="seg" id="vf" data-source="visits tracking gap"><button type="button" data-st="" aria-pressed="true">Mọi outlet <b data-draw="v_all">—</b></button><button type="button" data-st="kd" aria-pressed="false">Có scheme chưa đạt <b data-draw="v_kd">—</b></button><button type="button" data-st="none" aria-pressed="false">Chưa có chương trình <b data-draw="v_none">—</b></button><button type="button" data-st="pot" aria-pressed="false">Potential cần đề xuất <b data-draw="v_pot">—</b></button></div>
+  <div class="xbar"><p class="srcl" data-draw="src_plan" data-source="sources visits tracking"></p><button type="button" class="xbtn" data-x="visit">⤓ Xuất lịch visit</button></div>
+  <div class="vsplit"><div class="vlist" data-draw="vlist" data-source="visits outlets tracking gap"></div><div class="vdet" data-draw="vdet" data-source="visits tracking gap overlap outlets"></div></div>
+ </section>
+</section>
+
+<section class="view" id="issue" hidden>
+ <div class="ask" data-source="gap overlap"><span class="qq">Issue · <span data-draw="ac_scope">—</span></span>
+  <p><b data-draw="ac_pot">—</b> outlet potential (Gold, Platinum, Silver ≥50 thùng) chưa có promotion sell-in/sell-out T11–T12 · <b data-draw="ac_ov">—</b> outlet đang trùng promotion.</p></div>
+ <div class="seg" id="subs" data-source="gap overlap"><button type="button" data-sub="pot" aria-pressed="true">Potential chưa có promotion <b data-draw="k_pot">—</b></button><button type="button" data-sub="ov" aria-pressed="false">Trùng promotion <b data-draw="k_ov">—</b></button></div>
+ <section class="card" id="p_pot" data-subpanel="pot">
+  <h2>Potential chưa có promotion và scheme đề xuất</h2>
+  <p class="muted">Scheme đề xuất chọn theo kênh, tier, rural và các scheme còn mở; SS xác nhận điều kiện trước khi đăng ký.</p>
+  <div class="fbar"><input type="search" class="flt" data-t="pot" data-k="q" placeholder="Tìm outlet, mã, SR…" aria-label="Tìm outlet"><select class="flt dash-select" data-t="pot" data-k="sr" data-draw="f_pot_sr" data-source="gap" aria-label="SR/DSM"></select><select class="flt dash-select" data-t="pot" data-k="tier" data-draw="f_pot_tier" data-source="gap" aria-label="Tier"></select><select class="flt dash-select" data-t="pot" data-k="kenh" data-draw="f_pot_kenh" data-source="gap" aria-label="Kênh"></select><button type="button" class="xbtn" data-x="pot">⤓ Xuất bảng</button></div>
+  <p class="srcl" data-draw="src_pot" data-source="sources programs"></p>
+  <p class="muted"><b data-draw="n_pot">—</b> outlet đang hiện</p>
+  <div class="tw"><table data-source="gap" data-row-key="oid"><thead><tr><th data-field="oid">Mã</th><th data-field="outlet">Outlet</th><th data-field="sr">SR/DSM</th><th data-field="ss">SS</th><th data-field="tier">Tier</th><th data-field="kenh">Kênh</th><th class="n" data-field="vol3m">Vol TB 3T</th><th data-field="hien_co">Đang có</th><th data-field="de_xuat">Scheme đề xuất</th></tr></thead><tbody data-draw="tb_pot"></tbody></table></div>
+ </section>
+ <section class="card" id="p_ov" data-subpanel="ov" hidden>
+  <h2>Outlet trùng promotion</h2>
+  <p class="muted">Đã bỏ các cặp chỉ là 2 file của cùng một chương trình (ví dụ Target Inc T7–T9 và claim Target Extra T8). Tie-up chỉ tính hợp đồng còn hiệu lực từ 10/2026.</p>
+  <div class="fbar"><input type="search" class="flt" data-t="ov" data-k="q" placeholder="Tìm outlet, mã, SR…" aria-label="Tìm outlet"><select class="flt dash-select" data-t="ov" data-k="sr" data-draw="f_ov_sr" data-source="overlap" aria-label="SR/DSM"></select><select class="flt dash-select" data-t="ov" data-k="logic" data-draw="f_ov_logic" data-source="overlap" aria-label="Logic"></select><select class="flt dash-select" data-t="ov" data-k="pair" data-draw="f_ov_pair" data-source="overlap" aria-label="Cặp chương trình"></select><button type="button" class="xbtn" data-x="ov">⤓ Xuất bảng</button></div>
+  <p class="srcl" data-draw="src_ov" data-source="sources overlap programs"></p>
+  <p class="muted"><b data-draw="n_ov">—</b> cặp trùng · <b data-draw="n_ovo">—</b> outlet đang hiện</p>
+  <div class="tw"><table data-source="overlap" data-row-key="oid,pair"><thead><tr><th data-field="oid">Mã</th><th data-field="outlet">Outlet</th><th data-field="sr">SR/DSM</th><th data-field="ss">SS</th><th data-field="logic">Logic</th><th data-field="prog_a">Chương trình A</th><th data-field="prog_b">Chương trình B</th><th data-field="skus">SKU trùng</th><th data-field="months">Tháng</th></tr></thead><tbody data-draw="tb_ov"></tbody></table></div>
+ </section>
+</section>
+</div>
+
+

@@ -33,12 +33,16 @@ body{margin:0;background:#F2F5F3;font-family:Inter,"Noto Sans",system-ui,sans-se
 </form></div>
 <script src="d3.min.js"></script>
 <script>
+/* Bản web winning-in-rural.
+   CODE để sửa tự do (ai cầm GitHub): app.js, app.css, app-body.html.
+   DỮ LIỆU mã hoá: data.enc (số chia, mail) + f/*.bin. Đổi data cần build lại bằng mật khẩu. */
 (function(){
-const META={"iter": 600000, "u": {"fbaebe8d7cac587f24d926ce0a872d800451e2d00d054b6f979395f28ef8789f": {"s": "D4Olto1DVcB9Bsk+5Gnnxg==", "i": "lVg/TV6HBaKSr/7d", "w": "WK8Z4p74rxxKY2R2VvPUpC84amw2RJfscmTalBZZiMDSYkB/kO7GOtNyTf5Ta9Qt"}, "004df0044f8ca118720bdca0bd89cce77f22221ac52523f18469bdf6e92015e2": {"s": "I+ZAWoQG+yLpcFevldIS4Q==", "i": "DYu8IIkl7j+KQic3", "w": "x7Q3J6igzn7Yb9uPthf4qmaY7akikPTEJY6AO6XkI/j/Hicd0uXR1vBu1VJstmpg"}, "a73eef4ee87383c579c7d72b696f0cd61d0fe6e58b6c0c2f595d92a9a5d23d82": {"s": "AsgShazaaBqEBQ+IkNN+wQ==", "i": "qqK6DuzbcEWEXQas", "w": "CgpySRQRsL/MKhjN9BbgPM09fppTQkU98Q9+wKzZkMgHlXHaZ6zg9BQVCpSV5rf3"}}};
+const META={"iter": 600000, "u": {"fbaebe8d7cac587f24d926ce0a872d800451e2d00d054b6f979395f28ef8789f": {"s": "1SGb3ni+jzaPLGaN/q66rA==", "i": "l5+lJIsWqlpcS0HB", "w": "pQtZHSVlB+DrN7U+s9VX0VmHZ5JCRy8tPNk2Z2BlC8kOvIPxX1XsbafUJwZOLyRT"}, "004df0044f8ca118720bdca0bd89cce77f22221ac52523f18469bdf6e92015e2": {"s": "I8J0eUE+ea9p3uVBsQeREg==", "i": "2GFYx6PiDZvgP8xM", "w": "yf/yf1KY+exYULw31UVvgpHeFKYenwsFemr2yNJtW7qaIboo613nO47hlJh36/wq"}, "a73eef4ee87383c579c7d72b696f0cd61d0fe6e58b6c0c2f595d92a9a5d23d82": {"s": "a+aAwIpGbJoxagBHkGyVmQ==", "i": "qrBW3WQRAwQVOxpc", "w": "TbrnYkTUXMKAkmVsaIkLrlLPsv4KHwicNhD6fhNPAvr+CI6nFPIrj88OAxgo5sNa"}}};
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const u8b64=u=>{let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);};
 const SK='wir_s27_k';
 let KEY=null;
+const OF=window.fetch.bind(window);
 async function derive(us,pw){
   us=us.trim().toLowerCase();const enc=new TextEncoder();
   const hid=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',enc.encode('wir|'+us)))).map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -49,43 +53,42 @@ async function derive(us,pw){
   return crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},true,['decrypt']);
 }
 async function dec(buf){const u=new Uint8Array(buf);return crypto.subtle.decrypt({name:'AES-GCM',iv:u.subarray(0,12)},KEY,u.subarray(12));}
-async function getBin(p){const r=await fetch(p,{cache:'no-cache'});if(!r.ok)throw new Error('net');return r.arrayBuffer();}
+async function getBin(p){const r=await OF(p,{cache:'no-cache'});if(!r.ok)throw new Error('net');return r.arrayBuffer();}
+function loadCss(href){return new Promise((res,rej)=>{const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.onload=res;l.onerror=res;document.head.appendChild(l);});}
+function loadJs(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.body.appendChild(s);});}
 
-async function boot(bundle){
-  const B=JSON.parse(new TextDecoder().decode(bundle));
+async function boot(B){
+  // B = {data, files}
   document.getElementById('gate').remove();
-  const st=document.createElement('style');st.textContent=B.css;document.head.appendChild(st);
-  const wrap=document.createElement('div');wrap.innerHTML=B.body;document.body.appendChild(wrap);
+  await loadCss('app.css');
+  const bodyHtml=await (await OF('app-body.html',{cache:'no-cache'})).text();
+  const wrap=document.createElement('div');wrap.innerHTML=bodyHtml;document.body.appendChild(wrap);
   const lb=document.createElement('button');lb.id='lockbtn';lb.textContent='Khoá';lb.onclick=()=>{try{sessionStorage.removeItem(SK)}catch(e){}location.reload();};document.body.appendChild(lb);
-  // dashboard shim
+  // dashboard shim (giống runtime của artifact, chỉ đọc)
   const DATA=B.data,draws={},calcs={},cv={};
   function run(n){document.querySelectorAll('[data-draw="'+n+'"]').forEach(el=>{if(!draws[n])return;try{draws[n](el)}catch(e){console.error(n,e)}});}
   window.dash={data:id=>{if(DATA[id])return{status:'ok',data:DATA[id]};if(calcs[id]){if(!cv[id])cv[id]=calcs[id].fn(...calcs[id].inputs.map(i=>DATA[i]));return{status:'ok',data:cv[id]};}return{status:'missing',data:[]};},
     draw:(n,fn)=>{if(fn){draws[n]=fn;run(n);return;}run(n);},calc:(id,o)=>{calcs[id]=o;},onData:fn=>fn(),setLink:()=>{}};
-  // downloads: save in browser
   const save=async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data]);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);};
   window.claude={use:async k=>k==='downloads'?{save}:null};
-  // source files: /_blob/... -> encrypted file
-  const of=window.fetch.bind(window);
+  // file nguồn: /_blob/... -> file mã hoá f/*.bin
   window.fetch=async(u,o)=>{const s=typeof u==='string'?u:(u&&u.url)||'';const p=B.files[s];
-    if(!p)return of(u,o);const plain=await dec(await getBin(p));
+    if(!p)return OF(u,o);const plain=await dec(await getBin(p));
     return new Response(plain,{status:200,headers:{'Content-Type':'application/json'}});};
-  const sc=document.createElement('script');sc.textContent=B.app;document.body.appendChild(sc);
+  await loadJs('app.js');
 }
 
 async function open(){
-  const bin=await getBin('app.bin');
+  const bin=await getBin('data.enc');
   let plain;try{plain=await dec(bin);}catch(e){throw new Error('pw');}
-  await boot(plain);
+  await boot(JSON.parse(new TextDecoder().decode(plain)));
 }
-
 async function tryKept(){
   let raw=null;try{raw=sessionStorage.getItem(SK);}catch(e){}
   if(!raw)return false;
   try{KEY=await crypto.subtle.importKey('raw',b64(raw),{name:'AES-GCM'},true,['decrypt']);await open();return true;}
   catch(e){try{sessionStorage.removeItem(SK)}catch(_){}KEY=null;return false;}
 }
-
 const f=document.querySelector('#gate form'),err=document.getElementById('err'),go=document.getElementById('go');
 f.onsubmit=async ev=>{ev.preventDefault();err.textContent='';go.disabled=true;go.textContent='Đang mở…';
   const keep=document.getElementById('keep').checked;
