@@ -912,18 +912,28 @@ const tasksOf=(sr,iso)=>{const V=D('visits')||[],O=oMap()||new Map(),T=tMap()||n
    out.push({sr,v,o,r,col,prog:pnm(r),project:p.project||'—',status:r.status||'—',actual:r.actual,target:r.target,gap,need:r.need_day,code:codesOf(r.prog),todo,act:r.status!=='Đã đạt',slow});});
   if(!L.length){const g=G.get(v.oid);const fit=fitS({o,L:[],g});out.push({sr,v,o,r:null,col:'gy',prog:'Chưa có chương trình',project:'Mời chương trình mới',status:'—',gap:null,code:'',todo:fit.length?'Giới thiệu chương trình: '+fit.join(', '):'Giới thiệu chương trình phù hợp',act:true,slow:false});}});
  return out;};
-const remindTxt=(sr,iso,TK)=>{const head=dayLabel(iso).replace(' (hôm nay)','')+' ra thị trường, '+nm(sr)+' cần làm:';const lines=[head];
+const dShort=iso=>{const d=new Date(iso+'T00:00:00');return WDN[d.getDay()]+' '+pad(d.getDate())+'/'+pad(d.getMonth()+1);};
+const monOf=iso=>{const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()-((d.getDay()+6)%7));return isoOf(d);};
+const isoWeek=iso=>{const d=new Date(iso+'T00:00:00');const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));t.setUTCDate(t.getUTCDate()+3-((t.getUTCDay()+6)%7));const y=new Date(Date.UTC(t.getUTCFullYear(),0,4));return 1+Math.round(((t-y)/864e5-3+((y.getUTCDay()+6)%7))/7);};
+const visDays=()=>[...new Set([...(D('visits')||[]).map(r=>r.d),...dayList()])].sort();
+const perOf=(per,key)=>{const vd=[...new Set((D('visits')||[]).map(r=>r.d))].sort();
+ if(per==='w'){const e=new Date(key+'T00:00:00');e.setDate(e.getDate()+6);const s0=new Date(key+'T00:00:00');const f=d=>pad(d.getDate())+'/'+pad(d.getMonth()+1);return {per,key,days:vd.filter(x=>monOf(x)===key),label:'Tuần '+isoWeek(key)+' ('+f(s0)+'–'+f(e)+')',tag:'Weekly plan_W'+isoWeek(key),title:'Weekly plan'};}
+ if(per==='m'){const [y,m]=key.split('-');return {per,key,days:vd.filter(x=>x.slice(0,7)===key),label:'Tháng '+(+m)+'/'+y,tag:'Monthly plan_T'+(+m),title:'Monthly plan'};}
+ const d=new Date(key+'T00:00:00');return {per:'d',key,days:[key],label:dShort(key)+'/'+d.getFullYear(),tag:'Daily plan_'+pad(d.getDate())+'.'+pad(d.getMonth()+1),title:'Daily plan'};};
+const tasksP=(sr,P)=>{const M=new Map();P.days.forEach(iso=>tasksOf(sr,iso).forEach(t=>{const k=t.o.oid+'|'+(t.r?t.r.prog:'none');const w=P.per==='d'?t.v.t:dShort(iso);if(M.has(k)){if(!M.get(k).whens.includes(w))M.get(k).whens.push(w);}else{t.whens=[w];M.set(k,t);}}));
+ return [...M.values()].map(t=>Object.assign(t,{when:P.per==='d'?t.whens[0]:(t.whens.length>1?'ghé '+t.whens.join(', '):'ghé '+t.whens[0])}));};
+const remindTxt=(sr,P,TK)=>{const head=P.per==='d'?dShort(P.key)+' ra thị trường, '+nm(sr)+' cần làm:':P.label+', '+nm(sr)+' cần làm:';const lines=[head];
  ['si','so','dp','gy'].forEach(k=>{const L=TK.filter(t=>t.col===k&&t.act).sort((a,b)=>(b.gap||0)-(a.gap||0));if(!L.length)return;lines.push('','* '+RTYPE[k]+':');
-  L.forEach(t=>lines.push('  - '+t.o.outlet+' ('+t.o.oid+', '+t.v.t+'): '+t.todo+(t.code?'. Code promotion: '+t.code:'')));});
+  L.forEach(t=>lines.push('  - '+t.o.outlet+' ('+t.o.oid+', '+t.when+'): '+t.todo+(t.code?'. Code promotion: '+t.code:'')));});
  if(lines.length===1)lines.push('Không có việc cần nhắc, giữ nhịp ghé outlet theo lịch.');return lines.join('\n');};
-const todoHead=['Xong','SR/DSM','Giờ','Mã outlet','Outlet','Tier','Loại','Chương trình','Project','Việc cần làm','Đã bán','Target','Thiếu (thùng)','Cần/ngày','Code promotion'];
-const todoRow=t=>[{v:'☐',s:'b'},nm(t.sr),t.v.t,t.o.oid,{v:t.o.outlet,s:'b'},t.o.tier||'',{v:RTYPE[t.col],s:'bl'},t.prog,t.project,{v:t.todo,s:t.gap?'r':(t.act?'w':'g')},t.actual!=null?t.actual:'',t.target!=null?t.target:'',t.gap!=null?{v:t.gap,s:'r'}:'',t.need!=null?Math.round(t.need*10)/10:'',t.code||''];
-const TW=[6,18,7,11,26,9,9,24,16,46,9,9,11,9,16];
-const buildRemind=async(srs,iso)=>{const all=srs.map(sr=>({sr,TK:tasksOf(sr,iso)}));const d=new Date(iso+'T00:00:00');const dd=pad(d.getDate())+'.'+pad(d.getMonth()+1);
- const fname=('Daily plan_'+dd+'_'+srs.map(s=>shortNm(s,srs)).join('_')).replace(/[\\/:*?"<>|]+/g,'-').slice(0,150)+'.xlsx';
+const todoHead=['Xong','SR/DSM','Ngày · giờ ghé','Mã outlet','Outlet','Tier','Loại','Chương trình','Project','Việc cần làm','Đã bán','Target','Thiếu (thùng)','Cần/ngày','Code promotion'];
+const todoRow=t=>[{v:'☐',s:'b'},nm(t.sr),t.when||t.v.t,t.o.oid,{v:t.o.outlet,s:'b'},t.o.tier||'',{v:RTYPE[t.col],s:'bl'},t.prog,t.project,{v:t.todo,s:t.gap?'r':(t.act?'w':'g')},t.actual!=null?t.actual:'',t.target!=null?t.target:'',t.gap!=null?{v:t.gap,s:'r'}:'',t.need!=null?Math.round(t.need*10)/10:'',t.code||''];
+const TW=[6,18,14,11,26,9,9,24,16,46,9,9,11,9,16];
+const buildRemind=async(srs,P)=>{const all=srs.map(sr=>({sr,TK:tasksP(sr,P)}));
+ const fname=(P.tag+'_'+srs.map(s=>shortNm(s,srs)).join('_')).replace(/[\\/:*?"<>|]+/g,'-').slice(0,150)+'.xlsx';
  const TK=all.flatMap(a=>a.TK);const act=TK.filter(t=>t.act);const R=[];
- R.push([{v:'Daily plan '+dayLabel(iso).replace(' (hôm nay)','')+'/'+d.getFullYear()+' · '+srs.length+' SR/DSM',s:'t'}]);
- R.push([{v:'Tạo từ trang Winning in Rural lúc '+new Date().toLocaleString('vi-VN')+'. Việc tính từ lịch All Visits và số tracking; "Thiếu" là số thùng còn thiếu để đạt target của chương trình (số tổng, chưa tách theo nhãn).',s:'m'}]);
+ R.push([{v:P.title+' '+P.label+' · '+srs.length+' SR/DSM'+(P.per==='d'?'':' · '+P.days.length+' ngày có lịch'),s:'t'}]);
+ R.push([{v:'Tạo từ trang Winning in Rural lúc '+new Date().toLocaleString('vi-VN')+'. Việc tính từ lịch All Visits và số tracking'+(P.per==='d'?'':'; mỗi outlet + chương trình chỉ ghi 1 dòng, kèm các ngày ghé trong kỳ')+'; "Thiếu" là số thùng còn thiếu để đạt target của chương trình (số tổng, chưa tách theo nhãn).',s:'m'}]);
  R.push([]);
  R.push([{v:'1. Theo SR/DSM',s:'t'}]);const r1=R.length+1;
  R.push(['SR/DSM','Outlet trong lịch','Outlet có CT','Sell-in','Sell-out','Display','Khác','Tổng việc','Thiếu (thùng)'].map(v=>({v,s:'h'})));
@@ -938,23 +948,28 @@ const buildRemind=async(srs,iso)=>{const all=srs.map(sr=>({sr,TK:tasksOf(sr,iso)
  R.push([]);R.push([{v:'4. Danh sách việc (tick cột Xong khi làm xong)',s:'t'}]);R.push(todoHead.map(v=>({v,s:'h'})));
  act.forEach(t=>R.push(todoRow(t)));
  const sheets=[{n:'Tổng hợp',r:R,cols:[24,14,12,12,12,12,12,12,13,46,9,9,11,9,16],bars:[['H'+(r1+1)+':H'+e1],['I'+(r1+1)+':I'+e1,'E40613'],['B'+(r2+1)+':B'+e2],['E'+(r2+1)+':E'+e2,'E40613'],['F'+(r3+1)+':F'+e3]]}];
- all.forEach(a=>{const A=a.TK.filter(t=>t.act);const txt=remindTxt(a.sr,iso,a.TK);const S2=[[{v:nm(a.sr)+' · '+dayLabel(iso).replace(' (hôm nay)',''),s:'t'}],[{v:'Lời nhắc',s:'b'}]];
+ all.forEach(a=>{const A=a.TK.filter(t=>t.act);const txt=remindTxt(a.sr,P,a.TK);const S2=[[{v:nm(a.sr)+' · '+P.label,s:'t'}],[{v:'Lời nhắc',s:'b'}]];
   txt.split('\n').forEach(l=>S2.push([{v:l,s:l.startsWith('*')?'bl':''}]));S2.push([]);
   const st=S2.length+1;S2.push(todoHead.map(v=>({v,s:'h'})));A.forEach(t=>S2.push(todoRow(t)));
   const done=a.TK.filter(t=>!t.act);if(done.length){S2.push([]);S2.push([{v:'Đã đạt, giữ nhịp',s:'b'}]);done.forEach(t=>S2.push(todoRow(t)));}
   sheets.push({n:String(nm(a.sr)),r:S2,cols:TW,freeze:0});});
- const text=all.map(a=>remindTxt(a.sr,iso,a.TK)).join('\n\n------\n\n');
+ const text=all.map(a=>remindTxt(a.sr,P,a.TK)).join('\n\n------\n\n');
  return {fname,data:await XS(sheets),text,n:act.length};};
 
 /* giao diện: chọn ASM > SS > SR/DSM theo phạm vi đang chọn ở trên */
 S.rm=S.rm||{open:false,asm:'',ss:'',srs:null};
 draw('vremind',el=>{el.replaceChildren();const O=D('outlets'),V=D('visits');if(!O||!V){return;}const iso=S.day||todayISO();
- const bt=E('button','xbtn rmbtn',S.rm.open?'✕ Đóng tạo lời nhắc':'✎ Tạo lời nhắc đầu ngày');bt.type='button';bt.onclick=()=>{S.rm.open=!S.rm.open;dash.draw('vremind');};el.appendChild(bt);if(!S.rm.open)return;
- const vSR=new Set(V.filter(r=>r.d===iso).map(r=>r.sr));const SRI=new Map();O.forEach(o=>{if(vSR.has(o.sr)&&!SRI.has(o.sr))SRI.set(o.sr,{asm:o.asm,ss:o.ss});});
+ S.rm.per=S.rm.per||'d';if(!S.rm.key||S.rm.keyPer!==S.rm.per){S.rm.key=S.rm.per==='w'?monOf(iso):S.rm.per==='m'?iso.slice(0,7):iso;S.rm.keyPer=S.rm.per;}if(S.rm.per==='d'&&S.rm.keyDay!==iso){S.rm.key=iso;}S.rm.keyDay=iso;
+ const P=perOf(S.rm.per,S.rm.key);const dset=new Set(P.days);
+ const bt=E('button','xbtn rmbtn',S.rm.open?'✕ Đóng tạo lời nhắc':'✎ Tạo lời nhắc (ngày / tuần / tháng)');bt.type='button';bt.onclick=()=>{S.rm.open=!S.rm.open;dash.draw('vremind');};el.appendChild(bt);if(!S.rm.open)return;
+ const vSR=new Set(V.filter(r=>dset.has(r.d)).map(r=>r.sr));const SRI=new Map();O.forEach(o=>{if(vSR.has(o.sr)&&!SRI.has(o.sr))SRI.set(o.sr,{asm:o.asm,ss:o.ss});});
  const lvl=S.ST==='Toàn S27'?'all':S.ST==='ASM'?'asm':S.ST==='SS'?'ss':'sr';
  if(lvl==='asm')S.rm.asm=S.SV;if(lvl==='ss'){S.rm.ss=S.SV;S.rm.asm='';}if(lvl==='sr'){S.rm.srs=[S.SV];}
- const box=E('div','rmbox');box.appendChild(E('p','rmh','Tạo lời nhắc cho '+dayLabel(iso).replace(' (hôm nay)','')+': chọn người nhận rồi bấm Tạo. Mỗi lần tạo sẽ tải 1 file Excel và hiện lời nhắc để sao chép.'));
+ const box=E('div','rmbox');box.appendChild(E('p','rmh','Chọn kỳ (ngày, tuần hoặc tháng) và người nhận rồi bấm Tạo. Mỗi lần tạo sẽ tải 1 file Excel và hiện lời nhắc để sao chép.'));
  const row=E('div','rmrow');const mkS=(lab,opts,val,on)=>{const w=E('label','rmsel');w.appendChild(E('span',null,lab));const s=E('select','dash-select');opts.forEach(([v,t])=>s.appendChild(new Option(t,v)));s.value=val;s.onchange=()=>on(s.value);w.appendChild(s);row.appendChild(w);};
+ const pr=E('div','rmper');[['d','Ngày'],['w','Tuần'],['m','Tháng']].forEach(([k,t])=>{const b=E('button',S.rm.per===k?'on':null,t);b.type='button';b.setAttribute('aria-pressed',S.rm.per===k?'true':'false');b.onclick=()=>{S.rm.per=k;S.rm.srs=null;dash.draw('vremind');};pr.appendChild(b);});row.appendChild(pr);
+ {const vd=visDays();let opts;if(S.rm.per==='w')opts=[...new Set(vd.map(monOf))].map(k=>[k,perOf('w',k).label]);else if(S.rm.per==='m')opts=[...new Set(vd.map(x=>x.slice(0,7)))].map(k=>[k,perOf('m',k).label]);else opts=vd.map(k=>[k,dShort(k)]);
+  mkS(S.rm.per==='w'?'Tuần':S.rm.per==='m'?'Tháng':'Ngày',opts,S.rm.key,v=>{S.rm.key=v;S.rm.srs=null;if(S.rm.per==='d'){setDay(v);}else dash.draw('vremind');});}
  const asms=[...new Set([...SRI.values()].map(x=>x.asm).filter(Boolean))].sort();
  if(lvl==='all')mkS('ASM',[['','Tất cả ASM'],...asms.map(a=>[a,nm(a)])],S.rm.asm,v=>{S.rm.asm=v;S.rm.ss='';S.rm.srs=null;dash.draw('vremind');});
  const sss=[...new Set([...SRI.values()].filter(x=>!S.rm.asm||x.asm===S.rm.asm).map(x=>x.ss).filter(Boolean))].sort();
@@ -962,17 +977,17 @@ draw('vremind',el=>{el.replaceChildren();const O=D('outlets'),V=D('visits');if(!
  box.appendChild(row);
  const cand=[...SRI].filter(([sr,x])=>(!S.rm.asm||x.asm===S.rm.asm)&&(!S.rm.ss||x.ss===S.rm.ss)).map(([sr])=>sr).sort((a,b)=>String(nm(a)).localeCompare(String(nm(b)),'vi'));
  if(!S.rm.srs)S.rm.srs=cand.slice();S.rm.srs=S.rm.srs.filter(s=>cand.includes(s));
- const sw=E('div','rmsr');sw.appendChild(E('span','rml','SR/DSM có lịch ngày này ('+cand.length+')'));
+ const sw=E('div','rmsr');sw.appendChild(E('span','rml','SR/DSM có lịch trong '+P.label+' ('+cand.length+')'));
  if(lvl!=='sr'){const all=E('label','rmck all');const ca=E('input');ca.type='checkbox';ca.checked=cand.length>0&&S.rm.srs.length===cand.length;ca.onchange=()=>{S.rm.srs=ca.checked?cand.slice():[];dash.draw('vremind');};all.append(ca,' Tất cả');sw.appendChild(all);}
  cand.forEach(sr=>{const l=E('label','rmck');const c=E('input');c.type='checkbox';c.checked=S.rm.srs.includes(sr);c.disabled=lvl==='sr';c.onchange=()=>{S.rm.srs=c.checked?[...S.rm.srs,sr]:S.rm.srs.filter(x=>x!==sr);dash.draw('vremind');};l.append(c,' '+nm(sr));sw.appendChild(l);});
- if(!cand.length)sw.appendChild(E('span','muted','Không có SR/DSM nào có lịch visit ngày này trong phạm vi đã chọn.'));
+ if(!cand.length)sw.appendChild(E('span','muted','Không có SR/DSM nào có lịch visit trong kỳ này ở phạm vi đã chọn.'));
  box.appendChild(sw);
  const go=E('button','vbtn on','Tạo lời nhắc ('+S.rm.srs.length+' SR/DSM)');go.type='button';go.disabled=!S.rm.srs.length;const msg=E('span','muted');const act=E('div','rmact');act.append(go,msg);box.appendChild(act);
  const out=E('div','rmout');box.appendChild(out);
- go.onclick=async()=>{go.disabled=true;msg.textContent='Đang tạo…';try{const r=await buildRemind(S.rm.srs.slice(),iso);r.iso=iso;S.rm.last=r;await xSave(r.fname,r.data);msg.textContent='Đã tạo '+r.fname+' · '+vn(r.n)+' việc';showOut(r);}catch(e){console.error(e);msg.textContent='Không tạo được lời nhắc ('+(e&&e.message||'lỗi')+')';}go.disabled=false;};
+ go.onclick=async()=>{go.disabled=true;msg.textContent='Đang tạo…';try{const r=await buildRemind(S.rm.srs.slice(),P);r.pk=S.rm.per+'|'+S.rm.key;S.rm.last=r;await xSave(r.fname,r.data);msg.textContent='Đã tạo '+r.fname+' · '+vn(r.n)+' việc';showOut(r);}catch(e){console.error(e);msg.textContent='Không tạo được lời nhắc ('+(e&&e.message||'lỗi')+')';}go.disabled=false;};
  const showOut=r=>{out.replaceChildren();const ta=E('textarea','rmtxt');ta.value=r.text;ta.rows=Math.min(18,r.text.split('\n').length+1);ta.readOnly=true;
   const cp=E('button','vbtn','Sao chép lời nhắc');cp.type='button';const cm=E('span','muted');cp.onclick=()=>{try{navigator.clipboard.writeText(r.text).then(()=>{cm.textContent='Đã sao chép';},()=>{ta.select();cm.textContent='Bấm Ctrl+C để sao chép';});}catch(e){ta.select();cm.textContent='Bấm Ctrl+C để sao chép';}};
   const dl=E('button','vbtn','Tải lại file Excel');dl.type='button';dl.onclick=()=>xSave(r.fname,r.data);
   const b=E('div','rmact');b.append(cp,dl,cm);out.append(b,ta);};
- if(S.rm.last&&S.rm.last.iso===iso)showOut(S.rm.last);
+ if(S.rm.last&&S.rm.last.pk===S.rm.per+'|'+S.rm.key)showOut(S.rm.last);
  el.appendChild(box);});

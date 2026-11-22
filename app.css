@@ -1112,3 +1112,7 @@
 .pp table.acct.acct tbody tr.acc.l3 td{padding-top:4px;padding-bottom:4px}
 .pp table.acct.acct tbody tr.acc.l2 .acth b{font-size:11px!important;font-weight:700!important}
 .pp table.acct.acct tbody tr.acc.l3.cur.cur.cur td.nm b,.pp table.acct.acct tbody tr.acc.l3.cur.cur.cur td.tc b{font-weight:800!important}
+.pp .rmper{display:inline-flex;border:1.5px solid #0B8137;border-radius:10px;overflow:hidden}
+.pp .rmper button{font:inherit;font-size:13.5px;font-weight:800;border:0;background:#fff;color:#0B8137;padding:0 16px;min-height:40px;cursor:pointer}
+.pp .rmper button+button{border-left:1.5px solid #0B8137}
+.pp .rmper button.on{background:#0B8137;color:#fff}
