@@ -1159,3 +1159,27 @@
 .pp #trk .minis .mini{border-top-width:4px!important}
 @media (min-width:1001px) and (max-width:1500px){.pp .wrgrid.wrgrid{grid-template-columns:minmax(0,2fr) minmax(0,3fr)}}
 .pp table.acct.acct thead th{font-size:10.5px!important;font-weight:800!important;color:#56625B!important}
+/* ===== lần 7: khung chi tiết bên phải gọn hơn ===== */
+.pp .ver{color:#0B8137;font-weight:700}
+.pp #trk{gap:8px!important;padding:10px 14px!important}
+.pp #trk .trh{gap:4px!important}
+.pp #trk .bc,.pp #trk .bc button{font-size:12px!important;min-height:0!important;padding-top:2px!important;padding-bottom:2px!important}
+.pp #trk h2{font-size:16px!important;margin:0!important}
+.pp #trk .trinfo{font-size:12.5px!important;margin:0!important}
+.pp #trk table.scht{font-size:12.5px!important}
+.pp #trk table.scht th{font-size:10.5px!important;padding:4px 8px!important;white-space:nowrap}
+.pp #trk table.scht td{padding:4px 8px!important}
+.pp #trk table.scht td b.code{font-size:12px!important;padding:0 6px!important}
+.pp #trk .srcl,.pp #trk .srcl button{font-size:11.5px!important}
+.pp #trk .srcl button{padding:2px 6px!important}
+.pp #trk .minis{gap:8px!important}
+.pp #trk .minis .mini{padding:6px 10px!important;border-top-width:4px!important}
+.pp #trk .minis .mini>span{font-size:12px!important}
+.pp #trk .minis .mini b,.pp #trk .minis .mini b span{font-size:22px!important;line-height:1.1!important}
+.pp #trk .minis .mini em,.pp #trk .minis .mini em span{font-size:11.5px!important}
+.pp #trk #trkst button{min-height:32px!important;font-size:13px!important;padding:0 10px!important}
+.pp #trk>.fbar input,.pp #trk>.fbar select,.pp #trk>.fbar .xbtn{min-height:34px!important;font-size:13px!important}
+.pp #trk>p.muted{font-size:12px!important;margin:0!important}
+.pp #trk>.tw td{padding:6px 10px!important;font-size:13px!important}
+.pp #trk>.tw td b{font-size:13px!important}
+.pp #trk>.tw th{padding:6px 10px!important;font-size:10.5px!important}
