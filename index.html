@@ -72,7 +72,7 @@ async function boot(B){
   // B = {data, files}
   document.getElementById('gate').remove();
   const V=Date.now();await loadCss('app.css?v='+V);
-  const bodyHtml=await (await OF('app-body.html',{cache:'no-cache'})).text();
+  const bodyHtml=await (await OF('app-body.html?v='+V,{cache:'no-store'})).text();
   const wrap=document.createElement('div');wrap.innerHTML=bodyHtml;document.body.appendChild(wrap);
   const lb=document.createElement('button');lb.id='lockbtn';lb.textContent='Khoá';lb.onclick=()=>{try{sessionStorage.removeItem(SK)}catch(e){}location.reload();};document.body.appendChild(lb);
   // dashboard shim (giống runtime của artifact, chỉ đọc)
