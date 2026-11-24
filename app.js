@@ -432,7 +432,7 @@ const plEval=()=>{const p=plProg();const O=D('outlets'),T=tMap();if(!p||!O||!T)r
   const why=[];const v=+o.vol3m||0;const ch=o.channel||o.segment||'';const lead=String(o.lead||'').toUpperCase();
   if(typeof SMALL==='function'&&SMALL(p)){if(f.vol&&v>f.vol)why.push('Trên '+f.vol+' thùng/th → outlet lớn, hướng TIP/P4G');if(tin&&(TRK[o.tier]||0)>tin)why.push('Outlet lớn ('+(o.tier||'—')+') → hướng TIP/P4G');}
   else{if(v<f.vol)why.push('Dưới '+f.vol+' thùng/th');if((TRK[o.tier]||0)<tin)why.push('Tier '+(o.tier||'—'));}
-  if(f.rur==='Rural'&&o.demo!=='Rural')why.push('Urban');
+  if(f.rur==='Rural'&&o.demo!=='Rural')why.push('Urban');if(f.seg&&(o.segment||o.channel)!==f.seg)why.push('Segment khác');if(f.lar==='has'&&!(+o.lar3m>0))why.push('Chưa bán Larue');if(f.lar==='none'&&+o.lar3m>0)why.push('Đang bán Larue');if(f.biv==='has'&&!(+o.biv3m>0))why.push('Chưa bán Bivina');if(f.biv==='none'&&+o.biv3m>0)why.push('Đang bán Bivina');if(f.shr&&o.shr==null)why.push('Chưa có số share');else if(f.shr==='lt70'&&o.shr>=70)why.push('Share HVN ≥70%');else if(f.shr==='ge70'&&o.shr<70)why.push('Share HVN <70%');
   const ov=L.map(r=>M.get(r.prog)).find(q=>q&&q.id!==p.id&&(p.logic==='Sell-in'||p.logic==='Sell-out')&&q.logic===p.logic&&inter(sk,skuSet(q)));
   if(ov)why.push('Trùng '+p.logic+' cùng SKU: '+ov.name.split(' (')[0]);
   const fam=p.fam;
@@ -514,7 +514,7 @@ let _PE={},_PEO=null;const plEval=id=>{const p=PM().get(id);const O=D('outlets')
   const why=[];const v=+o.vol3m||0;const ch=o.channel||o.segment||'';const lead=String(o.lead||'').toUpperCase();
   if(typeof SMALL==='function'&&SMALL(p)){if(f.vol&&v>f.vol)why.push('Trên '+f.vol+' thùng/th → outlet lớn, hướng TIP/P4G');if(tin&&(TRK[o.tier]||0)>tin)why.push('Outlet lớn ('+(o.tier||'—')+') → hướng TIP/P4G');}
   else{if(v<f.vol)why.push('Dưới '+f.vol+' thùng/th');if((TRK[o.tier]||0)<tin)why.push('Tier '+(o.tier||'—'));}
-  if(f.rur==='Rural'&&o.demo!=='Rural')why.push('Urban');
+  if(f.rur==='Rural'&&o.demo!=='Rural')why.push('Urban');if(f.seg&&(o.segment||o.channel)!==f.seg)why.push('Segment khác');if(f.lar==='has'&&!(+o.lar3m>0))why.push('Chưa bán Larue');if(f.lar==='none'&&+o.lar3m>0)why.push('Đang bán Larue');if(f.biv==='has'&&!(+o.biv3m>0))why.push('Chưa bán Bivina');if(f.biv==='none'&&+o.biv3m>0)why.push('Đang bán Bivina');if(f.shr&&o.shr==null)why.push('Chưa có số share');else if(f.shr==='lt70'&&o.shr>=70)why.push('Share HVN ≥70%');else if(f.shr==='ge70'&&o.shr<70)why.push('Share HVN <70%');
   const ov=L.map(r=>M.get(r.prog)).find(q=>q&&q.id!==p.id&&(p.logic==='Sell-in'||p.logic==='Sell-out')&&q.logic===p.logic&&inter(sk,skuSet(q)));
   if(ov)why.push('Trùng '+p.logic+' cùng SKU: '+ov.name.split(' (')[0]);
   const fam=p.fam;
@@ -563,7 +563,11 @@ draw('pl_cfg',el=>{el.replaceChildren();if(!S.pls.length){el.appendChild(E('p','
   const upd=(kk,v)=>{S.plf[id]=Object.assign(plF(id),{[kk]:v});plDraw();};
   const sm=SMALL(p);row.append(sm?mkSel([['0','Mọi sản lượng'],['5','≤5 thùng'],['10','≤10 thùng'],['20','≤20 thùng'],['30','≤30 thùng'],['50','≤50 thùng']],String(f.vol),v=>upd('vol',+v)):mkSel([['0','Mọi sản lượng'],['10','≥10 thùng'],['20','≥20 thùng'],['30','≥30 thùng'],['40','≥40 thùng'],['60','≥60 thùng'],['100','≥100 thùng']],String(f.vol),v=>upd('vol',+v)),
    sm?mkSel([['','Mọi tier'],['Silver','Tối đa Silver'],['Bronze','Chỉ Bronze']],f.tier,v=>upd('tier',v)):mkSel([['','Mọi tier'],['Silver','Silver+'],['Gold','Gold+'],['Platinum','Platinum']],f.tier,v=>upd('tier',v)),
-   mkSel([['','Rural + Urban'],['Rural','Chỉ Rural']],f.rur,v=>upd('rur',v)));
+   mkSel([['','Rural + Urban'],['Rural','Chỉ Rural']],f.rur,v=>upd('rur',v)),
+   mkSel([['','Mọi segment'],...[...new Set((D('outlets')||[]).map(o=>o.segment||o.channel).filter(Boolean))].sort().map(x=>[x,x])],f.seg||'',v=>upd('seg',v)),
+   mkSel([['','Larue: tất cả'],['has','Đang bán Larue'],['none','Chưa bán Larue']],f.lar||'',v=>upd('lar',v)),
+   mkSel([['','Bivina: tất cả'],['has','Đang bán Bivina'],['none','Chưa bán Bivina']],f.biv||'',v=>upd('biv',v)),
+   mkSel([['','Mọi share HVN'],['lt70','Share HVN < 70%'],['ge70','Share HVN ≥ 70%']],f.shr||'',v=>upd('shr',v)));
   const q=E('input');q.type='number';q.min='1';q.placeholder='Số lượng';q.setAttribute('aria-label','Số lượng outlet muốn chọn');q.oninput=()=>{const n=parseInt(q.value,10);tp.textContent=n>0?'Chọn '+vn(Math.min(n,R.ok.length))+' outlet':'Chọn hết';};q.value=S.plq[id]||'';q.onchange=()=>{S.plq[id]=q.value;};
   const tp=E('button','more',(parseInt(S.plq[id],10)>0)?'Chọn '+vn(Math.min(parseInt(S.plq[id],10),R.ok.length))+' outlet':'Chọn hết');tp.type='button';tp.onclick=()=>{const n=parseInt(q.value,10)||R.ok.length;S.plq[id]=q.value;k.clear();R.ok.slice(0,n).forEach(y=>k.add(y.o.oid));plDraw();};
   const cl=E('button','back','Bỏ chọn');cl.type='button';cl.onclick=()=>{k.clear();plDraw();};row.append(q,tp,cl);c.appendChild(row);
@@ -576,9 +580,9 @@ draw('pl_mx',el=>{el.replaceChildren();if(!S.pls.length)return;const M=PM();cons
  const ids=new Map();RS.forEach(([id,R])=>{R.ok.forEach(x=>{const c=ids.get(x.o.oid);if(!c||x.sc>c.sc)ids.set(x.o.oid,{o:x.o,sc:x.sc});});pick(id).forEach(oid=>{if(!ids.has(oid)){const y=R.exM.get(oid);if(y)ids.set(oid,{o:y.o,sc:-1});}});});
  let L=[...ids.values()].filter(x=>(!qv||(x.o.outlet+' '+x.o.oid+' '+nm(x.o.sr)).toLowerCase().includes(qv))&&(!only||S.pls.some(id=>pick(id).has(x.o.oid))));
  L.sort((a,b)=>b.sc-a.sc);const tot=L.length;L=L.slice(0,300);
- const t=E('table');const th=E('thead');const hr=E('tr');['Outlet · SR','Tier','Vol TB 3T'].forEach((x,i)=>{const h=E('th',i===2?'n':null,x);hr.appendChild(h);});
+ const t=E('table');const th=E('thead');const hr=E('tr');['Outlet · SR','Tier','Vol TB 3T','Larue TB 3T','Bivina TB 3T','Share HVN'].forEach((x,i)=>{const h=E('th',i>=2?'n':null,x);hr.appendChild(h);});
  RS.forEach(([id])=>hr.appendChild(E('th','plcol',(M.get(id).short||M.get(id).name))));th.appendChild(hr);t.appendChild(th);
- const tb=E('tbody');L.forEach(x=>{const o=x.o;const tr=E('tr');const a=td(tr);a.append(E('b',null,o.outlet),E('span','muted',o.oid+' · '+nm(o.sr)));td(tr).appendChild(pill(o.tier||'—','s-mid'));td(tr,null,'n').appendChild(mk(vn(o.vol3m),'outlets','vol3m',{oid:o.oid}));
+ const tb=E('tbody');L.forEach(x=>{const o=x.o;const tr=E('tr');const a=td(tr);a.append(E('b',null,o.outlet),E('span','muted',o.oid+' · '+nm(o.sr)));td(tr).appendChild(pill(o.tier||'—','s-mid'));td(tr,null,'n').appendChild(mk(vn(o.vol3m),'outlets','vol3m',{oid:o.oid}));td(tr,o.lar3m==null?'—':vn(o.lar3m),'n');td(tr,o.biv3m==null?'—':vn(o.biv3m),'n');td(tr,o.shr==null?'—':String(o.shr).replace('.',',')+'%','n');
   RS.forEach(([id,R])=>{const c=td(tr,null,'plcell');const k=pick(id);
    if(R.curS.has(o.oid)){c.appendChild(pill('Đang chạy','t-ok'));return;}
    const ok=R.okM.get(o.oid);const ex=R.exM.get(o.oid);
